@@ -50,5 +50,35 @@
 
 <footer>© 2026 Parenting Adult Children Today · info@parentingadultchildrentoday.com · Results vary; no outcome promised. Educational content, not therapy.</footer>
 
+
+<script>
+// TRUE ONE-CLICK: charge the card vaulted at checkout, no re-entry.
+// Falls back to a standalone Stripe checkout if the session is missing/expired.
+(() => {
+  const API='https://pact-funnel-api.alex-f42.workers.dev', ITEM='roadmap-ds', NEXT='oto-2.html', FALLBACK='https://buy.stripe.com/test_6oUcMY7ExabC36Q6ppcbC08';
+  const sid = new URLSearchParams(location.search).get('sid');
+  document.querySelectorAll('a.decline').forEach(a => {
+    if (sid) a.href = a.getAttribute('href') + '?sid=' + encodeURIComponent(sid);
+  });
+  const btn = document.querySelector('a.cta-btn');
+  btn.addEventListener('click', async e => {
+    e.preventDefault();
+    const orig = btn.textContent;
+    btn.style.pointerEvents = 'none';
+    btn.textContent = 'Adding to your order…';
+    try {
+      if (!sid) throw new Error('no session');
+      const r = await fetch(API + '/upsell', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ session_id: sid, item: ITEM }) });
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.error || j.status || 'charge failed');
+      btn.textContent = '✓ Added to your order!';
+      setTimeout(() => location = NEXT + '?sid=' + encodeURIComponent(sid), 700);
+    } catch (err) {
+      location = FALLBACK;  // recover the sale via standalone checkout
+    }
+  });
+})();
+</script>
 </body>
 </html>

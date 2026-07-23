@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Slab:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
 <style>
   :root{
     --black:#111111; --ink:#2f2f2f; --grey:#f3f3f3; --line:#dcdcdc;
@@ -160,7 +161,7 @@
         <input type="tel" id="phone" autocomplete="tel">
 
         <h2 style="margin-top:26px"><span class="n">2</span>Payment information</h2>
-        <div class="fake-card">🔒 Card details are collected on the next page — <b>Stripe's secure checkout</b>. Your card data never touches our servers.<br><span style="font-size:12px;color:#aaa">Test mode: card 4242 4242 4242 4242, any future date/CVC. [GHL build: replace this block with native order-form card fields for on-page payment + one-click vaulting.]</span></div>
+        <div class="fake-card">🔒 Secure card fields load <b>right here on this page</b> when you click the button below — powered by Stripe. Your card data never touches our servers.<br><span style="font-size:12px;color:#aaa">Test mode: card 4242 4242 4242 4242, any future date, any CVC.</span></div>
 
         <!-- THE BUMP — the one decision beyond the purchase -->
         <div style="margin-top:24px" class="bump-arrow">One-time offer for new readers — check the box to add it</div>
@@ -175,6 +176,8 @@
         </label>
 
         <button class="cta-btn" type="submit">Send My Book →<span style="display:block;font-weight:400;font-size:13px">continue to secure payment</span></button>
+
+        <div id="checkout-embed" style="margin-top:22px"></div>
 
         <ul class="anxiety">
           <li>256-bit secure checkout. Your card details never touch our servers.</li>
@@ -237,17 +240,36 @@
     row.classList.toggle('on', bump.checked);
     tot.textContent = bump.checked ? '$36.00' : '$9.00';
   });
-  // TEST-MODE flow: route to Stripe checkout — bump checked = book+Vault bundle link,
-  // unchecked = book-only link (Vault appears there as an optional add-on = second chance).
-  // GHL build replaces this with the native order form; keep bump semantics identical.
-  const LINK_BOOK   = 'https://buy.stripe.com/test_4gM4gs0c5bfG6j23ddcbC06';
-  const LINK_BUNDLE = 'https://buy.stripe.com/test_cNi9AMe2VfvW8racNNcbC0b';
-  document.getElementById('orderform').addEventListener('submit', e => {
+  // ON-PAGE CHECKOUT: create a vaulting session on our backend, mount Stripe's
+  // embedded card form right here. Bump checked = book+Vault ($36), else book ($9).
+  const API = 'https://pact-funnel-api.alex-f42.workers.dev';
+  const PK  = 'pk_test_51LGShDDyaLrjkeNa24KnDiDeOZekDxWCD9SBHcLjE46W7sNtjUXoqTpKuoRYUSA8TDzoaVdVCAqA6OCTiNef3hOj00aI7mpqEd';
+  let mounted = false;
+  document.getElementById('orderform').addEventListener('submit', async e => {
     e.preventDefault();
-    let url = bump.checked ? LINK_BUNDLE : LINK_BOOK;
-    const em = document.getElementById('email').value.trim();
-    if (em) url += '?prefilled_email=' + encodeURIComponent(em);
-    window.location = url;
+    if (mounted) return;
+    const btn = document.querySelector('#orderform .cta-btn');
+    btn.disabled = true; btn.innerHTML = 'Loading secure checkout…';
+    try {
+      const r = await fetch(API + '/session', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ bump: bump.checked, email: document.getElementById('email').value.trim() || undefined })
+      });
+      const j = await r.json();
+      if (!j.clientSecret) throw new Error(j.error || 'session failed');
+      // hide the placeholder + button, lock the bump (it's priced into this session)
+      document.querySelector('.fake-card').style.display = 'none';
+      btn.style.display = 'none';
+      bump.disabled = true;
+      mounted = true;
+      const checkout = await Stripe(PK).initEmbeddedCheckout({ clientSecret: j.clientSecret });
+      checkout.mount('#checkout-embed');
+      document.getElementById('checkout-embed').scrollIntoView({behavior:'smooth', block:'start'});
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = 'Send My Book →<span style="display:block;font-weight:400;font-size:13px">continue to secure payment</span>';
+      alert('Could not load checkout: ' + err.message + '\nPlease try again.');
+    }
   });
 </script>
 
