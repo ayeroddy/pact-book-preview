@@ -144,27 +144,9 @@
     <div>
       <!-- GHL/processor integration: replace this form with the native order form on import.
            Keep field order, labels, bump copy, and button copy EXACTLY — each line is doctrine. -->
-      <form class="panel" id="orderform" novalidate>
-        <h2><span class="n">1</span>Where should we send your book?</h2>
-        <label for="name">Full Name</label>
-        <input type="text" id="name" autocomplete="name" placeholder="Jane Smith">
-        <label for="email">Email Address <small>— your ebook &amp; audiobook are delivered here instantly</small></label>
-        <input type="email" id="email" autocomplete="email" placeholder="jane@email.com">
-        <label for="addr">Shipping Address <small>— where should we mail your printed copy in August?</small></label>
-        <input type="text" id="addr" autocomplete="street-address" placeholder="123 Main St">
-        <div class="row3">
-          <div><label for="city">City</label><input type="text" id="city" autocomplete="address-level2"></div>
-          <div><label for="state">State</label><input type="text" id="state" autocomplete="address-level1"></div>
-          <div><label for="zip">ZIP</label><input type="text" id="zip" autocomplete="postal-code"></div>
-        </div>
-        <label for="phone">Phone <small>(optional — only used for order &amp; delivery updates, never sales calls)</small></label>
-        <input type="tel" id="phone" autocomplete="tel">
-
-        <h2 style="margin-top:26px"><span class="n">2</span>Payment information</h2>
-        <div class="fake-card">🔒 Secure card fields load <b>right here on this page</b> when you click the button below — powered by Stripe. Your card data never touches our servers.<br><span style="font-size:12px;color:#aaa">Test mode: card 4242 4242 4242 4242, any future date, any CVC.</span></div>
-
-        <!-- THE BUMP — the one decision beyond the purchase -->
-        <div style="margin-top:24px" class="bump-arrow">One-time offer for new readers — check the box to add it</div>
+      <div class="panel">
+        <h2><span class="n">1</span>Your order — one decision</h2>
+        <div class="bump-arrow">One-time offer for new readers — check the box to add it</div>
         <label class="bump" for="bumpbox">
           <div class="head">
             <input type="checkbox" id="bumpbox">
@@ -175,9 +157,10 @@
           </div>
         </label>
 
-        <button class="cta-btn" type="submit">Send My Book →<span style="display:block;font-weight:400;font-size:13px">continue to secure payment</span></button>
-
-        <div id="checkout-embed" style="margin-top:22px"></div>
+        <h2 style="margin-top:26px"><span class="n">2</span>Payment — secure, right on this page</h2>
+        <p id="embed-status" style="text-align:center;color:#888;font-size:15px;padding:26px 0">Loading secure checkout…</p>
+        <div id="checkout-embed"></div>
+        <p style="font-size:12.5px;color:#999;text-align:center;margin-top:10px">Your email &amp; shipping address are collected securely above — the printed copy ships to that address at the August release. Test mode: card 4242 4242 4242 4242, any future date, any CVC.</p>
 
         <ul class="anxiety">
           <li>256-bit secure checkout. Your card details never touch our servers.</li>
@@ -185,7 +168,7 @@
           <li class="g"><b>30-Day "Keep The Book" Guarantee</b> — refund with one email to info@parentingadultchildrentoday.com, answered within 24 hours. You keep everything.</li>
           <li class="h">Questions? [phone] · info@parentingadultchildrentoday.com (real humans, Mon–Fri)</li>
         </ul>
-      </form>
+      </div>
     </div>
 
     <!-- ============ RIGHT: ORDER SUMMARY ============ -->
@@ -232,45 +215,43 @@
 </footer>
 
 <script>
-  // Bump toggles the order summary + total. Purchase event value must equal the total (pixel doctrine).
+  // Payment mounts ON PAGE LOAD. The bump toggle rebuilds the session ($9 <-> $36).
   const bump = document.getElementById('bumpbox'),
         row  = document.getElementById('bumprow'),
         tot  = document.getElementById('total');
+  const API = 'https://pact-funnel-api.alex-f42.workers.dev';
+  const PK  = 'pk_test_51LGShDDyaLrjkeNa24KnDiDeOZekDxWCD9SBHcLjE46W7sNtjUXoqTpKuoRYUSA8TDzoaVdVCAqA6OCTiNef3hOj00aI7mpqEd';
+  let checkout = null, currentBump = null, loading = false;
+
+  async function mountCheckout(bumpVal) {
+    if (loading) return;
+    loading = true;
+    const st = document.getElementById('embed-status');
+    st.style.display = 'block';
+    st.textContent = currentBump === null ? 'Loading secure checkout…' : 'Updating your order…';
+    try {
+      const r = await fetch(API + '/session', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ bump: bumpVal }) });
+      const j = await r.json();
+      if (!j.clientSecret) throw new Error(j.error || 'session failed');
+      if (checkout) checkout.destroy();
+      checkout = await Stripe(PK).initEmbeddedCheckout({ clientSecret: j.clientSecret });
+      checkout.mount('#checkout-embed');
+      currentBump = bumpVal;
+      st.style.display = 'none';
+    } catch (e) {
+      st.textContent = 'Checkout could not load — please refresh the page.';
+    }
+    loading = false;
+    if (bump.checked !== currentBump) mountCheckout(bump.checked);
+  }
+
   bump.addEventListener('change', () => {
     row.classList.toggle('on', bump.checked);
     tot.textContent = bump.checked ? '$36.00' : '$9.00';
+    mountCheckout(bump.checked);
   });
-  // ON-PAGE CHECKOUT: create a vaulting session on our backend, mount Stripe's
-  // embedded card form right here. Bump checked = book+Vault ($36), else book ($9).
-  const API = 'https://pact-funnel-api.alex-f42.workers.dev';
-  const PK  = 'pk_test_51LGShDDyaLrjkeNa24KnDiDeOZekDxWCD9SBHcLjE46W7sNtjUXoqTpKuoRYUSA8TDzoaVdVCAqA6OCTiNef3hOj00aI7mpqEd';
-  let mounted = false;
-  document.getElementById('orderform').addEventListener('submit', async e => {
-    e.preventDefault();
-    if (mounted) return;
-    const btn = document.querySelector('#orderform .cta-btn');
-    btn.disabled = true; btn.innerHTML = 'Loading secure checkout…';
-    try {
-      const r = await fetch(API + '/session', {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ bump: bump.checked, email: document.getElementById('email').value.trim() || undefined })
-      });
-      const j = await r.json();
-      if (!j.clientSecret) throw new Error(j.error || 'session failed');
-      // hide the placeholder + button, lock the bump (it's priced into this session)
-      document.querySelector('.fake-card').style.display = 'none';
-      btn.style.display = 'none';
-      bump.disabled = true;
-      mounted = true;
-      const checkout = await Stripe(PK).initEmbeddedCheckout({ clientSecret: j.clientSecret });
-      checkout.mount('#checkout-embed');
-      document.getElementById('checkout-embed').scrollIntoView({behavior:'smooth', block:'start'});
-    } catch (err) {
-      btn.disabled = false;
-      btn.innerHTML = 'Send My Book →<span style="display:block;font-weight:400;font-size:13px">continue to secure payment</span>';
-      alert('Could not load checkout: ' + err.message + '\nPlease try again.');
-    }
-  });
+  mountCheckout(false);
 </script>
 
 </body>
