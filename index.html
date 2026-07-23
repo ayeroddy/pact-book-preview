@@ -159,7 +159,9 @@
     box-shadow:0 8px 22px -12px rgba(0,0,0,.35);transition:transform .15s ease}
   .vt:hover{transform:translateY(-3px)}
   .vt img{width:100%;display:block}
-  .vt .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.08)}
+  .vt video{width:100%;display:block;aspect-ratio:16/9;background:#000;object-fit:cover}
+  .vt.playing .play{display:none}
+  .vt .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.08);pointer-events:none}
   .vt .play span{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;
     align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.35)}
   .vt .play span::after{content:"";display:block;margin-left:5px;border-style:solid;border-width:12px 0 12px 20px;
@@ -315,14 +317,23 @@
   <div class="wrap">
     <div class="strip-black">Real PACT Members, In Their Own Words</div>
     <div class="vt-grid">
-      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4544afaedd1c89695a4b.png" alt="PACT member video: This brought us together" loading="lazy"><span class="play"><span></span></span></a>
-      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4723b3c8655da2abcf21.png" alt="PACT member video: This changed everything" loading="lazy"><span class="play"><span></span></span></a>
-      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c45440cd3954cb22036b4.png" alt="PACT member video: Less stress, more connection" loading="lazy"><span class="play"><span></span></span></a>
-      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c45a1b3c8655da2ab9f9c.png" alt="PACT member video: The best decision I made" loading="lazy"><span class="play"><span></span></span></a>
-      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4621cae0ff33d93f42d6.png" alt="PACT member video testimonial" loading="lazy"><span class="play"><span></span></span></a>
-      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c468c817563b473dfa6cd.png" alt="PACT member video testimonial" loading="lazy"><span class="play"><span></span></span></a>
+      <!-- Video↔poster pairing extracted from parentingadultstoday.com page payload (verified). -->
+      <div class="vt"><video controls preload="none" playsinline poster="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4544afaedd1c89695a4b.png"><source src="https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/transcoded_videos/cts-f9dad645fa2ec249_720p.mp4" type="video/mp4"></video><span class="play"><span></span></span></div>
+      <div class="vt"><video controls preload="none" playsinline poster="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4723b3c8655da2abcf21.png"><source src="https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/transcoded_videos/cts-cf7b21f4c1b2eddb_720p.mp4" type="video/mp4"></video><span class="play"><span></span></span></div>
+      <div class="vt"><video controls preload="none" playsinline poster="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c45440cd3954cb22036b4.png"><source src="https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/transcoded_videos/cts-0faed6e9d593e2fa_720p.mp4" type="video/mp4"></video><span class="play"><span></span></span></div>
+      <div class="vt"><video controls preload="none" playsinline poster="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c45a1b3c8655da2ab9f9c.png"><source src="https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/transcoded_videos/cts-c5508dcbd4d819eb_720p.mp4" type="video/mp4"></video><span class="play"><span></span></span></div>
+      <div class="vt"><video controls preload="none" playsinline poster="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4621cae0ff33d93f42d6.png"><source src="https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/transcoded_videos/cts-45c19872b256aa93_720p.mp4" type="video/mp4"></video><span class="play"><span></span></span></div>
+      <div class="vt"><video controls preload="none" playsinline poster="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c468c817563b473dfa6cd.png"><source src="https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/transcoded_videos/cts-1083d40fbceddcc6_720p.mp4" type="video/mp4"></video><span class="play"><span></span></span></div>
     </div>
-    <p class="vt-note">Tap any video to watch members tell their stories. <!-- GHL build: embed these same hosted videos natively (account media library) instead of linking out. --></p>
+    <p class="vt-note">Press play to hear members tell their stories.</p>
+    <script>
+      document.querySelectorAll('.vt video').forEach(v => {
+        v.addEventListener('play', () => {
+          v.closest('.vt').classList.add('playing');
+          document.querySelectorAll('.vt video').forEach(o => { if (o !== v) o.pause(); });
+        });
+      });
+    </script>
   </div>
 </section>
 
