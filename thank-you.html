@@ -29,8 +29,16 @@
 <section>
   <div class="wrap">
     <p style="color:var(--green);font-weight:700">✓ Order complete</p>
-    <h1>Welcome. Your book is in your inbox — and your first step is below.</h1>
-    <p>Check your email (from <strong>info@parentingadultchildrentoday.com</strong>) for your login to the reading library: ebook, audiobook, bonuses, and anything you added today. Your printed copy ships at the August release — we'll email tracking.</p>
+    <h1>Welcome. Your library is open — and your first step is below.</h1>
+    <p><a class="btn" id="library-btn" href="members.html">📚 Open My Library →</a></p>
+    <p>Everything you bought today is unlocked in your library: ebook, audiobook, bonuses, and any additions. Your printed copy ships at the August release — we'll email tracking to your order email.</p>
+    <script>
+      // carry the purchase session into the library for auto-login
+      (() => {
+        const sid = new URLSearchParams(location.search).get('sid');
+        if (sid) document.getElementById('library-btn').href = 'members.html?sid=' + encodeURIComponent(sid);
+      })();
+    </script>
 
     <!-- Value bomb #1 delivered immediately on the TY page = first micro-transaction of the ascension -->
     <h3>Before you read a single page, watch this (9 minutes)</h3>
