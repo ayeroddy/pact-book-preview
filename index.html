@@ -153,6 +153,19 @@
   .bigprice{font-family:var(--slab);font-weight:900;font-size:clamp(60px,10vw,92px);color:var(--black);text-align:center;line-height:1}
   .bigprice s{color:#999;font-size:.42em;font-weight:700;vertical-align:middle;margin-right:12px}
 
+  /* video testimonials */
+  .vt-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:900px;margin:0 auto}
+  .vt{position:relative;display:block;border-radius:8px;overflow:hidden;border:2px solid var(--line);
+    box-shadow:0 8px 22px -12px rgba(0,0,0,.35);transition:transform .15s ease}
+  .vt:hover{transform:translateY(-3px)}
+  .vt img{width:100%;display:block}
+  .vt .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.08)}
+  .vt .play span{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;
+    align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+  .vt .play span::after{content:"";display:block;margin-left:5px;border-style:solid;border-width:12px 0 12px 20px;
+    border-color:transparent transparent transparent var(--red)}
+  .vt-note{text-align:center;font-size:14px;color:#777;margin-top:14px}
+
   /* reviews */
   .rev-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:860px;margin:0 auto}
   .rev{border:2px dotted var(--line);border-radius:8px;padding:20px 20px;background:#fff}
@@ -189,6 +202,7 @@
   @media(min-width:860px){
     .hero-split{grid-template-columns:1.05fr .95fr}
     .inc-grid{grid-template-columns:1fr 1fr}
+    .vt-grid{grid-template-columns:1fr 1fr 1fr}
     .rev-grid{grid-template-columns:1fr 1fr}
     ul.fasc.two{columns:2;column-gap:40px}
     ul.fasc.two li{break-inside:avoid}
@@ -296,6 +310,22 @@
   </div>
 </section>
 
+<!-- ======================= VIDEO TESTIMONIALS ======================= -->
+<section>
+  <div class="wrap">
+    <div class="strip-black">Real PACT Members, In Their Own Words</div>
+    <div class="vt-grid">
+      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4544afaedd1c89695a4b.png" alt="PACT member video: This brought us together" loading="lazy"><span class="play"><span></span></span></a>
+      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4723b3c8655da2abcf21.png" alt="PACT member video: This changed everything" loading="lazy"><span class="play"><span></span></span></a>
+      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c45440cd3954cb22036b4.png" alt="PACT member video: Less stress, more connection" loading="lazy"><span class="play"><span></span></span></a>
+      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c45a1b3c8655da2ab9f9c.png" alt="PACT member video: The best decision I made" loading="lazy"><span class="play"><span></span></span></a>
+      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c4621cae0ff33d93f42d6.png" alt="PACT member video testimonial" loading="lazy"><span class="play"><span></span></span></a>
+      <a class="vt" href="https://parentingadultstoday.com/testimonial-videos" target="_blank" rel="noopener"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_768/u_https://assets.cdn.filesafe.space/NGmAsFjfsi2wZ1qWlYQn/media/6a3c468c817563b473dfa6cd.png" alt="PACT member video testimonial" loading="lazy"><span class="play"><span></span></span></a>
+    </div>
+    <p class="vt-note">Tap any video to watch members tell their stories. <!-- GHL build: embed these same hosted videos natively (account media library) instead of linking out. --></p>
+  </div>
+</section>
+
 <!-- ======================= METHOD + WHAT'S INSIDE ======================= -->
 <section style="background:var(--grey)">
   <div class="wrap">
@@ -368,12 +398,17 @@
 <!-- ======================= REVIEWS ======================= -->
 <section>
   <div class="wrap">
-    <div class="strip-black">Here's What Others Have To Say</div>
+    <div class="strip-black">What Parents Say About Catherine's Work</div>
+    <p class="center" style="font-size:14.5px;color:#777;margin:-14px 0 24px">Real messages from parents inside Catherine's programs and live trainings. The method in this book is the same one they're using.</p>
     <div class="rev-grid">
-      <div class="rev"><div class="stars">★★★★★</div><blockquote>[Testimonial — objection: "I thought it was too late for us."]</blockquote><div class="who">— [Name, State]</div><div class="vnote">signed release required before launch</div></div>
-      <div class="rev"><div class="stars">★★★★★</div><blockquote>[Testimonial — objection: "my child wouldn't respond to anything."]</blockquote><div class="who">— [Name, State]</div><div class="vnote">signed release required before launch</div></div>
-      <div class="rev"><div class="stars">★★★★★</div><blockquote>[Testimonial — couple: "we'd already tried everything, including counseling."]</blockquote><div class="who">— [Names, State]</div><div class="vnote">signed release required before launch</div></div>
-      <div class="rev"><div class="stars">★★★★★</div><blockquote>[Testimonial — grandparent: access to grandchildren restored.]</blockquote><div class="who">— [Name, State]</div><div class="vnote">signed release required before launch</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><blockquote>"I sent my adult child a text… and she responded: 'I appreciate your honesty and your apology. I'll give you the space you asked for — I'm open to talking when you're ready.' <b>These are major steps forward.</b>"</blockquote><div class="who">— Tricia A.</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><blockquote>"Your webinar was a success for me. <b>Me and my adult children have mended our differences and our relationships are so great.</b> I did recommend some of my friends that were experiencing the same thing."</blockquote><div class="who">— L.P.</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><blockquote>"I have gotten some wonderful new tools… It begins with me. I was gifted to have them and now, through your work, <b>this gift can be opened again and again. It was shut because I shut it.</b>"</blockquote><div class="who">— Donna D.</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><blockquote>"My biggest win has been becoming much more aware of my own thoughts, reactions, and the role I play in my relationships. <b>I'm learning to pause before I respond</b>, respect boundaries, and focus on what I can control."</blockquote><div class="who">— Diana M.</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><blockquote>"We are already applying some of the things we've learned in our interactions with [our son]. The byproduct we did not anticipate is actually talking with [my husband] about <i>our</i> relationship. <b>A great bonus!</b>"</blockquote><div class="who">— A PACT Couple</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><blockquote>"It was so empowering and encouraging… <b>It's giving me courage to get ready to have a conversation with my daughter.</b>"</blockquote><div class="who">— Linda P.</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><blockquote>"Yes, I do feel the shift from the last few weeks of doing the modules. <b>I have faith that the shift will move even more</b>, since I am determined to continue."</blockquote><div class="who">— Helen W.</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><blockquote>"It has given me <b>great hope in bettering my relationships with my daughters.</b> I am encouraged and looking forward to being involved."</blockquote><div class="who">— Kathleen R.</div></div>
     </div>
   </div>
 </section>
