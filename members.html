@@ -124,6 +124,12 @@ const token = localStorage.getItem('pact_token');
 const params = new URLSearchParams(location.search);
 
 async function boot() {
+  // DEMO MODE (?demo=1): preview the library with sample entitlements — no purchase needed.
+  // Remove before live launch.
+  if (params.get('demo')) {
+    renderLibrary({ email: 'demo-preview@parentingadultchildrentoday.com', owned: ['book','vault','roadmap'], sid: null });
+    return;
+  }
   let t = token;
   const sid = params.get('sid');
   if (!t && sid) {
@@ -140,7 +146,10 @@ async function boot() {
     me = await r.json();
     if (!me.owned) throw 0;
   } catch(e) { localStorage.removeItem('pact_token'); document.getElementById('gate').hidden = false; return; }
+  renderLibrary(me);
+}
 
+function renderLibrary(me) {
   document.getElementById('whoami').innerHTML = (me.email ? me.email + ' · ' : '') + '<a href="#" id="signout">sign out</a>';
   document.getElementById('signout').onclick = e => { e.preventDefault(); localStorage.removeItem('pact_token'); location.reload(); };
 
@@ -168,6 +177,7 @@ async function boot() {
   grid.querySelectorAll('.unlock-btn').forEach(btn => {
     btn.addEventListener('click', async e => {
       e.preventDefault();
+      if (!me.sid) { btn.textContent = 'Demo preview — buy flow does this for real'; return; }
       btn.textContent = 'Adding to your order…'; btn.style.pointerEvents = 'none';
       try {
         const r = await fetch(API + '/upsell', {method:'POST', headers:{'Content-Type':'application/json'},
