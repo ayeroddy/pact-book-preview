@@ -139,8 +139,8 @@
   <!-- ─── qualified: straight to calendar ─── -->
   <div class="card" id="approved" hidden>
     <div class="result">
-      <h2>You're approved — choose your time.</h2>
-      <p><b id="ap-name"></b>, based on your answers, a Relationship Clarity Call is the right next step for your family. Pick the time that works for you (your spouse is warmly welcome to join):</p>
+      <h2>Application received — choose your time.</h2>
+      <p><b id="ap-name"></b>, thank you — your answers are on their way to Catherine's team so they can prepare for your specific situation. Pick the time that works for you (your spouse is warmly welcome to join):</p>
     </div>
     <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
   </div>
@@ -190,7 +190,7 @@ async function submitApp(e){
   const score = pts('relationship')+pts('duration')+pts('grandchildren')+pts('together')+pts('readiness');
   // Qualified = severe situation + real readiness. Severity: relationship+duration+grandchildren >= 6.
   const severity = pts('relationship')+pts('duration')+pts('grandchildren');
-  const qualified = severity >= 5 && pts('readiness') >= 2;
+  const qualified = true; // buyers all book — answers are closer intel, not a gate
   const payload={
     first_name:document.getElementById('fname').value.trim(),
     last_name:document.getElementById('lname').value.trim(),
