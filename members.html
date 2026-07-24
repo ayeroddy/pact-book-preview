@@ -226,10 +226,33 @@ const AUDIO_CHAPTERS = [
 ];
 const ROADMAP_VIDEOS = [
   {t:'Module 1 — Reconnect & Thrive', key:'roadmap/m1-reconnect-thrive.mp4', free:true},
-  {t:'Module 2 — Pause', key:null},{t:'Module 3 — Acceptance', key:null},
-  {t:'Module 4 — Release', key:null},{t:'Module 5 — Engage', key:null},
-  {t:'Module 6 — Nurture', key:null},{t:'Module 7 — Trust', key:null},
-  {t:'Module 8 — New Beginning', key:null}
+  {t:'1.2 · The Roadmap Forward', key:'roadmap/m1-2.mp4'},
+  {t:'Module 2 — Pause', key:'roadmap/m2-intro.mp4'},
+  {t:'2.1 · The Purpose and Power of the Pause', key:'roadmap/m2-1.mp4'},
+  {t:'2.2 · Rediscovering Self', key:'roadmap/m2-2.mp4'},
+  {t:'2.3 · Practicing the Pause', key:'roadmap/m2-3.mp4'},
+  {t:'Module 3 — Acceptance', key:'roadmap/m3-intro.mp4'},
+  {t:'3.1 · Creating Emotional Safety', key:'roadmap/m3-1.mp4'},
+  {t:'3.2 · From Authority to Ally', key:'roadmap/m3-2.mp4'},
+  {t:'3.3 · Letting Go, Leaning In', key:'roadmap/m3-3.mp4'},
+  {t:'Module 4 — Release', key:'roadmap/m4-intro.mp4'},
+  {t:'4.1 · Letting Go of Control', key:'roadmap/m4-1.mp4'},
+  {t:'4.2 · Releasing Our Grief', key:'roadmap/m4-2.mp4'},
+  {t:'4.3 · Emotional Shift: Finding Peace', key:'roadmap/m4-3.mp4'},
+  {t:'Module 5 — Engage', key:'roadmap/m5-intro.mp4'},
+  {t:'5.1 · The Heart of Engagement', key:'roadmap/m5-1.mp4'},
+  {t:'5.2 · Removing Barriers', key:'roadmap/m5-2.mp4'},
+  {t:'5.3 · Practicing Compassion', key:'roadmap/m5-3.mp4'},
+  {t:'Module 6 — Nurture', key:'roadmap/m6-intro.mp4'},
+  {t:'6.1 · The Power of Encouragement', key:'roadmap/m6-1.mp4'},
+  {t:'6.2 · Strengthening Self-Awareness', key:'roadmap/m6-2.mp4'},
+  {t:'6.3 · Nurturing Boundaries', key:'roadmap/m6-3.mp4'},
+  {t:'Module 7 — Trust', key:'roadmap/m7-intro.mp4'},
+  {t:'7.1 · Trust — Letting Go', key:'roadmap/m7-1.mp4'},
+  {t:'7.2 · Trusting Their Journey', key:'roadmap/m7-2.mp4'},
+  {t:'7.3 · Living Trust', key:'roadmap/m7-3.mp4'},
+  {t:'Module 8 — New Beginning', key:'roadmap/m8-intro.mp4'},
+  {t:'8.1 · Integration & Commitments', key:'roadmap/m8-1.mp4'}
 ];
 const UNITED_VIDEOS = [
   {t:'The United Front — Live Keynote with Bill Robison', key:'united/session-1-keynote.mp4', free:true},
@@ -288,8 +311,30 @@ function render(){
         <div class="ic">🤝</div><div class="t"><b>The United Front Guide</b><span>The written protocol for the two of you</span></div><div class="go">Open →</div></div>` : '',
       pitch:'When two parents pull in two directions, the child reads it as unsafe. This series gets you both on the same map.'
     });
+  // audio editions: DS buyers get these as their product; full buyers get them as a bonus
+  if (owned.has('roadmap') || owned.has('roadmap-ds')) {
+    g.innerHTML += audioEdition('The Roadmap — Audio Edition',
+      'Every lesson as audio — listen on a walk or a drive.', ROADMAP_VIDEOS, 'roadmap-audio/',
+      owned.has('roadmap-ds') && !owned.has('roadmap')
+        ? `<div class="lesson" onclick="openDoc('deliverables/30-day-reconnection-roadmap.html','Your 30-Day Schedule')"><div class="ic">🗓️</div><div class="t"><b>Your 30-Day Workbook</b><span>Which lesson to listen to each day, and what to do</span></div><div class="go">Open →</div></div>` : '');
+  }
+  if (owned.has('together') || owned.has('together-ds')) {
+    g.innerHTML += audioEdition('The United Front — Audio Edition',
+      'The keynote and every session as audio, for the two of you.', UNITED_VIDEOS, 'united-audio/',
+      owned.has('together-ds') && !owned.has('together')
+        ? `<div class="lesson" onclick="openDoc('deliverables/united-front-couples-guide.html','The United Front Guide')"><div class="ic">🤝</div><div class="t"><b>The United Front Guide</b><span>The written protocol for the two of you</span></div><div class="go">Open →</div></div>` : '');
+  }
   document.getElementById('app').hidden=false;
   wireUnlocks();
+}
+
+function audioEdition(title, sub, vids, prefix, extra){
+  const rows = vids.filter(v=>v.key).map((v,i)=>{
+    const ak = prefix + v.key.split('/').pop().replace('.mp4','.mp3');
+    return `<div class="chap" onclick="playAudio('${ak}','${esc(v.t)}')"><span class="n">${i+1}</span><span>${esc(v.t)}</span><span class="pl">▶ Listen</span></div>`;
+  }).join('');
+  return `<div class="mod"><div class="head"><div><h3>${title}</h3><div class="sub">${sub}</div></div><span class="badge owned">✓ Yours</span></div>
+    <div class="body"><div class="chaps">${rows}</div>${extra||''}</div></div>`;
 }
 
 function section(n,title,sub){
