@@ -272,7 +272,7 @@ function videoModule(m){
   }).join('');
   const cta = m.owned ? '' :
     `<div class="locknote">${m.pitch}</div>
-     <a class="btn wide unlock" data-item="${m.item}" href="#">Unlock the ${m.title} — ${m.price}, one click</a>
+     <a class="btn wide unlock" data-item="${m.item}" href="#">Unlock ${m.title} — ${m.price}, one click</a>
      <p style="font-size:14px;color:var(--soft);text-align:center;margin-top:8px">Charges the card from your original order · same 30-day guarantee</p>`;
   return `<div class="sec-label">${m.owned?'Your Video Course':'Add to Your Course'}</div>
   <div class="mod"><div class="head">
