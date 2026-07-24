@@ -255,11 +255,18 @@ function videoModule(m){
   let tiles = m.vids.map((v,i)=>{
     const playable = m.owned || v.free;
     const canPlay = playable && v.key;
-    const onclick = canPlay ? `play('${v.key}','video','${esc(v.t)}')` : (m.owned? '' : `unlock('${m.item}')`);
-    const flag = (!m.owned && v.free) ? '<span class="freeflag">Free preview</span>' : '';
-    const overlay = canPlay
-      ? `<div class="ov"><span class="play">▶</span></div>`
-      : `<div class="ov"><span class="lock">🔒</span></div>`;
+    const comingSoon = playable && !v.key;   // owned/free but video not uploaded yet
+    let onclick = '', flag = '', overlay;
+    if (canPlay) {
+      onclick = `play('${v.key}','video','${esc(v.t)}')`;
+      if (!m.owned && v.free) flag = '<span class="freeflag">Free preview</span>';
+      overlay = `<div class="ov"><span class="play">▶</span></div>`;
+    } else if (comingSoon) {
+      overlay = `<div class="ov"><span class="lock">🎬</span><span style="color:#fff;font-size:12px;font-weight:700">Coming soon</span></div>`;
+    } else { // locked — the conversion tile
+      onclick = `unlock('${m.item}')`;
+      overlay = `<div class="ov"><span class="lock">🔒</span></div>`;
+    }
     return `<div class="vtile ${canPlay?'free':''}" onclick="${onclick}">
       <img src="${POSTER}" alt="">${flag}${overlay}<div class="cap">${esc(v.t)}</div></div>`;
   }).join('');
