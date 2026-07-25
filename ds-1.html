@@ -52,7 +52,7 @@ fbq('track','PageView');</script>
   <p class="price-line">One-time <b>$47</b> — this page only.</p>
 
   <!-- GHL: native one-click downsell element -->
-  <a class="cta-btn" href="https://buy.stripe.com/test_6oUcMY7ExabC36Q6ppcbC08">Add The Audio Roadmap ($47)</a>
+  <a class="cta-btn" href="https://buy.stripe.com/9B6dR21g9abC9vebJJcbC0m">Add The Audio Roadmap ($47)</a>
   <p class="cta-note"><b>Instant access</b> — unlocks the second you click. One click — same card, same 30-day guarantee.</p>
 
   <a class="decline" href="oto-2.html">No thank you — continue to my order.</a>
@@ -65,7 +65,7 @@ fbq('track','PageView');</script>
 // TRUE ONE-CLICK: charge the card vaulted at checkout, no re-entry.
 // Falls back to a standalone Stripe checkout if the session is missing/expired.
 (() => {
-  const API='https://pact-funnel-api.alex-f42.workers.dev', ITEM='roadmap-ds', NEXT='oto-2.html', FALLBACK='https://buy.stripe.com/test_6oUcMY7ExabC36Q6ppcbC08';
+  const API='https://pact-funnel-api.alex-f42.workers.dev', ITEM='roadmap-ds', NEXT='oto-2.html', FALLBACK='https://buy.stripe.com/9B6dR21g9abC9vebJJcbC0m';
   const sid = new URLSearchParams(location.search).get('sid');
   document.querySelectorAll('a.decline').forEach(a => {
     if (sid) a.href = a.getAttribute('href') + '?sid=' + encodeURIComponent(sid);

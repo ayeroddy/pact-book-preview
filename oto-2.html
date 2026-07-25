@@ -74,7 +74,7 @@ fbq('track','PageView');</script>
   <p class="price-line">One-time, this page only: <s>$147</s> <b>$67</b></p>
 
   <!-- GHL: native one-click upsell element -->
-  <a class="cta-btn" href="https://buy.stripe.com/test_4gMbIUbUNcjK36Q3ddcbC09">Add The United Front ($67)</a>
+  <a class="cta-btn" href="https://buy.stripe.com/5kQ6oA2kd4Ri8racNNcbC0n">Add The United Front ($67)</a>
   <p class="cta-note"><b>Instant access</b> — the sessions unlock in your course the second you click. One click — same card, same 30-day keep-it-all guarantee.</p>
 
   <a class="decline" href="ds-2.html">No thank you — take me to my book.</a>
@@ -87,7 +87,7 @@ fbq('track','PageView');</script>
 // TRUE ONE-CLICK: charge the card vaulted at checkout, no re-entry.
 // Falls back to a standalone Stripe checkout if the session is missing/expired.
 (() => {
-  const API='https://pact-funnel-api.alex-f42.workers.dev', ITEM='together', NEXT='thank-you.html', FALLBACK='https://buy.stripe.com/test_4gMbIUbUNcjK36Q3ddcbC09';
+  const API='https://pact-funnel-api.alex-f42.workers.dev', ITEM='together', NEXT='thank-you.html', FALLBACK='https://buy.stripe.com/5kQ6oA2kd4Ri8racNNcbC0n';
   const sid = new URLSearchParams(location.search).get('sid');
   document.querySelectorAll('a.decline').forEach(a => {
     if (sid) a.href = a.getAttribute('href') + '?sid=' + encodeURIComponent(sid);
