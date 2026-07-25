@@ -303,9 +303,6 @@ async function markDone(key){
 }
 function isDone(key){ return PROG.has(key); }
 async function boot(){
-  if (params.get('demo')) { ME = {email:'preview@pact', owned:['book'], sid:null};
-    try{ PROG = new Set(JSON.parse(localStorage.getItem(progKey())||'[]')); }catch(e){}
-    return render(); }
   let t = localStorage.getItem('pact_token');
   const sid = params.get('sid');
   if (!t && sid) {
