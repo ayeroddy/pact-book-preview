@@ -146,6 +146,20 @@
   #chatbtn:hover{transform:translateY(-2px)}
   #chatbtn .dot{display:inline-block;width:10px;height:10px;background:#6fdb8a;border-radius:50%;margin-right:9px}
 
+  details.acc{border:1px solid var(--line);border-radius:16px;background:#fdfcf9;margin-bottom:14px}
+  details.acc[open]{background:#fff;box-shadow:0 4px 16px rgba(56,24,118,.06)}
+  details.acc summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;
+    padding:20px 22px;font-size:19px;font-weight:600;color:var(--ink);border-radius:16px}
+  details.acc summary::-webkit-details-marker{display:none}
+  details.acc summary:hover{background:#faf6ee}
+  details.acc summary .cnt{font-size:14px;font-weight:600;color:var(--soft);background:#f1ecdf;
+    padding:5px 12px;border-radius:999px;white-space:nowrap;margin-left:auto}
+  details.acc summary .cnt.done{background:#e9f5ea;color:var(--green)}
+  details.acc summary .cnt.lock{background:#f4effc;color:var(--purple)}
+  details.acc summary .chev{flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:#f0ebfa;
+    color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:16px;transition:transform .2s}
+  details.acc[open] summary .chev{transform:rotate(180deg)}
+  details.acc .accbody{padding:2px 18px 20px}
   .ck{margin-left:8px;color:var(--green);font-weight:900}
   .lesson.isdone,.chap.isdone{background:#f2f8f3;border-color:#cfe6d2}
   .vtile .donechip{position:absolute;top:10px;right:10px;background:var(--green);color:#fff;font-size:12px;
@@ -406,15 +420,7 @@ function bookModule(){
     </div></div>`;
 }
 
-function videoModule(m){
-  const withKeys = m.vids.filter(v=>v.key);
-  const doneN = withKeys.filter(v=>isDone(v.key)).length;
-  if (m.owned) withKeys.forEach(v=>window.__items.push(v.key));
-  const complete = m.owned && withKeys.length>0 && doneN===withKeys.length;
-  const badge = complete ? '<span class="badge owned">🏆 Completed!</span>'
-    : m.owned ? `<span class="badge owned">✓ Yours · ${doneN}/${withKeys.length} watched</span>`
-    : '<span class="badge locked">Preview below — unlock any time</span>';
-  let tiles = m.vids.map((v,i)=>{
+function tileHTML(v,m){
     const playable = m.owned || v.free;
     const canPlay = playable && v.key;
     const comingSoon = playable && !v.key;
@@ -433,6 +439,37 @@ function videoModule(m){
     const timg = v.key ? vurl('thumbs/'+v.key.split('/').pop().replace('.mp4','.jpg')) : POSTER;
     return `<div class="vtile ${cls}" onclick="${onclick}"><img src="${timg}" onerror="this.onerror=null;this.src=window.PFALL" alt="">${flag}${overlay}
       <div class="cap">${esc(v.t)}</div></div>`;
+}
+
+function videoModule(m){
+  const withKeys = m.vids.filter(v=>v.key);
+  const doneN = withKeys.filter(v=>isDone(v.key)).length;
+  if (m.owned) withKeys.forEach(v=>window.__items.push(v.key));
+  const complete = m.owned && withKeys.length>0 && doneN===withKeys.length;
+  const badge = complete ? '<span class="badge owned">🏆 Completed!</span>'
+    : m.owned ? `<span class="badge owned">✓ Yours · ${doneN}/${withKeys.length} watched</span>`
+    : '<span class="badge locked">Preview below — unlock any time</span>';
+  // group into collapsible sections: "Module N — ..." / "Keynote" entries start a group
+  const groups=[];
+  for (const v of m.vids){
+    const isHeader = /^Module \d/.test(v.t) || /Keynote/i.test(v.t) || groups.length===0;
+    if (isHeader) groups.push({title:v.t.replace(/ —.*$/,'').replace(/^The United Front — /,''), full:v.t, vids:[v]});
+    else groups[groups.length-1].vids.push(v);
+  }
+  let openedOne=false;
+  const accs = groups.map(gr=>{
+    const gk=gr.vids.filter(v=>v.key);
+    const gd=gk.filter(v=>isDone(v.key)).length;
+    const gDone = m.owned && gk.length>0 && gd===gk.length;
+    let openAttr='';
+    if (!openedOne && (!m.owned || !gDone)) { openAttr=' open'; openedOne=true; }
+    const cnt = !m.owned
+      ? `<span class="cnt lock">🔒 ${gr.vids.length} video${gr.vids.length>1?'s':''}</span>`
+      : gDone ? '<span class="cnt done">✓ Complete</span>'
+      : `<span class="cnt">${gd} of ${gk.length} watched</span>`;
+    const tiles = gr.vids.map(v=>tileHTML(v,m)).join('');
+    return `<details class="acc"${openAttr}><summary><span>${esc(gr.title)}</span>${cnt}<span class="chev">▾</span></summary>
+      <div class="accbody"><div class="vgrid">${tiles}</div></div></details>`;
   }).join('');
   const cta = m.owned ? (m.extra||'') :
     `<div class="locknote">${m.pitch}</div>
@@ -440,7 +477,7 @@ function videoModule(m){
      <p style="font-size:15px;color:var(--soft);text-align:center;margin-top:10px">Uses the card from your original order · same 30-day guarantee · nothing to re-enter</p>`;
   return `<div class="mod"><div class="head">
     <div><h3>${m.title}</h3><div class="sub">${m.sub}</div></div>${badge}</div>
-    <div class="body"><div class="vgrid">${tiles}</div>${cta}</div></div>`;
+    <div class="body">${accs}${cta}</div></div>`;
 }
 
 /* ── in-page overlay ── */
