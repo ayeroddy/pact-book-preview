@@ -453,7 +453,7 @@ function videoModule(m){
   const groups=[];
   for (const v of m.vids){
     const isHeader = /^Module \d/.test(v.t) || /Keynote/i.test(v.t) || groups.length===0;
-    if (isHeader) groups.push({title:v.t.replace(/ —.*$/,'').replace(/^The United Front — /,''), full:v.t, vids:[v]});
+    if (isHeader) groups.push({title:v.t.replace(/^The United Front — /,''), vids:[v]});
     else groups[groups.length-1].vids.push(v);
   }
   let openedOne=false;
