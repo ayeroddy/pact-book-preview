@@ -53,13 +53,28 @@
   .row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
   .fake-card{background:var(--grey);border:2px dashed var(--line);border-radius:6px;padding:16px;text-align:center;color:#888;font-size:14px;margin-top:14px}
 
-  /* THE BUMP */
-  .bump{border:3px dashed var(--red);background:var(--yellow-soft);border-radius:8px;padding:18px 18px;margin:24px 0 20px;cursor:pointer;display:block}
-  .bump .head{display:flex;gap:12px;align-items:flex-start}
-  .bump input{width:22px;height:22px;margin-top:3px;accent-color:var(--red);flex:0 0 22px}
-  .bump .yes{font-weight:900;font-size:17.5px}
-  .bump .yes span{color:var(--red)}
-  .bump p{font-size:15px;margin:10px 0 0;color:#444}
+  /* step panels */
+  .steppanel{display:none}
+  .steppanel.on{display:block}
+  .backlink{font-size:14px;color:#888;text-decoration:none;display:inline-block;margin-bottom:12px;cursor:pointer}
+  .backlink:hover{color:var(--navy)}
+  .trustline{margin-top:14px;font-size:13px;color:#777;text-align:center}
+  .field-err{display:none;color:#B3392E;font-weight:700;font-size:14px;margin:12px 0 0}
+
+  /* step-2 order line above the bump */
+  .orderline{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:15.5px;font-weight:700;
+    border-bottom:2px solid var(--line);padding:0 0 12px;margin-bottom:16px}
+  .orderline .ok{color:var(--green);margin-right:7px}
+  .orderline em{color:var(--red);font-style:normal;white-space:nowrap}
+
+  /* THE BUMP — classic order-form style: dashed frame, highlighted checkbox bar */
+  .bump{border:2px dashed #b3ab99;border-radius:6px;background:#fff;margin:14px 0 24px;cursor:pointer;display:block;overflow:hidden}
+  .bump .head{display:flex;gap:11px;align-items:center;background:#fdf3bf;padding:13px 14px;border-bottom:1px dashed #d8cfae}
+  .bump input{width:22px;height:22px;accent-color:var(--green);flex:0 0 22px}
+  .bump .yes{font-weight:900;font-size:16.5px;color:var(--green);line-height:1.3}
+  .bump .body{padding:14px 16px 16px}
+  .bump .body p{font-size:15px;margin:0;color:#333}
+  .bump .bname{color:#B3392E;font-weight:900;text-decoration:underline}
   .bump .once{font-style:italic;font-weight:700}
   .bump-arrow{display:flex;align-items:center;gap:8px;color:var(--red);font-weight:900;font-size:14px;margin-bottom:6px;letter-spacing:.03em}
   .bump-arrow::before{content:"⬇︎";font-size:16px;animation:bounce 1.6s infinite}
@@ -141,8 +156,8 @@ fbq('track','PageView');fbq('track','InitiateCheckout',{value:9.00,currency:'USD
 </div>
 <div class="stepbar">
   <div class="steps">
-    <div class="step active"><span class="n">1</span> Your Information</div>
-    <div class="step active"><span class="n">2</span> Complete Order</div>
+    <div class="step active" id="steptab1"><span class="n">1</span> Your Information</div>
+    <div class="step" id="steptab2"><span class="n">2</span> Complete Order</div>
   </div>
 </div>
 <div class="urgency">⚠️ Your Advance Reader price is reserved: <b>$9.00</b> (regular $24.95)</div>
@@ -152,25 +167,40 @@ fbq('track','PageView');fbq('track','InitiateCheckout',{value:9.00,currency:'USD
 
     <!-- ============ LEFT: FORM ============ -->
     <div>
-      <!-- GHL/processor integration: replace this form with the native order form on import.
-           Keep field order, labels, bump copy, and button copy EXACTLY — each line is doctrine. -->
-      <div class="panel">
-        <h2><span class="n">1</span>Your order — one decision</h2>
+      <!-- Two-step order form: contact info first (lead captured pre-payment),
+           then the bump + embedded payment. Copy is doctrine — change nothing lightly. -->
+      <div class="panel steppanel on" id="p1">
+        <h2><span class="n">1</span>Where should we send your book?</h2>
+        <label for="f-name">First name</label>
+        <input type="text" id="f-name" autocomplete="given-name" placeholder="Your first name">
+        <label for="f-email">Email <small>— your library link is sent here instantly</small></label>
+        <input type="email" id="f-email" autocomplete="email" placeholder="you@email.com" inputmode="email">
+        <label for="f-phone">Mobile phone <small>— order updates + a personal check-in from Catherine's team</small></label>
+        <input type="tel" id="f-phone" autocomplete="tel" placeholder="(555) 555-5555" inputmode="tel">
+        <p class="field-err" id="f-err"></p>
+        <button class="cta-btn" id="cont" type="button" style="margin-top:20px">Continue To Secure Checkout →</button>
+        <p class="trustline">🔒 Your information is never shared. The charge appears discreetly as "PACT GROWTH".</p>
+      </div>
+
+      <div class="panel steppanel" id="p2">
+        <a class="backlink" id="back">← Edit your contact info</a>
+        <div class="orderline"><span><span class="ok">✔</span>Welcome Home — Advance Edition (ebook + audiobook)</span><em>$9.00</em></div>
+
         <div class="bump-arrow">One-time offer for new readers — check the box to add it</div>
         <label class="bump" for="bumpbox">
           <div class="head">
             <input type="checkbox" id="bumpbox">
-            <div>
-              <div class="yes"><span>YES —</span> add The First Words Vault for just $27 <i>(one-time)</i></div>
-              <p>You'll know the method. This is what to actually <b>say</b>: 30 word-for-word letters, texts, and voicemail scripts for every re-entry moment — the first text after a year of silence, the unanswered-letter follow-up, the gatekeeper spouse, your grandchild's birthday. Written by Catherine, drawn from the letters and scripts of the PACT community. <span class="once">This price is only available on this page.</span></p>
-            </div>
+            <span class="yes">YES — Add The First Words Vault for just $27 (one-time)</span>
+          </div>
+          <div class="body">
+            <p><span class="bname">The First Words Vault</span> — You'll know the method. This is what to actually <b>say</b>: 30 word-for-word letters, texts, and voicemail scripts for every re-entry moment — the first text after a year of silence, the unanswered-letter follow-up, the gatekeeper spouse, your grandchild's birthday. Written by Catherine, drawn from the letters and scripts of the PACT community. <span class="once">This price is only available on this page.</span></p>
           </div>
         </label>
 
         <h2 style="margin-top:26px"><span class="n">2</span>Payment — secure, right on this page</h2>
         <p id="embed-status" style="text-align:center;color:#888;font-size:15px;padding:26px 0">Loading secure checkout…</p>
         <div id="checkout-embed"></div>
-        <p style="font-size:12.5px;color:#999;text-align:center;margin-top:10px">Your email is collected securely above — your library link is sent there instantly.</p>
+        <p style="font-size:12.5px;color:#999;text-align:center;margin-top:10px">Your email is pre-filled from step 1 — your library link is sent there instantly.</p>
 
         <ul class="anxiety">
           <li>256-bit secure checkout. Your card details never touch our servers.</li>
@@ -225,35 +255,71 @@ fbq('track','PageView');fbq('track','InitiateCheckout',{value:9.00,currency:'USD
 </footer>
 
 <script>
-  // Payment mounts ON PAGE LOAD. The bump toggle rebuilds the session ($9 <-> $36).
+  // Two-step order form. Step 1 captures the lead (GHL upsert pre-payment),
+  // step 2 mounts the embedded checkout with the email pre-filled. The bump
+  // toggle rebuilds the session ($9 <-> $36).
   const bump = document.getElementById('bumpbox'),
         row  = document.getElementById('bumprow'),
         tot  = document.getElementById('total');
   const API = 'https://pact-funnel-api.alex-f42.workers.dev';
   const PK  = 'pk_live_51TP1022QGGpeDcPBKwnQbRVNU2pcQR4mhfiPWGaEJWbVXsWzmtvz4KrLBzrSG3p2unVsx5fJqjmzEfN0oMv5Vw1w006jhnyiMH';
-  let checkout = null, currentBump = null, loading = false;
+  let checkout = null, mountedKey = null, loading = false, leadEmail = '';
+
+  const p1 = document.getElementById('p1'), p2 = document.getElementById('p2'),
+        t1 = document.getElementById('steptab1'), t2 = document.getElementById('steptab2'),
+        err = document.getElementById('f-err');
+  const digits = v => (v || '').replace(/\D/g, '');
+
+  function goStep(n) {
+    p1.classList.toggle('on', n === 1); p2.classList.toggle('on', n === 2);
+    t1.classList.toggle('active', n === 1); t2.classList.toggle('active', n === 2);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function fail(msg) { err.textContent = msg; err.style.display = 'block'; }
+
+  document.getElementById('back').addEventListener('click', () => goStep(1));
+  document.getElementById('cont').addEventListener('click', () => {
+    const name  = document.getElementById('f-name').value.trim(),
+          email = document.getElementById('f-email').value.trim(),
+          phone = document.getElementById('f-phone').value.trim();
+    if (!name) return fail('Please enter your first name.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail('Please enter a valid email — your book is delivered there.');
+    const d = digits(phone);
+    if (d.length < 10) return fail('Please enter your mobile number — your order updates are sent there.');
+    err.style.display = 'none';
+    leadEmail = email;
+    const e164 = d.length === 10 ? '+1' + d : '+' + d;
+    try { fetch(API + '/lead', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, email, phone: e164 }) }); } catch (e) {}
+    try { fbq('track', 'AddPaymentInfo'); } catch (e) {}
+    try { navigator.sendBeacon(API + '/pv', 'checkout2'); } catch (e) {}
+    goStep(2);
+    mountCheckout(bump.checked);
+  });
 
   async function mountCheckout(bumpVal) {
     if (loading) return;
+    const key = bumpVal + '|' + leadEmail;
+    if (mountedKey === key) return;
     loading = true;
     const st = document.getElementById('embed-status');
     st.style.display = 'block';
-    st.textContent = currentBump === null ? 'Loading secure checkout…' : 'Updating your order…';
+    st.textContent = mountedKey === null ? 'Loading secure checkout…' : 'Updating your order…';
     try {
       const r = await fetch(API + '/session', { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ bump: bumpVal }) });
+        body: JSON.stringify({ bump: bumpVal, email: leadEmail }) });
       const j = await r.json();
       if (!j.clientSecret) throw new Error(j.error || 'session failed');
       if (checkout) checkout.destroy();
       checkout = await Stripe(PK).initEmbeddedCheckout({ clientSecret: j.clientSecret });
       checkout.mount('#checkout-embed');
-      currentBump = bumpVal;
+      mountedKey = key;
       st.style.display = 'none';
     } catch (e) {
       st.textContent = 'Checkout could not load — please refresh the page.';
     }
     loading = false;
-    if (bump.checked !== currentBump) mountCheckout(bump.checked);
+    if (bump.checked + '|' + leadEmail !== mountedKey) mountCheckout(bump.checked);
   }
 
   bump.addEventListener('change', () => {
@@ -261,7 +327,6 @@ fbq('track','PageView');fbq('track','InitiateCheckout',{value:9.00,currency:'USD
     tot.textContent = bump.checked ? '$36.00' : '$9.00';
     mountCheckout(bump.checked);
   });
-  mountCheckout(false);
 </script>
 
 <script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','checkout')}catch(e){}</script>
