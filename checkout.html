@@ -127,6 +127,20 @@
 
   .seals{display:flex;gap:14px;justify-content:center;align-items:center;margin-top:16px;font-size:12px;color:#999;flex-wrap:wrap}
 
+  /* below-the-grid: proof + FAQ for scroll-down skeptics */
+  .undergrid{max-width:680px;margin:0 auto;padding:6px 16px 46px}
+  .undergrid h2{font-family:var(--slab);font-size:21px;text-align:center;margin:26px 0 16px;color:var(--black)}
+  .tw{border:2px dotted var(--line);border-radius:8px;padding:16px 18px;background:#fff;margin-bottom:12px}
+  .tw .stars{color:var(--yellow-btn);font-size:14px;letter-spacing:2px;margin-bottom:6px}
+  .tw blockquote{font-size:14.5px;font-style:italic;margin:0 0 8px}
+  .tw .who{font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.05em}
+  details.faq{background:#fff;border:2px solid var(--line);border-radius:8px;margin-bottom:10px;padding:0}
+  details.faq summary{cursor:pointer;font-weight:700;font-size:15.5px;padding:14px 16px;list-style:none;position:relative}
+  details.faq summary::after{content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--red);font-weight:900}
+  details.faq[open] summary::after{content:"–"}
+  details.faq .a{padding:0 16px 14px;font-size:14.5px;color:#444}
+  details.faq .a p{margin:0 0 8px}
+
   footer{background:var(--black);color:#bbb;padding:26px 0;font-size:12px;line-height:1.7;text-align:center}
 
   @media(min-width:900px){
@@ -245,6 +259,42 @@ fbq('track','PageView');fbq('track','InitiateCheckout',{value:9.00,currency:'USD
       </div>
     </div>
   </div>
+</div>
+
+<div class="undergrid">
+  <h2>Parents who started exactly where you are</h2>
+  <div class="tw">
+    <div class="stars">★★★★★</div>
+    <blockquote>"I sent my adult child a text… and she responded: 'I appreciate your honesty and your apology. I'll give you the space you asked for — I'm open to talking when you're ready.'"</blockquote>
+    <div class="who">— Tricia</div>
+  </div>
+  <div class="tw">
+    <div class="stars">★★★★★</div>
+    <blockquote>"My biggest win has been becoming much more aware of my own thoughts, reactions, and the role I play in my relationships."</blockquote>
+    <div class="who">— Diana</div>
+  </div>
+
+  <h2>Common questions</h2>
+  <details class="faq">
+    <summary>Is this really only $9? Nothing recurring?</summary>
+    <div class="a"><p>Yes. $9, one time. No subscription, no trial that converts, no hidden charges. The only other thing you'll ever see on this page is the optional First Words Vault add-on — clearly marked, also one-time.</p></div>
+  </details>
+  <details class="faq">
+    <summary>What exactly do I get, and when?</summary>
+    <div class="a"><p>Instantly, on any device: the full <b>Welcome Home</b> ebook, the complete audiobook read by Catherine, The Estrangement Decoder, the "Why Therapy Didn't Work" class, and The Grandparent's Bridge. Your private library link opens on the next page and is emailed to you for permanent access. Digital only — nothing ships.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Is this religious?</summary>
+    <div class="a"><p>No — the method is practical and psychology-based, built on Catherine's 40 years as a licensed psychotherapist. Many people of faith feel at home in this work, but nothing in the book requires any particular belief.</p></div>
+  </details>
+  <details class="faq">
+    <summary>What if it doesn't help my situation?</summary>
+    <div class="a"><p>You're covered by the 30-day "Keep The Book" guarantee: one email to info@parentingadultchildrentoday.com and you get a full refund within 24 hours — and you keep the book and every bonus.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Will anyone see this — or contact me about my family?</summary>
+    <div class="a"><p>Your privacy is protected. The charge appears discreetly as "PACT GROWTH," and no one will ever reach out about your family situation unless you ask us to.</p></div>
+  </details>
 </div>
 
 <footer>
