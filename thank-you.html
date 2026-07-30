@@ -31,7 +31,11 @@ n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','1511568519903735');fbq('init','1387545469584384');
-fbq('track','PageView');fbq('track','Purchase',{value:9.00,currency:'USD',content_name:'Welcome Home Book'});</script>
+fbq('track','PageView');
+// eventID = checkout session id -> Meta dedupes this against the Worker's CAPI
+// Purchase (which carries the real order total). Only fires when sid is present.
+var whSid = new URLSearchParams(location.search).get('sid');
+if (whSid) fbq('track','Purchase',{value:9.00,currency:'USD',content_name:'Welcome Home Book'},{eventID:whSid});</script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1511568519903735&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>

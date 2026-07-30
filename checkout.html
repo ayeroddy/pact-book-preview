@@ -356,8 +356,12 @@ fbq('track','PageView');fbq('track','InitiateCheckout',{value:9.00,currency:'USD
     st.style.display = 'block';
     st.textContent = mountedKey === null ? 'Loading secure checkout…' : 'Updating your order…';
     try {
+      // Meta browser identifiers ride along so the Worker's server-side CAPI
+      // Purchase (fired later by the Stripe webhook) can claim ad attribution.
+      const mck = n => { const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : undefined; };
       const r = await fetch(API + '/session', { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ bump: bumpVal, email: leadEmail }) });
+        body: JSON.stringify({ bump: bumpVal, email: leadEmail, fbp: mck('_fbp'), fbc: mck('_fbc'),
+          fbclid: new URLSearchParams(location.search).get('fbclid') || undefined }) });
       const j = await r.json();
       if (!j.clientSecret) throw new Error(j.error || 'session failed');
       if (checkout) checkout.destroy();
