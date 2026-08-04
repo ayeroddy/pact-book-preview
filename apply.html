@@ -180,6 +180,7 @@ document.head.appendChild(s);
 <script>
 const API = 'https://pact-funnel-api.alex-f42.workers.dev';
 const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
+const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
 const SRC = new URLSearchParams(location.search).get('src') || 'direct';
 
 // highlight selected options
@@ -218,12 +219,18 @@ async function submitApp(e){
     src:SRC, answers, score, severity, qualified,
   };
   const btn=document.getElementById('subbtn'); btn.disabled=true; btn.textContent='Submitting…';
-  try{ await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); }catch(err){}
+  // The worker decides the calendar: P1 leads (money-open + estranged + 6mo+) get the
+  // priority roster if it has a slot within 72h; everyone else (and any error) → main.
+  let route='main';
+  try{
+    const r=await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    route=(await r.json()).route||'main';
+  }catch(err){}
   try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
   document.getElementById('appform').hidden=true;
   if (qualified){
     document.getElementById('ap-name').textContent=payload.first_name;
-    document.getElementById('calframe').src=CAL;
+    document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL);
     document.getElementById('approved').hidden=false;
   } else {
     document.getElementById('rc-name').textContent=payload.first_name;
