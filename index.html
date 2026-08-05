@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+/* VSL split test: sticky 50/50. ?lp=c forces control, ?lp=v forces variant. */
+(function(){try{
+  var q=new URLSearchParams(location.search),f=q.get('lp');
+  if(f==='c'){localStorage.setItem('wh_lp','control');return;}
+  if(f==='v'){localStorage.setItem('wh_lp','vsl');location.replace('vsl.html'+location.search);return;}
+  var a=localStorage.getItem('wh_lp');
+  if(!a){a=Math.random()<0.5?'control':'vsl';localStorage.setItem('wh_lp',a);}
+  if(a==='vsl'){location.replace('vsl.html'+location.search);}
+}catch(e){}})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welcome Home — The P.A.R.E.N.T. Method Book | $9 Advance Edition</title>

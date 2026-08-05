@@ -370,7 +370,8 @@ document.head.appendChild(s);
       const mck = n => { const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : undefined; };
       const r = await fetch(API + '/session', { method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ bump: bumpVal, email: leadEmail, fbp: mck('_fbp'), fbc: mck('_fbc'),
-          fbclid: new URLSearchParams(location.search).get('fbclid') || undefined }) });
+          fbclid: new URLSearchParams(location.search).get('fbclid') || undefined,
+          lp: new URLSearchParams(location.search).get('lp') || (function(){try{return localStorage.getItem('wh_lp')==='vsl'?'vsl':(localStorage.getItem('wh_lp')==='control'?'control':undefined)}catch(e){return undefined}})() }) });
       const j = await r.json();
       if (!j.clientSecret) throw new Error(j.error || 'session failed');
       if (checkout) checkout.destroy();
