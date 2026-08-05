@@ -260,13 +260,57 @@ document.head.appendChild(s);
 <div class="wrap">
   <div class="prehead">For Every Parent Who Hasn't Heard From Their Adult Child In <b>Months</b> (Or <b>Years</b>) And Is Done Being Told To <b>"Just Give Them Space"</b></div>
   <h1 class="main">New Book Reveals The <mark>Counterintuitive "Safety-First" Method</mark> Helping Parents Reconnect With Estranged Adult Children — <mark class="u">Even If They Won't Answer The Phone</mark></h1>
-<!-- VSL split-test variant: video above the fold -->
-<div style="max-width:860px;margin:18px auto 26px;border-radius:12px;overflow:hidden;box-shadow:0 18px 44px -12px rgba(0,0,0,.45);background:#000">
-  <video id="vslplayer" controls preload="metadata" playsinline poster="assets/vsl-poster.jpg" style="display:block;width:100%;height:auto">
+<!-- VSL split-test variant: click-for-sound autoplay player -->
+<style>
+  .vslwrap{max-width:860px;margin:18px auto 8px;border-radius:14px;overflow:hidden;position:relative;
+    box-shadow:0 22px 54px -14px rgba(0,0,0,.5);background:#000;cursor:pointer;border:3px solid #2B2160}
+  .vslwrap video{display:block;width:100%;height:auto}
+  .vsl-sound{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(20,14,45,.42);z-index:3;transition:opacity .25s}
+  .vsl-sound.off{opacity:0;pointer-events:none}
+  .vsl-badge{background:#C9A227;color:#241a05;font-weight:900;font-size:clamp(17px,2.6vw,24px);
+    padding:16px 30px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.45);
+    display:flex;align-items:center;gap:12px;animation:vslpulse 1.6s ease-in-out infinite;
+    font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;text-transform:uppercase;letter-spacing:.03em}
+  .vsl-badge svg{width:26px;height:26px;flex:none}
+  .vsl-sub{margin-top:14px;color:#fff;font-weight:700;font-size:clamp(13px,1.9vw,16px);text-shadow:0 2px 8px rgba(0,0,0,.6)}
+  @keyframes vslpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+  .vsl-bar{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(255,255,255,.22);z-index:2}
+  .vsl-bar i{display:block;height:100%;width:0;background:#C9A227}
+  .vsl-paused{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:2;background:rgba(20,14,45,.35)}
+  .vsl-paused span{width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center}
+  .vsl-paused svg{width:34px;height:34px;margin-left:6px}
+  @media(prefers-reduced-motion:reduce){.vsl-badge{animation:none}}
+  #vslplayer::cue{background:rgba(10,8,24,.78);color:#fff;font-size:clamp(15px,2.4vw,22px);line-height:1.35;font-family:-apple-system,'Helvetica Neue',Arial,sans-serif}
+</style>
+<div class="vslwrap" id="vslwrap">
+  <video id="vslplayer" autoplay muted playsinline preload="auto" poster="assets/vsl-poster.jpg">
     <source src="assets/vsl.mp4" type="video/mp4">
+    <track kind="captions" src="assets/vsl.vtt" srclang="en" label="English" default>
   </video>
+  <div class="vsl-sound" id="vslsound">
+    <div class="vsl-badge"><svg viewBox="0 0 24 24" fill="#241a05"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Click for sound</div>
+    <div class="vsl-sub">Your video has already started — tap to hear Catherine</div>
+  </div>
+  <div class="vsl-paused" id="vslpaused"><span><svg viewBox="0 0 24 24" fill="#2B2160"><path d="M8 5v14l11-7z"/></svg></span></div>
+  <div class="vsl-bar"><i id="vslprog"></i></div>
 </div>
-<p style="text-align:center;font-weight:800;color:#381876;margin:-10px 0 24px;font-size:17px">▶ Watch: Catherine explains the Safety-First Method (10 min)</p>
+<p style="text-align:center;font-weight:800;color:#381876;margin:12px 0 26px;font-size:16px">Catherine explains the Safety-First Method — then grab the book below for $9</p>
+<script>
+(function(){
+  var w=document.getElementById('vslwrap'),v=document.getElementById('vslplayer'),
+      s=document.getElementById('vslsound'),p=document.getElementById('vslpaused'),
+      bar=document.getElementById('vslprog'),unmuted=false;
+  v.play&&v.play().catch(function(){});
+  w.addEventListener('click',function(){
+    if(!unmuted){unmuted=true;v.currentTime=0;v.muted=false;v.volume=1;s.classList.add('off');v.play().catch(function(){});return;}
+    if(v.paused){v.play();p.style.display='none';}else{v.pause();p.style.display='flex';}
+  });
+  v.addEventListener('timeupdate',function(){if(v.duration)bar.style.width=(100*v.currentTime/v.duration)+'%';});
+  v.addEventListener('ended',function(){p.style.display='none';});
+})();
+</script>
+
 
   <p class="subhead">Without begging. Without one more "perfect letter." Without waiting one more year for a phone call that isn't coming. <b>Start reading in the next 2 minutes.</b></p>
 
