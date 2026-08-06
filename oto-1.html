@@ -69,9 +69,31 @@ document.head.appendChild(s);
   <p class="ok">✓ Your copy of Welcome Home is on its way to your inbox.</p>
   <h1>The book gives you the method.<br><mark>This gives you the next 30 days.</mark></h1>
 
-  <!-- OTO 1 video slot — unhide once the edited video is uploaded to R2 -->
-  <div id="oto1-video" hidden>
-    <div class="video"><video controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/oto1.mp4" style="width:100%;border-radius:8px"></video></div>
+  <!-- OTO 1 video (R20 v2, captioned) -->
+  <style>
+    .otovwrap{position:relative;border-radius:8px;overflow:hidden;cursor:pointer}
+    .oto-sound{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(20,14,45,.35);z-index:3;transition:opacity .25s}
+    .oto-sound.off{opacity:0;pointer-events:none}
+    .oto-badge{background:#C9A227;color:#241a05;font-weight:900;font-size:clamp(16px,2.4vw,22px);padding:14px 26px;border-radius:999px;
+      box-shadow:0 10px 30px rgba(0,0,0,.45);animation:otopulse 1.6s ease-in-out infinite;text-transform:uppercase;letter-spacing:.03em}
+    @keyframes otopulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+    @media(prefers-reduced-motion:reduce){.oto-badge{animation:none}}
+  </style>
+  <div id="oto1-video">
+    <div class="video otovwrap" id="otowrap" style="display:block;aspect-ratio:auto">
+      <video id="otovid" autoplay muted playsinline preload="auto" poster="assets/oto1-poster.jpg" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/oto1.mp4" style="width:100%;display:block;border-radius:8px"></video>
+      <div class="oto-sound" id="otosound"><div class="oto-badge">&#128266; Click for sound</div></div>
+    </div>
+    <script>
+    (function(){var w=document.getElementById('otowrap'),v=document.getElementById('otovid'),s=document.getElementById('otosound'),un=false;
+    v.play&&v.play().catch(function(){});
+    w.addEventListener('click',function(){
+      if(!un){un=true;v.currentTime=0;v.muted=false;v.volume=1;s.classList.add('off');v.play().catch(function(){});return;}
+      if(v.paused){v.play();}else{v.pause();s.classList.remove('off');s.querySelector('.oto-badge').innerHTML='&#9654; Resume';}
+    });
+    v.addEventListener('play',function(){if(un)s.classList.add('off');});
+    })();
+    </script>
   </div>
 
   <p><b>One-time offer for new readers only — you will only see this page once.</b></p>
