@@ -64,10 +64,30 @@ document.head.appendChild(s);
       })();
     </script>
 
-    <!-- Value bomb #1 slot — unhide this block once bonus/vb/vb1.mp4 is uploaded to R2 -->
-    <div id="vb1-block" hidden>
+    <!-- Value bomb #1 (captioned) -->
+    <style>
+      .tywrap{position:relative;border-radius:8px;overflow:hidden;cursor:pointer}
+      .typlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;background:rgba(20,14,45,.30);transition:opacity .25s}
+      .typlay.off{opacity:0;pointer-events:none}
+      .typlay span{width:clamp(80px,12vw,110px);height:clamp(80px,12vw,110px);border-radius:50%;background:#C9A227;display:flex;align-items:center;justify-content:center;
+        box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 10px rgba(201,162,39,.35);animation:typulse 1.8s ease-in-out infinite}
+      .typlay svg{width:44%;height:44%;margin-left:6%}
+      @keyframes typulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+      @media(prefers-reduced-motion:reduce){.typlay span{animation:none}}
+    </style>
+    <div id="vb1-block">
       <h3>Before you read a single page, watch this (9 minutes)</h3>
-      <div class="video"><video controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4" style="width:100%;border-radius:8px"></video></div>
+      <div class="video tywrap" id="tywrap" style="display:block;aspect-ratio:auto">
+        <video id="tyvid" controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4?v=2" style="width:100%;border-radius:8px;display:block"></video>
+        <div class="typlay" id="typlay"><span><svg viewBox="0 0 24 24" fill="#241a05"><path d="M8 5v14l11-7z"/></svg></span></div>
+      </div>
+      <script>
+      (function(){var v=document.getElementById('tyvid'),o=document.getElementById('typlay');
+      o.addEventListener('click',function(){v.play();});
+      v.addEventListener('play',function(){o.classList.add('off');});
+      v.addEventListener('pause',function(){if(!v.ended)o.classList.remove('off');});
+      })();
+      </script>
     </div>
 
     <div class="card">
