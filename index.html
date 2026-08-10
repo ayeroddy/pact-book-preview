@@ -7,9 +7,12 @@
   var q=new URLSearchParams(location.search),f=q.get('lp');
   if(f==='c'){localStorage.setItem('wh_lp','control');return;}
   if(f==='v'){localStorage.setItem('wh_lp','vsl');location.replace('vsl.html'+location.search);return;}
-  var a=localStorage.getItem('wh_lp');
-  if(!a){a=Math.random()<0.5?'control':'vsl';localStorage.setItem('wh_lp',a);}
-  if(a==='vsl'){location.replace('vsl.html'+location.search);}
+  // VERDICT 2026-08-10: VSL won the split 213-163 (+31%, p~0.01, led every day).
+  // 100% of traffic now gets the VSL; control stays reachable via ?lp=c and all
+  // arm tagging stays live so the dashboard keeps attributing correctly.
+  // Prior sticky control assignments are migrated to the winner.
+  localStorage.setItem('wh_lp','vsl');
+  location.replace('vsl.html'+location.search);
 }catch(e){}})();
 </script>
 
