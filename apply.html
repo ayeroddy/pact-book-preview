@@ -80,7 +80,7 @@ document.head.appendChild(s);
   <div class="wrap">
     <h1>Book your Relationship Clarity Call</h1>
     <p>30 minutes on Zoom · your specific situation · a clear next step forward.<br>
-    <b style="color:#fff">Our team reviews every application before confirming your call.</b> This takes about 60 seconds and helps us prepare specifically for your family.</p>
+    <b style="color:#fff">Three quick questions, then pick your time.</b> About 30 seconds — your answers help Catherine&rsquo;s team prepare specifically for your family.</p>
   </div>
 </div>
 
@@ -117,16 +117,6 @@ document.head.appendChild(s);
 <div class="wrap">
   <!-- ─── the application ─── -->
   <form class="card" id="appform" onsubmit="return submitApp(event)">
-    <div class="q"><label class="title">Your name</label>
-      <div class="row2">
-        <input type="text" id="fname" placeholder="First name" required>
-        <input type="text" id="lname" placeholder="Last name" required>
-      </div>
-    </div>
-    <div class="q"><label class="title">Email</label><input type="email" id="email" placeholder="you@example.com" required></div>
-    <div class="q"><label class="title">Phone</label><input type="tel" id="phone" placeholder="(555) 555-5555" required>
-      <div class="hint">So our team can confirm your call time.</div></div>
-
     <div class="q" data-name="relationship"><label class="title">How would you describe your relationship with your adult child right now?</label>
       <div class="opts">
         <label class="opt"><input type="radio" name="relationship" value="silence" data-pts="3"> Complete silence — no contact at all</label>
@@ -145,6 +135,41 @@ document.head.appendChild(s);
       </div>
     </div>
 
+    <div class="q" data-name="readiness"><label class="title">If this call confirmed PACT was the right fit for your family, which best describes where you'd be?</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="readiness" value="whatever-it-takes" data-pts="3"> Ready to move forward — whatever it takes to get my family back</label>
+        <label class="opt"><input type="radio" name="readiness" value="right-plan" data-pts="2"> Ready, if the plan is clearly right for our situation</label>
+        <label class="opt"><input type="radio" name="readiness" value="understand-investment" data-pts="1"> I'd need to understand the investment first</label>
+        <label class="opt"><input type="radio" name="readiness" value="exploring" data-pts="0"> Just exploring for now</label>
+      </div>
+    </div>
+
+    <div class="q"><label class="title">Where should we send your call confirmation?</label>
+      <div class="row2">
+        <input type="text" id="fname" placeholder="First name" required>
+        <input type="text" id="lname" placeholder="Last name">
+      </div>
+      <input type="email" id="email" placeholder="you@example.com" required style="margin-top:10px">
+      <input type="tel" id="phone" placeholder="Mobile — so our team can confirm your time" required style="margin-top:10px">
+    </div>
+
+    <button class="btn" id="subbtn" type="submit">See Available Call Times →</button>
+    <div class="err" id="err">Please answer the three questions above so we can match you with the right specialist.</div>
+    <div class="trust">🔒 Private &amp; confidential · reviewed by a real human on Catherine's team</div>
+  </form>
+
+  <!-- ─── calendar + post-booking intel ─── -->
+  <div class="card" id="approved" hidden>
+    <div class="result">
+      <h2>Pick your time, <span id="ap-name"></span>.</h2>
+      <p>Your answers are on their way to Catherine's team. Choose the time that works for you — your spouse is warmly welcome to join:</p>
+    </div>
+    <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
+
+    <div class="result" style="margin-top:22px">
+      <h2 style="font-size:20px">While you're here — 60 seconds so the team can prepare.</h2>
+      <p>Optional, but it makes your call sharper.</p>
+    </div>
     <div class="q" data-name="grandchildren"><label class="title">Are grandchildren involved?</label>
       <div class="opts">
         <label class="opt"><input type="radio" name="grandchildren" value="blocked" data-pts="3"> Yes — and we can't see them</label>
@@ -152,7 +177,6 @@ document.head.appendChild(s);
         <label class="opt"><input type="radio" name="grandchildren" value="none" data-pts="0"> No grandchildren</label>
       </div>
     </div>
-
     <div class="q" data-name="tried"><label class="title">What have you already tried?</label>
       <div class="hint">Choose all that apply.</div>
       <div class="opts">
@@ -163,45 +187,14 @@ document.head.appendChild(s);
         <label class="opt"><input type="checkbox" name="tried" value="nothing"> Nothing yet — I don't want to make it worse</label>
       </div>
     </div>
-
     <div class="q" data-name="together"><label class="title">Are you walking this alone, or with a spouse/partner?</label>
       <div class="opts">
         <label class="opt"><input type="radio" name="together" value="couple" data-pts="1"> With my spouse or partner</label>
         <label class="opt"><input type="radio" name="together" value="solo" data-pts="0"> On my own</label>
       </div>
     </div>
-
-    <div class="q" data-name="readiness"><label class="title">If this call confirmed PACT was the right fit for your family, which best describes where you'd be?</label>
-      <div class="opts">
-        <label class="opt"><input type="radio" name="readiness" value="whatever-it-takes" data-pts="3"> Ready to move forward — whatever it takes to get my family back</label>
-        <label class="opt"><input type="radio" name="readiness" value="right-plan" data-pts="2"> Ready, if the plan is clearly right for our situation</label>
-        <label class="opt"><input type="radio" name="readiness" value="understand-investment" data-pts="1"> I'd need to understand the investment first</label>
-        <label class="opt"><input type="radio" name="readiness" value="exploring" data-pts="0"> Just exploring for now</label>
-      </div>
-    </div>
-
-    <button class="btn" id="subbtn" type="submit">Submit My Application →</button>
-    <div class="err" id="err">Please answer every question above so our team can prepare for your call.</div>
-    <div class="trust">🔒 Private &amp; confidential · reviewed by a real human on Catherine's team</div>
-  </form>
-
-  <!-- ─── qualified: straight to calendar ─── -->
-  <div class="card" id="approved" hidden>
-    <div class="result">
-      <h2>Application received — choose your time.</h2>
-      <p><b id="ap-name"></b>, thank you — your answers are on their way to Catherine's team so they can prepare for your specific situation. Pick the time that works for you (your spouse is warmly welcome to join):</p>
-    </div>
-    <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
-  </div>
-
-  <!-- ─── received: soft path ─── -->
-  <div class="card" id="received" hidden>
-    <div class="result">
-      <h2>Your application is in.</h2>
-      <p><b id="rc-name"></b>, thank you for trusting us with this. A member of Catherine's team will personally review your application and reach out within one business day with your next step.</p>
-      <p>In the meantime, the most valuable thing you can do is keep working the method — and remember the one instruction: <b>don't reach out to your child yet.</b></p>
-      <a class="btn" style="max-width:420px;margin:10px auto 0" href="members.html">Back to My Course →</a>
-    </div>
+    <button class="btn" id="extrabtn" type="button" onclick="saveExtra()" style="max-width:420px">Send to the Team →</button>
+    <div class="trust" id="extradone" style="display:none">✓ Saved — thank you. See you on the call.</div>
   </div>
 </div>
 
@@ -211,7 +204,16 @@ document.head.appendChild(s);
 const API = 'https://pact-funnel-api.alex-f42.workers.dev';
 const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
 const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
-const SRC = new URLSearchParams(location.search).get('src') || 'direct';
+const QS = new URLSearchParams(location.search);
+const SRC = QS.get('src') || 'direct';
+
+// Buyers are known people — prefill identity from email-link params so the only
+// typing left is usually the phone number.
+(function(){
+  if (QS.get('e')) document.getElementById('email').value = QS.get('e');
+  if (QS.get('fn')) document.getElementById('fname').value = QS.get('fn');
+  if (QS.get('ln')) document.getElementById('lname').value = QS.get('ln');
+})();
 
 // highlight selected options
 document.addEventListener('change', e => {
@@ -227,28 +229,31 @@ document.addEventListener('change', e => {
 function val(name){ const el=document.querySelector(`input[name=${name}]:checked`); return el?el.value:null; }
 function pts(name){ const el=document.querySelector(`input[name=${name}]:checked`); return el?Number(el.dataset.pts||0):0; }
 
-async function submitApp(e){
-  e.preventDefault();
-  const required=['relationship','duration','grandchildren','together','readiness'];
-  if (required.some(n=>!val(n))){ document.getElementById('err').style.display='block'; return false; }
-  document.getElementById('err').style.display='none';
+function buildPayload(){
   const answers={
-    relationship:val('relationship'), duration:val('duration'), grandchildren:val('grandchildren'),
-    together:val('together'), readiness:val('readiness'),
+    relationship:val('relationship'), duration:val('duration'), readiness:val('readiness'),
+    grandchildren:val('grandchildren')||'', together:val('together')||'',
     tried:[...document.querySelectorAll('input[name=tried]:checked')].map(c=>c.value),
   };
   const score = pts('relationship')+pts('duration')+pts('grandchildren')+pts('together')+pts('readiness');
-  // Qualified = severe situation + real readiness. Severity: relationship+duration+grandchildren >= 6.
   const severity = pts('relationship')+pts('duration')+pts('grandchildren');
-  const qualified = true; // buyers all book — answers are closer intel, not a gate
-  const payload={
+  return {
     first_name:document.getElementById('fname').value.trim(),
     last_name:document.getElementById('lname').value.trim(),
     email:document.getElementById('email').value.trim(),
     phone:document.getElementById('phone').value.trim(),
-    src:SRC, answers, score, severity, qualified,
+    src:SRC, answers, score, severity, qualified:true,
   };
-  const btn=document.getElementById('subbtn'); btn.disabled=true; btn.textContent='Submitting…';
+}
+
+async function submitApp(e){
+  e.preventDefault();
+  if (['relationship','duration','readiness'].some(n=>!val(n))){
+    document.getElementById('err').style.display='block'; return false;
+  }
+  document.getElementById('err').style.display='none';
+  const payload=buildPayload();
+  const btn=document.getElementById('subbtn'); btn.disabled=true; btn.textContent='One moment…';
   // The worker decides the calendar: P1 leads (money-open + estranged + 6mo+) get the
   // priority roster if it has a slot within 72h; everyone else (and any error) → main.
   let route='main';
@@ -258,16 +263,20 @@ async function submitApp(e){
   }catch(err){}
   try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
   document.getElementById('appform').hidden=true;
-  if (qualified){
-    document.getElementById('ap-name').textContent=payload.first_name;
-    document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL);
-    document.getElementById('approved').hidden=false;
-  } else {
-    document.getElementById('rc-name').textContent=payload.first_name;
-    document.getElementById('received').hidden=false;
-  }
+  document.getElementById('ap-name').textContent=payload.first_name;
+  document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL);
+  document.getElementById('approved').hidden=false;
   window.scrollTo({top:0,behavior:'smooth'});
   return false;
+}
+
+async function saveExtra(){
+  const btn=document.getElementById('extrabtn'); btn.disabled=true; btn.textContent='Saving…';
+  try{
+    await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(buildPayload())});
+  }catch(err){}
+  btn.style.display='none';
+  document.getElementById('extradone').style.display='block';
 }
 </script>
 <script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','apply')}catch(e){}</script>
