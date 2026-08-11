@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Home — Your Library Is Open</title>
+<style>
+  :root{--indigo:#381876;--indigo-deep:#2a1259;--gold:#C9A227;--cream:#faf7f1;--ink:#2e2740;
+    --muted:#6f6884;--green:#2E7D32;--serif:Georgia,'Times New Roman',serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);color:var(--ink);background:var(--cream);font-size:17px;line-height:1.65}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px}
+  h1,h2,h3{font-family:var(--serif);color:var(--indigo);line-height:1.2}
+  p{margin:0 0 18px}
+  .card{background:#fff;border:1px solid #eae4d8;border-radius:16px;padding:26px 24px;margin:22px 0}
+  .btn{display:inline-block;background:linear-gradient(180deg,#d9b34a,var(--gold) 60%,#a5811a);color:#33270a;font-weight:800;text-decoration:none;
+    padding:14px 26px;border-radius:10px}
+  .video{background:var(--indigo-deep);aspect-ratio:16/9;border-radius:14px;display:flex;align-items:center;
+    justify-content:center;color:#C9C3E0;margin:22px 0;font-size:14px}
+  section{padding:44px 0}
+  ol.steps{margin:0 0 22px 20px}
+  ol.steps li{margin-bottom:12px}
+  .placeholder{outline:2px dashed #B3392E;outline-offset:3px;border-radius:4px}
+</style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1511568519903735');fbq('init','1387545469584384');
+fbq('track','PageView');
+// eventID = checkout session id -> Meta dedupes this against the Worker's CAPI
+// Purchase (which carries the real order total). Only fires when sid is present.
+var whSid = new URLSearchParams(location.search).get('sid');
+if (whSid) fbq('track','Purchase',{value:9.00,currency:'USD',content_name:'Welcome Home Book'},{eventID:whSid});</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1511568519903735&ev=PageView&noscript=1"/></noscript>
+<!-- Hyros Universal Tracking -->
+<script>
+(function(){
+var s = document.createElement('script');
+s.type = 'text/javascript';
+s.src = "https://215347.t.hyros.com/v1/lst/universal-script?ph=80e0d167794caa546cdc56006c3b29ced01bd1778457b28346daf7acb5660416&tag=!clicked&ref_url=" + encodeURI(document.URL);
+document.head.appendChild(s);
+})();
+</script>
+</head>
+<body>
+
+<section>
+  <div class="wrap">
+    <p style="color:var(--green);font-weight:700">✓ Order complete</p>
+    <h1>Welcome. Your library is open — and your first step is below.</h1>
+    <p><a class="btn" id="library-btn" href="members.html">📚 Open My Library →</a></p>
+    <p>Everything you bought today is unlocked in your library: ebook, audiobook, bonuses, and any additions. It's yours to keep — read it on any device, and come back any time.</p>
+    <p style="font-size:15px"><a href="#fasttrack" style="color:var(--gold,#9a7b1a);font-weight:700">In year-two-plus silence? You can skip ahead and talk to the team this week &darr;</a></p>
+    <p style="background:#FFFDF6;border:1px dashed var(--gold);border-radius:10px;padding:12px 16px;font-size:15px"><b>📬 One important thing:</b> we just emailed your permanent library link. If it's not in your inbox in 2 minutes, <b>check your spam or promotions folder</b> — and drag it to your inbox so you never lose access.</p>
+    <script>
+      // carry the purchase session into the library for auto-login
+      (() => {
+        const sid = new URLSearchParams(location.search).get('sid');
+        if (sid) document.getElementById('library-btn').href = 'members.html?sid=' + encodeURIComponent(sid);
+      })();
+    </script>
+
+    <!-- Value bomb #1 (captioned) -->
+    <style>
+      .tywrap{position:relative;border-radius:8px;overflow:hidden;cursor:pointer}
+      .typlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;background:rgba(20,14,45,.30);transition:opacity .25s}
+      .typlay.off{opacity:0;pointer-events:none}
+      .typlay span{width:clamp(80px,12vw,110px);height:clamp(80px,12vw,110px);border-radius:50%;background:#C9A227;display:flex;align-items:center;justify-content:center;
+        box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 10px rgba(201,162,39,.35);animation:typulse 1.8s ease-in-out infinite}
+      .typlay svg{width:44%;height:44%;margin-left:6%}
+      @keyframes typulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+      @media(prefers-reduced-motion:reduce){.typlay span{animation:none}}
+    </style>
+    <div id="vb1-block">
+      <h3>Before you read a single page, watch this (9 minutes)</h3>
+      <div class="video tywrap" id="tywrap" style="display:block;aspect-ratio:auto">
+        <video id="tyvid" controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4?v=2" style="width:100%;border-radius:8px;display:block"></video>
+        <div class="typlay" id="typlay"><span><svg viewBox="0 0 24 24" fill="#241a05"><path d="M8 5v14l11-7z"/></svg></span></div>
+      </div>
+      <script>
+      (function(){var v=document.getElementById('tyvid'),o=document.getElementById('typlay');
+      o.addEventListener('click',function(){v.play();});
+      v.addEventListener('play',function(){o.classList.add('off');});
+      v.addEventListener('pause',function(){if(!v.ended)o.classList.remove('off');});
+      })();
+      </script>
+    </div>
+
+    <!-- CALL FAST-TRACK: the funnel's true terminal action. Never gated behind content
+         consumption — 20% of PACT closes never watched the webinar. -->
+    <div class="card" id="fasttrack" style="border:2px solid var(--gold);background:#FFFDF6">
+      <h3 style="margin-top:0">If the silence is measured in years, not months — skip ahead.</h3>
+      <p>The book teaches the method, and for many families it's enough. But if your
+      situation is severe — 12+ months of no contact, a gatekeeper in the doorway,
+      grandchildren growing up without you — you don't have to walk it alone, and you
+      don't have to wait to finish the book to talk to us.</p>
+      <p>The <strong>Relationship Clarity Call</strong> is 30 minutes on Zoom with a PACT
+      advisor (spouses warmly invited). You'll leave with a diagnosis of your estrangement
+      pattern and a plan — whether or not you ever join a program. If working together makes
+      sense, your advisor will walk you through exactly what that looks like on the call.</p>
+      <a class="btn" href="apply.html?src=ty" style="background:var(--gold);color:#241a05;font-weight:800;font-size:18px">Book My Complimentary Clarity Call &rarr;</a>
+      <p style="font-size:13px;color:var(--muted);margin:10px 0 0">A few questions when you book help us match you with the right advisor. Calls available within 3 days.</p>
+    </div>
+
+
+    <div class="card">
+      <h3 style="margin-top:0">Your first 48 hours</h3>
+      <ol class="steps">
+        <li><strong>Tonight:</strong> read Chapter 1, or press play on the audiobook — Chapter 1 is about 15 minutes in Catherine's voice.</li>
+        <li><strong>Tomorrow:</strong> open <em>The Estrangement Decoder</em> bonus and identify your pattern — everything in the method routes from it.</li>
+        <li><strong>Do not</strong> reach out to your child yet. That step comes later, on purpose. (Chapter 2 explains why.)</li>
+      </ol>
+    </div>
+
+
+
+    <p style="font-size:14px;color:var(--muted)">Need help? info@parentingadultchildrentoday.com — real humans, Mon–Fri. Your 30-day keep-everything guarantee covers today's entire order.</p>
+  </div>
+</section>
+
+<script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','ty')}catch(e){}</script>
+</body>
+</html>
