@@ -169,8 +169,9 @@ document.head.appendChild(s);
       <p>Your answers are on their way to Catherine's team. Choose the time that works for you — your spouse is warmly welcome to join:</p>
     </div>
     <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
+    <a id="bookedNext" href="#prepQs" style="display:block;max-width:460px;margin:16px auto 0;text-align:center;background:#381876;color:#fff;font-weight:700;font-size:16px;text-decoration:none;padding:14px 22px;border-radius:999px">&#10003; I&rsquo;ve picked my time &mdash; continue &darr;</a>
 
-    <div class="result" style="margin-top:22px">
+    <div class="result" id="prepQs" style="margin-top:22px;scroll-margin-top:20px">
       <h2 style="font-size:20px">While you're here — 60 seconds so the team can prepare.</h2>
       <p>Optional, but it makes your call sharper.</p>
     </div>
@@ -200,7 +201,7 @@ document.head.appendChild(s);
     <button class="btn" id="extrabtn" type="button" onclick="saveExtra()" style="max-width:420px">Send to the Team →</button>
     <div class="trust" id="extradone" style="display:none">✓ Saved — thank you. See you on the call.</div>
 
-    <div class="result" style="margin-top:30px">
+    <div class="result" id="precall" style="margin-top:30px;scroll-margin-top:20px">
       <h2 style="font-size:20px">Before your call &mdash; watch this (9 minutes)</h2>
       <p>Catherine&rsquo;s class on the one behavior to stop tonight &mdash; and what to do with that energy instead. The best nine minutes you can spend before we talk.</p>
     </div>
@@ -292,6 +293,26 @@ async function submitApp(e){
   return false;
 }
 
+// Guided flow: booking widgets from GHL post messages on interaction — if one
+// looks like a confirmed appointment, walk the user down to the prep questions
+// automatically. The explicit continue button covers every other case.
+(function(){
+  let walked=false;
+  function walk(){ if(walked) return; walked=true;
+    const el=document.getElementById('prepQs'); if(el) el.scrollIntoView({behavior:'smooth'});
+    const b=document.getElementById('bookedNext'); if(b) b.textContent='✓ Time booked — two quick things below';
+  }
+  window.addEventListener('message', (e)=>{
+    try{
+      if(!/leadconnectorhq|msgsndr/.test(e.origin)) return;
+      const d=JSON.stringify(e.data||'');
+      if(/appointment|booking|confirmed|success/i.test(d)) walk();
+    }catch(_){}
+  });
+  document.addEventListener('click',(e)=>{ if(e.target.closest('#bookedNext')){ walked=true;
+    const b=document.getElementById('bookedNext'); if(b) b.textContent='✓ Time booked — two quick things below'; } });
+})();
+
 async function saveExtra(){
   const btn=document.getElementById('extrabtn'); btn.disabled=true; btn.textContent='Saving…';
   try{
@@ -299,6 +320,7 @@ async function saveExtra(){
   }catch(err){}
   btn.style.display='none';
   document.getElementById('extradone').style.display='block';
+  const pc=document.getElementById('precall'); if(pc) pc.scrollIntoView({behavior:'smooth'});
 }
 </script>
 <script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','apply')}catch(e){}</script>
