@@ -270,7 +270,11 @@ async function submitApp(e){
   try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
   document.getElementById('appform').hidden=true;
   document.getElementById('ap-name').textContent=payload.first_name;
-  document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL);
+  // Sticky contact: pass the applicant through to the GHL widget so the
+  // booking form arrives prefilled — they only pick a time and confirm.
+  const pre = new URLSearchParams({first_name:payload.first_name, last_name:payload.last_name||'',
+    email:payload.email, phone:payload.phone}).toString();
+  document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL)+'?'+pre;
   document.getElementById('approved').hidden=false;
   window.scrollTo({top:0,behavior:'smooth'});
   return false;
