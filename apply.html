@@ -79,7 +79,7 @@ document.head.appendChild(s);
 <div class="hero">
   <div class="wrap">
     <h1>Let&rsquo;s find your family&rsquo;s pattern.</h1>
-    <p><b style="color:#fff">Three quick questions, then pick your time.</b> About 30 seconds &mdash; your answers help Catherine&rsquo;s team prepare specifically for your family before your complimentary 30-minute call.</p>
+    <p><b style="color:#fff">One short application, then pick your time.</b> About 60 seconds &mdash; every answer helps your advisor prepare specifically for your family before your complimentary 30-minute call.</p>
   </div>
 </div>
 
@@ -88,7 +88,7 @@ document.head.appendChild(s);
 <div class="wrap">
   <!-- ─── the application ─── -->
   <form class="card" id="appform" onsubmit="return submitApp(event)">
-    <div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin-bottom:14px">Step 1 of 3 &middot; three quick questions</div>
+    <div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin-bottom:14px">Step 1 of 2 &middot; your application &mdash; about 60 seconds</div>
     <div class="q" data-name="relationship"><label class="title">How would you describe your relationship with your adult child right now?</label>
       <div class="opts">
         <label class="opt"><input type="radio" name="relationship" value="silence" data-pts="3"> Complete silence — no contact at all</label>
@@ -104,6 +104,32 @@ document.head.appendChild(s);
         <label class="opt"><input type="radio" name="duration" value="1-3y" data-pts="3"> 1–3 years</label>
         <label class="opt"><input type="radio" name="duration" value="6-12m" data-pts="2"> 6–12 months</label>
         <label class="opt"><input type="radio" name="duration" value="<6m" data-pts="1"> Less than 6 months</label>
+      </div>
+    </div>
+
+    <div class="q" data-name="grandchildren"><label class="title">Are grandchildren involved?</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="grandchildren" value="blocked" data-pts="3"> Yes — and we can't see them</label>
+        <label class="opt"><input type="radio" name="grandchildren" value="limited" data-pts="2"> Yes — contact is limited</label>
+        <label class="opt"><input type="radio" name="grandchildren" value="none" data-pts="0"> No grandchildren</label>
+      </div>
+    </div>
+
+    <div class="q" data-name="tried"><label class="title">What have you already tried?</label>
+      <div class="hint">Choose all that apply.</div>
+      <div class="opts">
+        <label class="opt"><input type="checkbox" name="tried" value="letters"> Letters, texts, or calls that went unanswered</label>
+        <label class="opt"><input type="checkbox" name="tried" value="therapy"> Therapy or counseling</label>
+        <label class="opt"><input type="checkbox" name="tried" value="gifts"> Gifts, visits, or invitations</label>
+        <label class="opt"><input type="checkbox" name="tried" value="waiting"> Giving them space and waiting</label>
+        <label class="opt"><input type="checkbox" name="tried" value="nothing"> Nothing yet — I don't want to make it worse</label>
+      </div>
+    </div>
+
+    <div class="q" data-name="together"><label class="title">Are you walking this alone, or with a spouse/partner?</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="together" value="couple" data-pts="1"> With my spouse or partner</label>
+        <label class="opt"><input type="radio" name="together" value="solo" data-pts="0"> On my own</label>
       </div>
     </div>
 
@@ -126,7 +152,7 @@ document.head.appendChild(s);
     </div>
 
     <button class="btn" id="subbtn" type="submit">See Available Call Times →</button>
-    <div class="err" id="err">Please answer the three questions above so we can match you with the right specialist.</div>
+    <div class="err" id="err">Please answer every question above so we can match you with the right advisor.</div>
     <div class="trust">🔒 Private &amp; confidential · reviewed by a real human on Catherine's team</div>
   </form>
 
@@ -164,46 +190,17 @@ document.head.appendChild(s);
   <!-- ─── calendar + post-booking intel ─── -->
   <div class="card" id="approved" hidden>
     <div class="result">
-      <div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin-bottom:10px">Step 2 of 3 &middot; choose your time</div>
+      <div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin-bottom:10px">Step 2 of 2 &middot; choose your time</div>
       <h2>Pick your time, <span id="ap-name"></span>.</h2>
       <p>Your answers are on their way to Catherine's team. Choose the time that works for you — your spouse is warmly welcome to join:</p>
     </div>
     <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
     <div style="text-align:center;margin:26px auto 6px;max-width:560px">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px"><span style="flex:1;height:1px;background:#e0d9cb"></span><span style="color:#C9A227;font-size:22px">&darr;</span><span style="flex:1;height:1px;background:#e0d9cb"></span></div>
-      <p style="font-size:16px;color:#6f6884;margin:0">Once your time is booked above, scroll down to finish <b style="color:#381876">Step&nbsp;3</b> &mdash; 60 seconds for your advisor.</p>
+      <p style="font-size:16px;color:#6f6884;margin:0">Once your time is booked above, scroll down &mdash; Catherine has a 9-minute class for you to watch before your call.</p>
     </div>
 
-    <div class="result" id="prepQs" style="margin-top:22px;scroll-margin-top:20px">
-      <div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin-bottom:10px">Step 3 of 3 &middot; finalize for your advisor</div>
-      <h2 style="font-size:20px">Last step — 60 seconds so your advisor can prepare.</h2>
-      <p>Optional, but it makes your call sharper.</p>
-    </div>
-    <div class="q" data-name="grandchildren"><label class="title">Are grandchildren involved?</label>
-      <div class="opts">
-        <label class="opt"><input type="radio" name="grandchildren" value="blocked" data-pts="3"> Yes — and we can't see them</label>
-        <label class="opt"><input type="radio" name="grandchildren" value="limited" data-pts="2"> Yes — contact is limited</label>
-        <label class="opt"><input type="radio" name="grandchildren" value="none" data-pts="0"> No grandchildren</label>
-      </div>
-    </div>
-    <div class="q" data-name="tried"><label class="title">What have you already tried?</label>
-      <div class="hint">Choose all that apply.</div>
-      <div class="opts">
-        <label class="opt"><input type="checkbox" name="tried" value="letters"> Letters, texts, or calls that went unanswered</label>
-        <label class="opt"><input type="checkbox" name="tried" value="therapy"> Therapy or counseling</label>
-        <label class="opt"><input type="checkbox" name="tried" value="gifts"> Gifts, visits, or invitations</label>
-        <label class="opt"><input type="checkbox" name="tried" value="waiting"> Giving them space and waiting</label>
-        <label class="opt"><input type="checkbox" name="tried" value="nothing"> Nothing yet — I don't want to make it worse</label>
-      </div>
-    </div>
-    <div class="q" data-name="together"><label class="title">Are you walking this alone, or with a spouse/partner?</label>
-      <div class="opts">
-        <label class="opt"><input type="radio" name="together" value="couple" data-pts="1"> With my spouse or partner</label>
-        <label class="opt"><input type="radio" name="together" value="solo" data-pts="0"> On my own</label>
-      </div>
-    </div>
-    <button class="btn" id="extrabtn" type="button" onclick="saveExtra()" style="max-width:420px">Send to the Team →</button>
-    <div class="trust" id="extradone" style="display:none">✓ Saved — thank you. See you on the call.</div>
+    
 
     <div class="result" id="precall" style="margin-top:30px;scroll-margin-top:20px">
       <h2 style="font-size:20px">Before your call &mdash; watch this (9 minutes)</h2>
@@ -283,7 +280,7 @@ function buildPayload(){
 
 async function submitApp(e){
   e.preventDefault();
-  if (['relationship','duration','readiness'].some(n=>!val(n))){
+  if (['relationship','duration','grandchildren','together','readiness'].some(n=>!val(n))){
     document.getElementById('err').style.display='block'; return false;
   }
   document.getElementById('err').style.display='none';
@@ -310,15 +307,7 @@ async function submitApp(e){
   return false;
 }
 
-async function saveExtra(){
-  const btn=document.getElementById('extrabtn'); btn.disabled=true; btn.textContent='Saving…';
-  try{
-    await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(buildPayload())});
-  }catch(err){}
-  btn.style.display='none';
-  document.getElementById('extradone').style.display='block';
-  const pc=document.getElementById('precall'); if(pc) pc.scrollIntoView({behavior:'smooth'});
-}
+
 </script>
 <script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','apply')}catch(e){}</script>
 </body>
