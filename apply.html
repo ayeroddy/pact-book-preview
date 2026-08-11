@@ -78,45 +78,17 @@ document.head.appendChild(s);
 
 <div class="hero">
   <div class="wrap">
-    <h1>Book your Relationship Clarity Call</h1>
-    <p>30 minutes on Zoom · your specific situation · a clear next step forward.<br>
-    <b style="color:#fff">Three quick questions, then pick your time.</b> About 30 seconds — your answers help Catherine&rsquo;s team prepare specifically for your family.</p>
+    <h1>Let&rsquo;s find your family&rsquo;s pattern.</h1>
+    <p><b style="color:#fff">Three quick questions, then pick your time.</b> About 30 seconds &mdash; your answers help Catherine&rsquo;s team prepare specifically for your family before your complimentary 30-minute call.</p>
   </div>
 </div>
 
-<div class="wrap" style="max-width:860px;margin:26px auto 0;padding:0 20px">
-  <!-- Application VSL (current cut; swap when editors deliver the 30-min-fixed v2) -->
-  <style>
-    .avslwrap{position:relative;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 18px 44px -12px rgba(0,0,0,.45);cursor:pointer}
-    .avslwrap video{display:block;width:100%;height:auto}
-    .avsl-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;background:rgba(20,14,45,.30);transition:opacity .25s}
-    .avsl-play.off{opacity:0;pointer-events:none}
-    .avsl-play span{width:clamp(88px,14vw,120px);height:clamp(88px,14vw,120px);border-radius:50%;background:#C9A227;display:flex;align-items:center;justify-content:center;
-      box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 10px rgba(201,162,39,.35);animation:avslpulse 1.8s ease-in-out infinite}
-    .avsl-play svg{width:44%;height:44%;margin-left:6%}
-    @keyframes avslpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-    @media(prefers-reduced-motion:reduce){.avsl-play span{animation:none}}
-  </style>
-  <div class="avslwrap" id="avslwrap">
-    <video id="avsl" controls preload="metadata" playsinline poster="assets/app-vsl-poster.jpg">
-      <source src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/app-vsl.mp4?v=3" type="video/mp4">
-    </video>
-    <div class="avsl-play" id="avslplay"><span><svg viewBox="0 0 24 24" fill="#241a05"><path d="M8 5v14l11-7z"/></svg></span></div>
-  </div>
-  <p style="text-align:center;font-weight:800;color:#381876;margin:12px 0 8px;font-size:16px">Before you apply &mdash; watch Catherine on the three moments where parents stall, and exactly how the Clarity Call works.</p>
-  <script>
-  (function(){var v=document.getElementById('avsl'),o=document.getElementById('avslplay');
-  o.addEventListener('click',function(){v.play();});
-  v.addEventListener('play',function(){o.classList.add('off');});
-  v.addEventListener('pause',function(){if(!v.ended)o.classList.remove('off');});
-  v.addEventListener('ended',function(){o.classList.remove('off');});
-  })();
-  </script>
-</div>
+
 
 <div class="wrap">
   <!-- ─── the application ─── -->
   <form class="card" id="appform" onsubmit="return submitApp(event)">
+    <div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin-bottom:14px">Step 1 of 2 &middot; three quick questions</div>
     <div class="q" data-name="relationship"><label class="title">How would you describe your relationship with your adult child right now?</label>
       <div class="opts">
         <label class="opt"><input type="radio" name="relationship" value="silence" data-pts="3"> Complete silence — no contact at all</label>
@@ -158,9 +130,41 @@ document.head.appendChild(s);
     <div class="trust">🔒 Private &amp; confidential · reviewed by a real human on Catherine's team</div>
   </form>
 
+<div class="wrap" id="avslsection" style="max-width:860px;margin:26px auto 0;padding:0 20px">
+  <!-- Application VSL (current cut; swap when editors deliver the 30-min-fixed v2) -->
+  <style>
+    .avslwrap{position:relative;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 18px 44px -12px rgba(0,0,0,.45);cursor:pointer}
+    .avslwrap video{display:block;width:100%;height:auto}
+    .avsl-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;background:rgba(20,14,45,.30);transition:opacity .25s}
+    .avsl-play.off{opacity:0;pointer-events:none}
+    .avsl-play span{width:clamp(88px,14vw,120px);height:clamp(88px,14vw,120px);border-radius:50%;background:#C9A227;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 10px rgba(201,162,39,.35);animation:avslpulse 1.8s ease-in-out infinite}
+    .avsl-play svg{width:44%;height:44%;margin-left:6%}
+    @keyframes avslpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    @media(prefers-reduced-motion:reduce){.avsl-play span{animation:none}}
+  </style>
+  <p style="text-align:center;font-weight:800;color:#381876;margin:26px 0 10px;font-size:16px">Not sure yet? Watch Catherine on the three moments where parents stall &mdash; and exactly how the call works.</p>
+  <div class="avslwrap" id="avslwrap">
+    <video id="avsl" controls preload="metadata" playsinline poster="assets/app-vsl-poster.jpg">
+      <source src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/app-vsl.mp4?v=3" type="video/mp4">
+    </video>
+    <div class="avsl-play" id="avslplay"><span><svg viewBox="0 0 24 24" fill="#241a05"><path d="M8 5v14l11-7z"/></svg></span></div>
+  </div>
+  
+  <script>
+  (function(){var v=document.getElementById('avsl'),o=document.getElementById('avslplay');
+  o.addEventListener('click',function(){v.play();});
+  v.addEventListener('play',function(){o.classList.add('off');});
+  v.addEventListener('pause',function(){if(!v.ended)o.classList.remove('off');});
+  v.addEventListener('ended',function(){o.classList.remove('off');});
+  })();
+  </script>
+</div>
+
   <!-- ─── calendar + post-booking intel ─── -->
   <div class="card" id="approved" hidden>
     <div class="result">
+      <div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin-bottom:10px">Step 2 of 2 &middot; choose your time</div>
       <h2>Pick your time, <span id="ap-name"></span>.</h2>
       <p>Your answers are on their way to Catherine's team. Choose the time that works for you — your spouse is warmly welcome to join:</p>
     </div>
@@ -201,6 +205,13 @@ document.head.appendChild(s);
       <p>Catherine&rsquo;s class on the one behavior to stop tonight &mdash; and what to do with that energy instead. The best nine minutes you can spend before we talk.</p>
     </div>
     <video controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4?v=2" style="width:100%;border-radius:12px;display:block;background:#241c3a"></video>
+
+    <div class="result" style="margin-top:30px">
+      <h2 style="font-size:20px">And while you wait for your call &mdash; your library is open.</h2>
+      <p>Everything you bought is already unlocked: the full ebook, the audiobook in Catherine&rsquo;s voice, the Estrangement Decoder, and your video classes. Your advisor may reference the Decoder on your call &mdash; it&rsquo;s the perfect place to start.</p>
+    </div>
+    <a class="btn" href="members.html" style="display:block;max-width:420px;margin:0 auto;text-align:center">&#128218; Open My Library &rarr;</a>
+    <p style="text-align:center;font-size:14px;color:#8a8378;margin-top:10px">Start with: The Estrangement Decoder &middot; The Three Silences &middot; When a Gatekeeper Holds the Door</p>
   </div>
 </div>
 
@@ -269,6 +280,7 @@ async function submitApp(e){
   }catch(err){}
   try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
   document.getElementById('appform').hidden=true;
+  var avs=document.getElementById('avslsection'); if(avs) avs.hidden=true;
   document.getElementById('ap-name').textContent=payload.first_name;
   // Sticky contact: pass the applicant through to the GHL widget so the
   // booking form arrives prefilled — they only pick a time and confirm.
