@@ -237,6 +237,19 @@ const SRC = QS.get('src') || 'direct';
   if (QS.get('ln')) document.getElementById('lname').value = QS.get('ln');
 })();
 
+// Source-aware ordering: hot arrivals (TY page, emails, Hope) see the form
+// first; "not sure yet" sources arrive BECAUSE they need convincing, so the
+// offer video leads for them and the application sits right below it.
+(function(){
+  const VIDEO_FIRST = ['rt-apply','seq-e12v','course-vsl','nudge-video'];
+  if (!VIDEO_FIRST.includes(SRC)) return;
+  const vs = document.getElementById('avslsection');
+  const fw = document.getElementById('appform') && document.getElementById('appform').closest('.wrap');
+  if (vs && fw && fw.parentNode) fw.parentNode.insertBefore(vs, fw);
+  const intro = vs && vs.querySelector('p');
+  if (intro) intro.innerHTML = 'Watch Catherine on the three moments where parents stall &mdash; and exactly how the call works. Your application is right below. &darr;';
+})();
+
 // highlight selected options
 document.addEventListener('change', e => {
   if (e.target.matches('.opt input[type=radio]')) {
