@@ -208,8 +208,8 @@ document.head.appendChild(s);
       <p>Your Estrangement Analysis is on its way to your Senior Advisor so they can prepare for your family&rsquo;s specific situation. Choose the time that works for you &mdash; your spouse is warmly welcome to join:</p>
       <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
 
-      <details style="margin-top:22px;border:1.5px solid #e0d9cb;border-radius:12px;background:#fff;padding:0">
-        <summary style="cursor:pointer;padding:16px 18px;font-weight:800;color:var(--indigo);font-size:16.5px;list-style-position:inside">Booked your time? &nbsp;&#9654;&nbsp; Watch Catherine&rsquo;s 9-minute pre-call class</summary>
+      <details id="precallbox" style="margin-top:22px;border:1.5px solid #e0d9cb;border-radius:12px;background:#fff;padding:0;scroll-margin-top:14px">
+        <summary id="precallsum" style="cursor:pointer;padding:16px 18px;font-weight:800;color:var(--indigo);font-size:16.5px;list-style-position:inside">Booked your time? &nbsp;&#9654;&nbsp; Watch Catherine&rsquo;s 9-minute pre-call class</summary>
         <div style="padding:4px 18px 18px">
           <p>Catherine&rsquo;s class on the one behavior to stop tonight &mdash; and what to do with that energy instead. The best nine minutes you can spend before we talk.</p>
           <video controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4?v=2" style="width:100%;border-radius:12px;display:block;background:#241c3a"></video>
@@ -358,6 +358,25 @@ async function submitApp(e){
   document.getElementById('approved').hidden=false;
   // land the buyer ON the calendar, not back at the hero
   setTimeout(() => document.getElementById('approved').scrollIntoView({behavior:'smooth', block:'start'}), 60);
+  // watch for the real booking (GHL appointment) and reveal the pre-call class
+  (function poll(n){
+    if (n > 45) return; // ~15 min then stop quietly
+    setTimeout(async () => {
+      try {
+        const r = await fetch(API + '/booked?e=' + encodeURIComponent(payload.email));
+        const j = await r.json();
+        if (j.booked) {
+          const box = document.getElementById('precallbox');
+          document.getElementById('precallsum').innerHTML = '&#10003;&nbsp; You&rsquo;re booked! Watch Catherine&rsquo;s 9-minute class before your call &darr;';
+          box.open = true;
+          box.style.borderColor = 'var(--gold)';
+          box.scrollIntoView({behavior:'smooth', block:'start'});
+          return;
+        }
+      } catch (e) {}
+      poll(n + 1);
+    }, 20000);
+  })(0);
   return false;
 }
 </script>
