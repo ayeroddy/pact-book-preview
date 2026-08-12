@@ -107,7 +107,11 @@ document.head.appendChild(s);
 
     <div class="kicker">One more step</div>
     <h1 style="font-size:clamp(28px,5vw,38px)">Find out which of the six patterns your family is in &mdash; this week.</h1>
-    <p style="font-size:19px;margin-top:10px"><strong>The book will teach you the method. This 30-minute call applies it to <em>your</em> child, <em>your</em> silence, <em>your</em> family</strong> &mdash; <strong>1-on-1 with Catherine&rsquo;s Vice President of Family Development</strong>, who has seen your exact pattern hundreds of times.</p>
+    <p style="font-size:19px;margin-top:10px">Complete your <strong>Estrangement Analysis</strong> below &mdash; six quick taps &mdash; and you&rsquo;ll be matched with one of <strong>Catherine&rsquo;s Senior Advisors of Family Development</strong> for your <strong>Relationship Clarity Call</strong>: 30 minutes, 1-on-1, the method applied to <em>your</em> child, <em>your</em> silence, <em>your</em> family.</p>
+
+    <div style="background:#FFFDF6;border:2px solid var(--gold);border-radius:14px;padding:16px 20px;margin:0 0 18px">
+      <p style="margin:0;font-size:17px"><strong>Catherine charges $497 for private diagnostic sessions like this.</strong> Because you purchased <em>Welcome Home</em> today, your session with her senior team is <strong style="color:var(--green)">complimentary</strong> &mdash; Catherine believes the diagnosis should never be the obstacle.</p>
+    </div>
 
     <ul class="bullets">
       <li><strong>Your pattern, diagnosed</strong> &mdash; the same six-pattern framework as your Estrangement Decoder, done <em>with</em> you instead of alone.</li>
@@ -115,11 +119,11 @@ document.head.appendChild(s);
       <li><strong>No judgment &mdash; truly.</strong> Catherine spent 40 years in this work and was once the estranged child in her own family. Nothing about your story will shock this team, and nobody here thinks it&rsquo;s your fault.</li>
     </ul>
 
-    <p style="font-size:16.5px;margin-bottom:6px"><strong>If the silence is measured in years, not months</strong> &mdash; this call is especially for you. Complimentary for book readers.</p>
+    <p style="font-size:16.5px;margin-bottom:6px"><strong>If the silence is measured in years, not months &mdash; this call is especially for you.</strong> And the method is honest about time: silence hardens the longer it stands. The earlier your pattern is diagnosed, the more options your family has.</p>
 
     <!-- ─── inline application ─── -->
     <form class="card" id="appform" onsubmit="return submitApp(event)" style="border:2px solid var(--gold)">
-      <div class="steplbl">Step 1 of 2 &middot; six quick taps &middot; answers go straight to your advisor</div>
+      <div class="steplbl">Your Estrangement Analysis &middot; step 1 of 2 &middot; six quick taps</div>
       <div class="prog"><span class="lbl" id="proglbl">Question 1 of 6</span><span class="bar"><i id="progbar" style="width:17%"></i></span></div>
       <span class="backlnk" id="backlnk">&larr; Back</span>
 
@@ -191,7 +195,7 @@ document.head.appendChild(s);
         </div>
       </div>
 
-      <button class="bigcta" id="subbtn" type="submit">Find My Family&rsquo;s Pattern &rarr;</button>
+      <button class="bigcta" id="subbtn" type="submit">Complete My Analysis &amp; Get Matched &rarr;</button>
       <div class="err" id="err">Please answer every question above so we can match you with the right advisor.</div>
       <p class="quiet" style="margin-top:8px">A few call times are open this week &middot; 30 minutes on Zoom &middot; spouse warmly welcome &middot; nothing to prepare</p>
       </div>
@@ -200,22 +204,20 @@ document.head.appendChild(s);
     <!-- ─── calendar + booked view (revealed after submit) ─── -->
     <div class="card" id="approved" hidden style="border:2px solid var(--gold)">
       <div class="steplbl">Step 2 of 2 &middot; choose your time</div>
-      <h2 style="font-size:22px">Pick your time, <span id="ap-name"></span>.</h2>
-      <p>Your application is complete and on its way to your advisor. Choose the time that works for you &mdash; your spouse is warmly welcome to join:</p>
+      <h2 style="font-size:22px">You&rsquo;re matched, <span id="ap-name"></span> &mdash; pick your time.</h2>
+      <p>Your Estrangement Analysis is on its way to your Senior Advisor so they can prepare for your family&rsquo;s specific situation. Choose the time that works for you &mdash; your spouse is warmly welcome to join:</p>
       <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
 
-      <div style="text-align:center;margin:26px auto 6px;max-width:560px">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px"><span style="flex:1;height:1px;background:#e0d9cb"></span><span style="color:#C9A227;font-size:22px">&darr;</span><span style="flex:1;height:1px;background:#e0d9cb"></span></div>
-        <p style="font-size:16px;color:#6f6884;margin:0">Once your time is booked above, scroll down &mdash; Catherine has a 9-minute class for you to watch before your call.</p>
-      </div>
-
-      <h3 style="margin:18px 0 8px">Before your call &mdash; watch this (9 minutes)</h3>
-      <p>Catherine&rsquo;s class on the one behavior to stop tonight &mdash; and what to do with that energy instead. The best nine minutes you can spend before we talk.</p>
-      <video controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4?v=2" style="width:100%;border-radius:12px;display:block;background:#241c3a"></video>
-
-      <h3 style="margin:26px 0 8px">And while you wait &mdash; your library is open.</h3>
-      <p>Everything you bought is already unlocked. Your advisor may reference the Estrangement Decoder on your call &mdash; it&rsquo;s the perfect place to start.</p>
-      <p><a class="btn" id="library-btn2" href="members.html">📚 Open My Library &rarr;</a></p>
+      <details style="margin-top:22px;border:1.5px solid #e0d9cb;border-radius:12px;background:#fff;padding:0">
+        <summary style="cursor:pointer;padding:16px 18px;font-weight:800;color:var(--indigo);font-size:16.5px;list-style-position:inside">Booked your time? &nbsp;&#9654;&nbsp; Watch Catherine&rsquo;s 9-minute pre-call class</summary>
+        <div style="padding:4px 18px 18px">
+          <p>Catherine&rsquo;s class on the one behavior to stop tonight &mdash; and what to do with that energy instead. The best nine minutes you can spend before we talk.</p>
+          <video controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4?v=2" style="width:100%;border-radius:12px;display:block;background:#241c3a"></video>
+          <h3 style="margin:22px 0 8px">And while you wait &mdash; your library is open.</h3>
+          <p>Everything you bought is already unlocked. Your advisor may reference the Estrangement Decoder on your call &mdash; it&rsquo;s the perfect place to start.</p>
+          <p><a class="btn" id="library-btn2" href="members.html">📚 Open My Library &rarr;</a></p>
+        </div>
+      </details>
     </div>
 
     <!-- library card (hidden once they apply — the booked view has its own) -->
