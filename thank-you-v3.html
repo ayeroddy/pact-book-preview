@@ -42,6 +42,17 @@
   .err{display:none;background:#fdecea;color:#B3392E;border-radius:10px;padding:11px 14px;font-size:15px;margin:10px 0}
   .whoami{background:#f6f1fd;border:1px solid #e0d3f7;border-radius:10px;padding:10px 14px;font-size:14.5px;margin-bottom:14px}
   .calframe{width:100%;min-height:760px;border:0;border-radius:14px;background:#fff}
+  /* stepper */
+  #appform .q{display:none}
+  #appform .q.active{display:block;animation:qin .25s ease}
+  @keyframes qin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .prog{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .prog .lbl{font-size:13px;font-weight:800;color:#8a8378;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+  .prog .bar{flex:1;height:8px;background:#efe9dd;border-radius:99px;overflow:hidden}
+  .prog .bar i{display:block;height:100%;background:linear-gradient(90deg,#d9b34a,var(--gold));border-radius:99px;transition:width .3s ease}
+  .backlnk{font-size:14px;color:var(--muted);text-decoration:underline;cursor:pointer;display:none;margin-bottom:10px}
+  .nextbtn{display:none;margin-top:6px;background:var(--indigo);color:#fff;border:0;border-radius:10px;padding:13px 26px;font-weight:800;font-size:16px;cursor:pointer;font-family:var(--sans)}
+  #confirmstep{display:none}
 </style>
 <!-- Meta Pixel -->
 <script>
@@ -108,7 +119,9 @@ document.head.appendChild(s);
 
     <!-- ─── inline application ─── -->
     <form class="card" id="appform" onsubmit="return submitApp(event)" style="border:2px solid var(--gold)">
-      <div class="steplbl">Step 1 of 2 &middot; about 60 seconds &middot; answers go straight to your advisor</div>
+      <div class="steplbl">Step 1 of 2 &middot; six quick taps &middot; answers go straight to your advisor</div>
+      <div class="prog"><span class="lbl" id="proglbl">Question 1 of 6</span><span class="bar"><i id="progbar" style="width:17%"></i></span></div>
+      <span class="backlnk" id="backlnk">&larr; Back</span>
 
       <div class="q" data-name="relationship"><label class="title">How would you describe your relationship with your adult child right now?</label>
         <div class="opts">
@@ -145,6 +158,7 @@ document.head.appendChild(s);
           <label class="opt"><input type="checkbox" name="tried" value="waiting"> Giving them space and waiting</label>
           <label class="opt"><input type="checkbox" name="tried" value="nothing"> Nothing yet — I don't want to make it worse</label>
         </div>
+        <button type="button" class="nextbtn" id="triednext">Next &rarr;</button>
       </div>
 
       <div class="q" data-name="together"><label class="title">Are you walking this alone, or with a spouse/partner?</label>
@@ -163,6 +177,7 @@ document.head.appendChild(s);
         </div>
       </div>
 
+      <div id="confirmstep">
       <!-- identity: auto-filled from the purchase; fields only appear if we can't -->
       <div class="whoami" id="whoami" style="display:none">Booking as <b id="who-name"></b> &middot; <span id="who-email"></span> <a href="#" id="who-edit" style="color:var(--indigo);font-weight:700">(not you?)</a></div>
       <div id="contactblock" style="display:none">
@@ -179,6 +194,7 @@ document.head.appendChild(s);
       <button class="bigcta" id="subbtn" type="submit">Find My Family&rsquo;s Pattern &rarr;</button>
       <div class="err" id="err">Please answer every question above so we can match you with the right advisor.</div>
       <p class="quiet" style="margin-top:8px">A few call times are open this week &middot; 30 minutes on Zoom &middot; spouse warmly welcome &middot; nothing to prepare</p>
+      </div>
     </form>
 
     <!-- ─── calendar + booked view (revealed after submit) ─── -->
@@ -268,6 +284,33 @@ document.addEventListener('change', e => {
 });
 function val(n){ const el=document.querySelector(`input[name=${n}]:checked`); return el?el.value:null; }
 function pts(n){ const el=document.querySelector(`input[name=${n}]:checked`); return el?Number(el.dataset.pts||0):0; }
+
+// ── one-question-at-a-time stepper ──
+const STEPS = ['relationship','duration','grandchildren','tried','together','readiness'];
+let stepIdx = 0;
+function qEl(name){ return document.querySelector(`#appform .q[data-name="${name}"]`); }
+function showStep(i){
+  stepIdx = Math.max(0, Math.min(i, STEPS.length));
+  STEPS.forEach((n, j) => qEl(n).classList.toggle('active', j === stepIdx));
+  const done = stepIdx >= STEPS.length;
+  document.getElementById('confirmstep').style.display = done ? 'block' : 'none';
+  document.getElementById('proglbl').textContent = done ? 'Last step' : `Question ${stepIdx + 1} of ${STEPS.length}`;
+  document.getElementById('progbar').style.width = Math.round(100 * (Math.min(stepIdx, STEPS.length) + (done ? 0 : 1)) / (STEPS.length + 1)) + '%';
+  if (done) document.getElementById('progbar').style.width = '100%';
+  document.getElementById('backlnk').style.display = stepIdx > 0 ? 'inline' : 'none';
+  document.getElementById('triednext').style.display = (STEPS[stepIdx] === 'tried') ? 'inline-block' : 'none';
+  const card = document.getElementById('appform');
+  const top = card.getBoundingClientRect().top + window.scrollY - 14;
+  if (window.scrollY > top) window.scrollTo({ top, behavior: 'smooth' });
+}
+document.addEventListener('change', (e) => {
+  const q = e.target.closest('#appform .q.active');
+  if (!q) return;
+  if (e.target.matches('input[type=radio]')) setTimeout(() => showStep(stepIdx + 1), 260);
+});
+document.getElementById('triednext').addEventListener('click', () => showStep(stepIdx + 1));
+document.getElementById('backlnk').addEventListener('click', () => showStep(stepIdx - 1));
+showStep(0);
 
 async function submitApp(e){
   e.preventDefault();
