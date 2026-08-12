@@ -228,6 +228,26 @@ document.head.appendChild(s);
           </div>
         </label>
 
+        <label class="bump armb-only" for="bump2box" style="display:none">
+          <div class="head">
+            <input type="checkbox" id="bump2box">
+            <span class="yes">YES — Add the 30-Day Reconnection Roadmap for $47 (reg. $97)</span>
+          </div>
+          <div class="body">
+            <p><span class="bname">The Reconnection Roadmap</span> — Catherine on video, walking you through your first 30 days day by day: 28 short filmed lessons, the daily schedule, and the first-contact protocol (gated to day 18, on purpose). The book teaches the method — this paces you through it. <span class="once">$97 everywhere else — $47 on this page only.</span></p>
+          </div>
+        </label>
+
+        <label class="bump armb-only" for="bump3box" style="display:none">
+          <div class="head">
+            <input type="checkbox" id="bump3box">
+            <span class="yes">YES — Add "The United Front" Couples Audio for $33 (one-time)</span>
+          </div>
+          <div class="body">
+            <p><span class="bname">The United Front</span> — for parents walking this together: when one reaches out and the other holds back, your child reads two strategies as instability. One plan, two parents, one steady signal — the complete audio program. <span class="once">Only offered here.</span></p>
+          </div>
+        </label>
+
         <h2 style="margin-top:26px"><span class="n">2</span>Payment — secure, right on this page</h2>
         <p id="embed-status" style="text-align:center;color:#888;font-size:15px;padding:26px 0">Loading secure checkout…</p>
         <div id="checkout-embed"></div>
@@ -258,6 +278,8 @@ document.head.appendChild(s);
         <div class="sumrow free"><span>"Why Therapy Didn't Work" class</span><span>FREE</span></div>
         <div class="sumrow free"><span>The Grandparent's Bridge</span><span>FREE</span></div>
         <div class="sumrow bumprow" id="bumprow"><span>The First Words Vault <i>(one-time)</i></span><span>$27.00</span></div>
+        <div class="sumrow bumprow" id="bumprow2"><span>30-Day Reconnection Roadmap <i>(one-time)</i></span><span>$47.00</span></div>
+        <div class="sumrow bumprow" id="bumprow3"><span>The United Front — couples audio <i>(one-time)</i></span><span>$33.00</span></div>
         <div class="sumrow total"><span>Total due today</span><span id="total">$9.00</span></div>
         <p class="duetoday">One-time payment. No subscription. No hidden charges.</p>
 
@@ -322,12 +344,43 @@ document.head.appendChild(s);
 </footer>
 
 <script>
+  // Funnel-structure split test (Aug 12): A = classic OTO chain, B = 3-bump
+  // compressed checkout -> straight to thank-you. Sticky 50/50; force ?arm=a|b.
+  var WH_ARM = (function(){
+    try {
+      var f = new URLSearchParams(location.search).get('arm');
+      if (f === 'a' || f === 'b') { localStorage.setItem('wh_arm', f); return f; }
+      var a = localStorage.getItem('wh_arm');
+      if (a !== 'a' && a !== 'b') { a = Math.random() < 0.5 ? 'a' : 'b'; localStorage.setItem('wh_arm', a); }
+      return a;
+    } catch (e) { return 'a'; }
+  })();
+</script>
+<script>
   // Two-step order form. Step 1 captures the lead (GHL upsert pre-payment),
   // step 2 mounts the embedded checkout with the email pre-filled. The bump
   // toggle rebuilds the session ($9 <-> $36).
   const bump = document.getElementById('bumpbox'),
         row  = document.getElementById('bumprow'),
+        bump2 = document.getElementById('bump2box'), row2 = document.getElementById('bumprow2'),
+        bump3 = document.getElementById('bump3box'), row3 = document.getElementById('bumprow3'),
         tot  = document.getElementById('total');
+  if (WH_ARM === 'b') document.querySelectorAll('.armb-only').forEach(el => el.style.display = 'block');
+  function pickedBumps() {
+    const out = [];
+    if (bump.checked) out.push('vault');
+    if (WH_ARM === 'b' && bump2.checked) out.push('roadmap-ds');
+    if (WH_ARM === 'b' && bump3.checked) out.push('together-ds');
+    return out;
+  }
+  function refreshSummary() {
+    const sel = pickedBumps();
+    row.classList.toggle('on', sel.includes('vault'));
+    row2.classList.toggle('on', sel.includes('roadmap-ds'));
+    row3.classList.toggle('on', sel.includes('together-ds'));
+    const total = 9 + (sel.includes('vault') ? 27 : 0) + (sel.includes('roadmap-ds') ? 47 : 0) + (sel.includes('together-ds') ? 33 : 0);
+    tot.textContent = '$' + total + '.00';
+  }
   const API = 'https://pact-funnel-api.alex-f42.workers.dev';
   const PK  = 'pk_live_51TP1022QGGpeDcPBKwnQbRVNU2pcQR4mhfiPWGaEJWbVXsWzmtvz4KrLBzrSG3p2unVsx5fJqjmzEfN0oMv5Vw1w006jhnyiMH';
   let checkout = null, mountedKey = null, loading = false, leadEmail = '';
@@ -361,12 +414,12 @@ document.head.appendChild(s);
     try { fbq('track', 'AddPaymentInfo'); } catch (e) {}
     try { navigator.sendBeacon(API + '/pv', 'checkout2'); } catch (e) {}
     goStep(2);
-    mountCheckout(bump.checked);
+    mountCheckout();
   });
 
-  async function mountCheckout(bumpVal) {
+  async function mountCheckout() {
     if (loading) return;
-    const key = bumpVal + '|' + leadEmail;
+    const key = pickedBumps().join(',') + '|' + leadEmail;
     if (mountedKey === key) return;
     loading = true;
     const st = document.getElementById('embed-status');
@@ -377,7 +430,7 @@ document.head.appendChild(s);
       // Purchase (fired later by the Stripe webhook) can claim ad attribution.
       const mck = n => { const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : undefined; };
       const r = await fetch(API + '/session', { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ bump: bumpVal, email: leadEmail, fbp: mck('_fbp'), fbc: mck('_fbc'),
+        body: JSON.stringify({ bump: bump.checked, bumps: pickedBumps(), arm: WH_ARM, email: leadEmail, fbp: mck('_fbp'), fbc: mck('_fbc'),
           fbclid: new URLSearchParams(location.search).get('fbclid') || undefined,
           lp: new URLSearchParams(location.search).get('lp') || (function(){try{return localStorage.getItem('wh_lp')==='vsl'?'vsl':(localStorage.getItem('wh_lp')==='control'?'control':undefined)}catch(e){return undefined}})() }) });
       const j = await r.json();
@@ -391,16 +444,12 @@ document.head.appendChild(s);
       st.textContent = 'Checkout could not load — please refresh the page.';
     }
     loading = false;
-    if (bump.checked + '|' + leadEmail !== mountedKey) mountCheckout(bump.checked);
+    if (pickedBumps().join(',') + '|' + leadEmail !== mountedKey) mountCheckout();
   }
 
-  bump.addEventListener('change', () => {
-    row.classList.toggle('on', bump.checked);
-    tot.textContent = bump.checked ? '$36.00' : '$9.00';
-    mountCheckout(bump.checked);
-  });
+  [bump, bump2, bump3].forEach(b => b && b.addEventListener('change', () => { refreshSummary(); mountCheckout(); }));
 </script>
 
-<script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','checkout')}catch(e){}</script>
+<script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv', WH_ARM==='b' ? 'checkoutb' : 'checkout')}catch(e){}</script>
 </body>
 </html>

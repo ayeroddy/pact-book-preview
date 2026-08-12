@@ -283,6 +283,7 @@ function buildPayload(){
     email:document.getElementById('email').value.trim(),
     phone:document.getElementById('phone').value.trim(),
     src:SRC, answers, score, severity, qualified:true,
+    arm:(function(){try{const a=localStorage.getItem('wh_arm');return a==='a'||a==='b'?a:undefined}catch(e){return undefined}})(),
   };
 }
 
