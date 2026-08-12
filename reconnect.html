@@ -227,13 +227,16 @@ const step = document.getElementById('step'), prog = document.getElementById('pr
       nextBtn = document.getElementById('nextBtn'), err = document.getElementById('err');
 const TOTAL = QUESTIONS.length + 1; // + contact step
 
+let booted = false;
 function render(){
   err.style.display = 'none';
   pfill.style.width = Math.round(idx / TOTAL * 100) + '%';
   backBtn.hidden = idx === 0;
   if (idx < QUESTIONS.length) renderQuestion(QUESTIONS[idx]);
   else renderContact();
-  document.getElementById('survey').scrollIntoView({behavior:'smooth', block:'nearest'});
+  // never scroll on initial page load — only when moving between questions
+  if (booted) document.getElementById('survey').scrollIntoView({behavior:'smooth', block:'nearest'});
+  booted = true;
 }
 
 function renderQuestion(q){
