@@ -19,13 +19,40 @@
   section{padding:38px 0}
   .kicker{display:inline-block;background:#efe7f9;color:var(--indigo);font-weight:800;font-size:13px;
     letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin:14px 0 10px}
-  .bigcta{display:block;text-align:center;background:linear-gradient(180deg,#d9b34a,var(--gold) 60%,#a5811a);
+  .bigcta{display:block;width:100%;text-align:center;background:linear-gradient(180deg,#d9b34a,var(--gold) 60%,#a5811a);
     color:#241a05;font-weight:900;font-size:clamp(19px,3vw,23px);text-decoration:none;padding:20px 28px;border-radius:14px;
-    box-shadow:0 10px 30px rgba(201,162,39,.35);margin:8px 0 10px}
+    box-shadow:0 10px 30px rgba(201,162,39,.35);margin:8px 0 10px;border:0;cursor:pointer;font-family:var(--sans)}
   .bullets{list-style:none;margin:0 0 20px}
   .bullets li{padding-left:30px;position:relative;margin-bottom:10px;font-size:17px}
   .bullets li:before{content:"✓";position:absolute;left:2px;color:var(--gold);font-weight:900}
   .quiet{font-size:13.5px;color:var(--muted);text-align:center}
+  /* inline application (ported from apply.html) */
+  .q{margin-bottom:22px}
+  .q .title{display:block;font-weight:800;font-size:17.5px;color:var(--indigo);margin-bottom:10px}
+  .q .hint{font-size:13.5px;color:var(--muted);margin:-6px 0 8px}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1.5px solid #e2dbcc;border-radius:10px;
+    padding:12px 14px;cursor:pointer;font-size:16px;line-height:1.45}
+  .opt input{margin-top:3px;accent-color:var(--indigo);flex:0 0 auto}
+  .opt.sel{border-color:var(--indigo);background:#f6f1fd}
+  .steplbl{font-size:12.5px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin:4px 0 14px}
+  .crow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .crow input,.cfull input{width:100%;padding:12px 13px;border:1.5px solid #e2dbcc;border-radius:10px;font-size:16px;background:#fff}
+  .cfull input{margin-top:10px}
+  .err{display:none;background:#fdecea;color:#B3392E;border-radius:10px;padding:11px 14px;font-size:15px;margin:10px 0}
+  .whoami{background:#f6f1fd;border:1px solid #e0d3f7;border-radius:10px;padding:10px 14px;font-size:14.5px;margin-bottom:14px}
+  .calframe{width:100%;min-height:760px;border:0;border-radius:14px;background:#fff}
+  /* stepper */
+  #appform .q[data-name]{display:none}
+  #appform .q[data-name].active{display:block;animation:qin .25s ease}
+  @keyframes qin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .prog{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .prog .lbl{font-size:13px;font-weight:800;color:#8a8378;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+  .prog .bar{flex:1;height:8px;background:#efe9dd;border-radius:99px;overflow:hidden}
+  .prog .bar i{display:block;height:100%;background:linear-gradient(90deg,#d9b34a,var(--gold));border-radius:99px;transition:width .3s ease}
+  .backlnk{font-size:14px;color:var(--muted);text-decoration:underline;cursor:pointer;display:none;margin-bottom:10px}
+  .nextbtn{display:none;margin-top:6px;background:var(--indigo);color:#fff;border:0;border-radius:10px;padding:13px 26px;font-weight:800;font-size:16px;cursor:pointer;font-family:var(--sans)}
+  #confirmstep{display:none}
 </style>
 <!-- Meta Pixel -->
 <script>
@@ -80,7 +107,11 @@ document.head.appendChild(s);
 
     <div class="kicker">One more step</div>
     <h1 style="font-size:clamp(28px,5vw,38px)">Find out which of the six patterns your family is in &mdash; this week.</h1>
-    <p style="font-size:19px;margin-top:10px"><strong>The book will teach you the method. This 30-minute call applies it to <em>your</em> child, <em>your</em> silence, <em>your</em> family</strong> &mdash; <strong>1-on-1 with Catherine&rsquo;s Vice President of Family Development</strong>, who has seen your exact pattern hundreds of times.</p>
+    <p style="font-size:19px;margin-top:10px">Complete your <strong>Estrangement Analysis</strong> below &mdash; six quick taps &mdash; and you&rsquo;ll be matched with one of <strong>Catherine&rsquo;s Senior Advisors of Family Development</strong> for your <strong>Relationship Clarity Call</strong>: 30 minutes, 1-on-1, the method applied to <em>your</em> child, <em>your</em> silence, <em>your</em> family.</p>
+
+    <div style="background:#FFFDF6;border:2px solid var(--gold);border-radius:14px;padding:16px 20px;margin:0 0 18px">
+      <p style="margin:0;font-size:17px"><strong>Catherine charges $497 for private diagnostic sessions like this.</strong> Because you purchased <em>Welcome Home</em> today, your session with her senior team is <strong style="color:var(--green)">complimentary</strong> &mdash; Catherine believes the diagnosis should never be the obstacle.</p>
+    </div>
 
     <ul class="bullets">
       <li><strong>Your pattern, diagnosed</strong> &mdash; the same six-pattern framework as your Estrangement Decoder, done <em>with</em> you instead of alone.</li>
@@ -88,12 +119,110 @@ document.head.appendChild(s);
       <li><strong>No judgment &mdash; truly.</strong> Catherine spent 40 years in this work and was once the estranged child in her own family. Nothing about your story will shock this team, and nobody here thinks it&rsquo;s your fault.</li>
     </ul>
 
-    <p style="font-size:16.5px;margin-bottom:10px"><strong>If the silence is measured in years, not months</strong> &mdash; this call is especially for you. Complimentary for book readers.</p>
-    <a class="bigcta" href="apply.html?src=ty">Find My Family&rsquo;s Pattern &rarr;</a>
-    <p class="quiet">A few call times are open this week &middot; 30 minutes on Zoom &middot; spouse warmly welcome &middot; nothing to prepare</p>
+    <p style="font-size:16.5px;margin-bottom:6px"><strong>If the silence is measured in years, not months &mdash; this call is especially for you.</strong> And the method is honest about time: silence hardens the longer it stands. The earlier your pattern is diagnosed, the more options your family has.</p>
 
-    <div class="card" style="margin-top:34px">
-      <h3 style="margin-top:0">While you wait for your call — your library is open.</h3>
+    <!-- ─── inline application ─── -->
+    <form class="card" id="appform" onsubmit="return submitApp(event)" style="border:2px solid var(--gold)">
+      <div class="steplbl">Your Estrangement Analysis &middot; step 1 of 2 &middot; six quick taps</div>
+      <div class="prog"><span class="lbl" id="proglbl">Question 1 of 6</span><span class="bar"><i id="progbar" style="width:17%"></i></span></div>
+      <span class="backlnk" id="backlnk">&larr; Back</span>
+
+      <div class="q" data-name="relationship"><label class="title">How would you describe your relationship with your adult child right now?</label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="relationship" value="silence" data-pts="3"> Complete silence — no contact at all</label>
+          <label class="opt"><input type="radio" name="relationship" value="gatekeeper" data-pts="3"> A spouse or partner controls access to them</label>
+          <label class="opt"><input type="radio" name="relationship" value="cold" data-pts="2"> They respond, but it's cold or brief</label>
+          <label class="opt"><input type="radio" name="relationship" value="tense" data-pts="1"> We talk, but it's tense and fragile</label>
+        </div>
+      </div>
+
+      <div class="q" data-name="duration"><label class="title">How long has it been this way?</label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="duration" value="3y+" data-pts="3"> More than 3 years</label>
+          <label class="opt"><input type="radio" name="duration" value="1-3y" data-pts="3"> 1–3 years</label>
+          <label class="opt"><input type="radio" name="duration" value="6-12m" data-pts="2"> 6–12 months</label>
+          <label class="opt"><input type="radio" name="duration" value="<6m" data-pts="1"> Less than 6 months</label>
+        </div>
+      </div>
+
+      <div class="q" data-name="grandchildren"><label class="title">Are grandchildren involved?</label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="grandchildren" value="blocked" data-pts="3"> Yes — and we can't see them</label>
+          <label class="opt"><input type="radio" name="grandchildren" value="limited" data-pts="2"> Yes — contact is limited</label>
+          <label class="opt"><input type="radio" name="grandchildren" value="none" data-pts="0"> No grandchildren</label>
+        </div>
+      </div>
+
+      <div class="q" data-name="tried"><label class="title">What have you already tried?</label>
+        <div class="hint">Choose all that apply.</div>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" name="tried" value="letters"> Letters, texts, or calls that went unanswered</label>
+          <label class="opt"><input type="checkbox" name="tried" value="therapy"> Therapy or counseling</label>
+          <label class="opt"><input type="checkbox" name="tried" value="gifts"> Gifts, visits, or invitations</label>
+          <label class="opt"><input type="checkbox" name="tried" value="waiting"> Giving them space and waiting</label>
+          <label class="opt"><input type="checkbox" name="tried" value="nothing"> Nothing yet — I don't want to make it worse</label>
+        </div>
+        <button type="button" class="nextbtn" id="triednext">Next &rarr;</button>
+      </div>
+
+      <div class="q" data-name="together"><label class="title">Are you walking this alone, or with a spouse/partner?</label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="together" value="couple" data-pts="1"> With my spouse or partner</label>
+          <label class="opt"><input type="radio" name="together" value="solo" data-pts="0"> On my own</label>
+        </div>
+      </div>
+
+      <div class="q" data-name="readiness"><label class="title">If this call confirmed PACT was the right fit for your family, which best describes where you'd be?</label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="readiness" value="whatever-it-takes" data-pts="3"> Ready to move forward — whatever it takes to get my family back</label>
+          <label class="opt"><input type="radio" name="readiness" value="right-plan" data-pts="2"> Ready, if the plan is clearly right for our situation</label>
+          <label class="opt"><input type="radio" name="readiness" value="understand-investment" data-pts="1"> I'd need to understand the investment first</label>
+          <label class="opt"><input type="radio" name="readiness" value="exploring" data-pts="0"> Just exploring for now</label>
+        </div>
+      </div>
+
+      <div id="confirmstep">
+      <!-- identity: auto-filled from the purchase; fields only appear if we can't -->
+      <div class="whoami" id="whoami" style="display:none">Booking as <b id="who-name"></b> &middot; <span id="who-email"></span> <a href="#" id="who-edit" style="color:var(--indigo);font-weight:700">(not you?)</a></div>
+      <div id="contactblock" style="display:none">
+        <div class="q"><label class="title">Where should we send your call confirmation?</label>
+          <div class="crow">
+            <input type="text" id="fname" placeholder="First name">
+            <input type="text" id="lname" placeholder="Last name">
+          </div>
+          <div class="cfull"><input type="email" id="email" placeholder="you@example.com"></div>
+          <div class="cfull"><input type="tel" id="phone" placeholder="Mobile — so our team can confirm your time"></div>
+        </div>
+      </div>
+
+      <button class="bigcta" id="subbtn" type="submit">Complete My Analysis &amp; Get Matched &rarr;</button>
+      <div class="err" id="err">Please answer every question above so we can match you with the right advisor.</div>
+      <p class="quiet" style="margin-top:8px">A few call times are open this week &middot; 30 minutes on Zoom &middot; spouse warmly welcome &middot; nothing to prepare</p>
+      </div>
+    </form>
+
+    <!-- ─── calendar + booked view (revealed after submit) ─── -->
+    <div class="card" id="approved" hidden style="border:2px solid var(--gold);scroll-margin-top:14px">
+      <div class="steplbl">Step 2 of 2 &middot; choose your time</div>
+      <h2 style="font-size:22px">You&rsquo;re matched, <span id="ap-name"></span> &mdash; pick your time.</h2>
+      <p>Your Estrangement Analysis is on its way to your Senior Advisor so they can prepare for your family&rsquo;s specific situation. Choose the time that works for you &mdash; your spouse is warmly welcome to join:</p>
+      <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
+
+      <details id="precallbox" style="margin-top:22px;border:1.5px solid #e0d9cb;border-radius:12px;background:#fff;padding:0;scroll-margin-top:14px">
+        <summary id="precallsum" style="cursor:pointer;padding:16px 18px;font-weight:800;color:var(--indigo);font-size:16.5px;list-style-position:inside">Booked your time? &nbsp;&#9654;&nbsp; Watch Catherine&rsquo;s 9-minute pre-call class</summary>
+        <div style="padding:4px 18px 18px">
+          <p>Catherine&rsquo;s class on the one behavior to stop tonight &mdash; and what to do with that energy instead. The best nine minutes you can spend before we talk.</p>
+          <video controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4?v=2" style="width:100%;border-radius:12px;display:block;background:#241c3a"></video>
+          <h3 style="margin:22px 0 8px">And while you wait &mdash; your library is open.</h3>
+          <p>Everything you bought is already unlocked. Your advisor may reference the Estrangement Decoder on your call &mdash; it&rsquo;s the perfect place to start.</p>
+          <p><a class="btn" id="library-btn2" href="members.html">📚 Open My Library &rarr;</a></p>
+        </div>
+      </details>
+    </div>
+
+    <!-- library card (hidden once they apply — the booked view has its own) -->
+    <div class="card" id="librarycard" style="margin-top:34px">
+      <h3 style="margin-top:0">Rather start with the book? Your library is open.</h3>
       <p>Everything you bought is already unlocked: the full ebook, the audiobook in Catherine&rsquo;s voice, the Estrangement Decoder, and your bonuses. It&rsquo;s yours to keep, on any device.</p>
       <p><a class="btn" id="library-btn" href="members.html">📚 Open My Library &rarr;</a></p>
       <p style="font-size:15px;margin:-6px 0 14px"><a href="vb1.html" style="color:var(--indigo);font-weight:700">&#9654; Start tonight with Catherine&rsquo;s 9-minute class &rarr;</a></p>
@@ -101,14 +230,156 @@ document.head.appendChild(s);
     </div>
 
     <p style="font-size:14px;color:var(--muted)">Need help? info@parentingadultchildrentoday.com — real humans, Mon–Fri. Your 30-day keep-everything guarantee covers today's entire order.</p>
-    <script>
-      (() => {
-        const sid = new URLSearchParams(location.search).get('sid');
-        if (sid) document.getElementById('library-btn').href = 'members.html?sid=' + encodeURIComponent(sid);
-      })();
-    </script>
   </div>
 </section>
+
+<script>
+const API = 'https://pact-funnel-api.alex-f42.workers.dev';
+const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
+const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
+const SID = new URLSearchParams(location.search).get('sid');
+let IDENT = null; // {first_name,last_name,email,phone} from the purchase session
+
+// library auto-login (both buttons)
+if (SID) ['library-btn','library-btn2'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.href = 'members.html?sid=' + encodeURIComponent(SID);
+});
+
+// resolve buyer identity from the purchase — no re-typing what checkout knows
+(async () => {
+  if (!SID) { document.getElementById('contactblock').style.display = 'block'; return; }
+  try {
+    const r = await fetch(API + '/session-info?sid=' + encodeURIComponent(SID));
+    if (!r.ok) throw 0;
+    IDENT = await r.json();
+    if (!IDENT.email) throw 0;
+    document.getElementById('who-name').textContent = (IDENT.first_name + ' ' + (IDENT.last_name||'')).trim();
+    document.getElementById('who-email').textContent = IDENT.email;
+    document.getElementById('whoami').style.display = 'block';
+    if (!IDENT.phone) { // rare: show just the phone field
+      document.getElementById('contactblock').style.display = 'block';
+      document.getElementById('fname').value = IDENT.first_name || '';
+      document.getElementById('lname').value = IDENT.last_name || '';
+      document.getElementById('email').value = IDENT.email || '';
+    }
+  } catch (e) {
+    IDENT = null;
+    document.getElementById('contactblock').style.display = 'block';
+  }
+})();
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'who-edit') { e.preventDefault(); IDENT = null;
+    document.getElementById('whoami').style.display = 'none';
+    document.getElementById('contactblock').style.display = 'block'; }
+});
+
+// option highlighting
+document.addEventListener('change', e => {
+  if (e.target.matches('.opt input[type=radio]')) {
+    e.target.closest('.opts').querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+    e.target.closest('.opt').classList.add('sel');
+  }
+  if (e.target.matches('.opt input[type=checkbox]')) {
+    e.target.closest('.opt').classList.toggle('sel', e.target.checked);
+  }
+});
+function val(n){ const el=document.querySelector(`input[name=${n}]:checked`); return el?el.value:null; }
+function pts(n){ const el=document.querySelector(`input[name=${n}]:checked`); return el?Number(el.dataset.pts||0):0; }
+
+// ── one-question-at-a-time stepper ──
+const STEPS = ['relationship','duration','grandchildren','tried','together','readiness'];
+let stepIdx = 0;
+function qEl(name){ return document.querySelector(`#appform .q[data-name="${name}"]`); }
+function showStep(i){
+  stepIdx = Math.max(0, Math.min(i, STEPS.length));
+  STEPS.forEach((n, j) => qEl(n).classList.toggle('active', j === stepIdx));
+  const done = stepIdx >= STEPS.length;
+  document.getElementById('confirmstep').style.display = done ? 'block' : 'none';
+  document.getElementById('proglbl').textContent = done ? 'Last step' : `Question ${stepIdx + 1} of ${STEPS.length}`;
+  document.getElementById('progbar').style.width = Math.round(100 * (Math.min(stepIdx, STEPS.length) + (done ? 0 : 1)) / (STEPS.length + 1)) + '%';
+  if (done) document.getElementById('progbar').style.width = '100%';
+  document.getElementById('backlnk').style.display = stepIdx > 0 ? 'inline' : 'none';
+  document.getElementById('triednext').style.display = (STEPS[stepIdx] === 'tried') ? 'inline-block' : 'none';
+  const card = document.getElementById('appform');
+  const top = card.getBoundingClientRect().top + window.scrollY - 14;
+  if (window.scrollY > top) window.scrollTo({ top, behavior: 'smooth' });
+}
+document.addEventListener('change', (e) => {
+  const q = e.target.closest('#appform .q.active');
+  if (!q) return;
+  if (e.target.matches('input[type=radio]')) setTimeout(() => showStep(stepIdx + 1), 260);
+});
+document.getElementById('triednext').addEventListener('click', () => showStep(stepIdx + 1));
+document.getElementById('backlnk').addEventListener('click', () => showStep(stepIdx - 1));
+showStep(0);
+
+async function submitApp(e){
+  e.preventDefault();
+  if (['relationship','duration','grandchildren','together','readiness'].some(n=>!val(n))){
+    document.getElementById('err').style.display='block'; return false;
+  }
+  const ident = IDENT || {
+    first_name: document.getElementById('fname').value.trim(),
+    last_name: document.getElementById('lname').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+  };
+  if (IDENT && !IDENT.phone) ident.phone = document.getElementById('phone').value.trim();
+  if (!ident.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ident.email)) {
+    document.getElementById('err').textContent='Please enter the email you used for your order.';
+    document.getElementById('err').style.display='block';
+    document.getElementById('contactblock').style.display='block'; return false;
+  }
+  document.getElementById('err').style.display='none';
+  const answers={
+    relationship:val('relationship'), duration:val('duration'), readiness:val('readiness'),
+    grandchildren:val('grandchildren')||'', together:val('together')||'',
+    tried:[...document.querySelectorAll('input[name=tried]:checked')].map(c=>c.value),
+  };
+  const payload={ ...ident, src:'ty', answers,
+    score: pts('relationship')+pts('duration')+pts('grandchildren')+pts('together')+pts('readiness'),
+    severity: pts('relationship')+pts('duration')+pts('grandchildren'), qualified:true,
+    arm:(function(){try{const a=localStorage.getItem('wh_arm');return a==='a'||a==='b'?a:undefined}catch(e){return undefined}})(),
+  };
+  const btn=document.getElementById('subbtn'); btn.disabled=true; btn.textContent='One moment…';
+  let route='main';
+  try{
+    const r=await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    route=(await r.json()).route||'main';
+  }catch(err){}
+  try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
+  document.getElementById('appform').hidden=true;
+  document.getElementById('librarycard').hidden=true;
+  document.getElementById('ap-name').textContent=payload.first_name || 'friend';
+  const pre = new URLSearchParams({first_name:payload.first_name, last_name:payload.last_name||'',
+    email:payload.email, phone:payload.phone||''}).toString();
+  document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL)+'?'+pre;
+  document.getElementById('approved').hidden=false;
+  // land the buyer ON the calendar, not back at the hero
+  setTimeout(() => document.getElementById('approved').scrollIntoView({behavior:'smooth', block:'start'}), 60);
+  // watch for the real booking (GHL appointment) and reveal the pre-call class
+  (function poll(n){
+    if (n > 45) return; // ~15 min then stop quietly
+    setTimeout(async () => {
+      try {
+        const r = await fetch(API + '/booked?e=' + encodeURIComponent(payload.email));
+        const j = await r.json();
+        if (j.booked) {
+          const box = document.getElementById('precallbox');
+          document.getElementById('precallsum').innerHTML = '&#10003;&nbsp; You&rsquo;re booked! Watch Catherine&rsquo;s 9-minute class before your call &darr;';
+          box.open = true;
+          box.style.borderColor = 'var(--gold)';
+          box.scrollIntoView({behavior:'smooth', block:'start'});
+          return;
+        }
+      } catch (e) {}
+      poll(n + 1);
+    }, 20000);
+  })(0);
+  return false;
+}
+</script>
 
 <script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','ty')}catch(e){}</script>
 </body>
