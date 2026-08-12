@@ -188,6 +188,14 @@ const API = 'https://pact-funnel-api.alex-f42.workers.dev';
 const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
 const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
 const SRC = new URLSearchParams(location.search).get('src') || 'gads-vsl';
+// Capture Google click ids for the server-side booked-call conversion (survives revisits)
+const QS = new URLSearchParams(location.search);
+let CLICK = {};
+try {
+  const fresh = { gclid:QS.get('gclid')||'', gbraid:QS.get('gbraid')||'', wbraid:QS.get('wbraid')||'' };
+  if (fresh.gclid || fresh.gbraid || fresh.wbraid) localStorage.setItem('pact_gads_click', JSON.stringify(fresh));
+  CLICK = JSON.parse(localStorage.getItem('pact_gads_click') || '{}');
+} catch(e){}
 
 const QUESTIONS = [
   { name:'relationship', title:'How would you describe your relationship with your adult child right now?', type:'radio',
@@ -293,7 +301,8 @@ nextBtn.addEventListener('click', async () => {
   const payload = { first_name:fname, last_name:lname, email, phone, src:SRC,
     answers:{ relationship:answers.relationship, duration:answers.duration, readiness:answers.readiness,
       grandchildren:answers.grandchildren||'', together:answers.together||'', tried:answers.tried||[] },
-    score, severity, qualified:true };
+    score, severity, qualified:true,
+    gclid:CLICK.gclid||'', gbraid:CLICK.gbraid||'', wbraid:CLICK.wbraid||'' };
   let route = 'main';
   try {
     const r = await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
