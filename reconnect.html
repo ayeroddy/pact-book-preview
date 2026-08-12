@@ -33,25 +33,53 @@
              box-shadow:0 8px 30px rgba(26,26,110,.45);animation:pulse 1.5s ease-in-out infinite;text-transform:uppercase}
   @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
   @media(prefers-reduced-motion:reduce){.vsl-badge{animation:none}}
-  .instruction{text-align:center;padding:26px 20px 6px}
+  .instruction{text-align:center;padding:26px 20px 4px}
   .instruction p{font-size:18px;color:var(--soft);max-width:640px;margin:0 auto;line-height:1.5}
-  .cta-wrap{text-align:center;padding:18px 20px 10px}
-  .cta{display:inline-block;background:var(--yellow);color:var(--navy);font-weight:900;font-size:clamp(18px,2.4vw,23px);
-       padding:20px 44px;border-radius:999px;text-decoration:none;box-shadow:0 10px 34px rgba(26,26,110,.3);
-       transition:transform .15s ease}
-  .cta:hover{transform:translateY(-2px)}
-  .cta-sub{font-size:15px;color:var(--soft);margin-top:12px}
-  .bio{max-width:640px;margin:44px auto 0;padding:0 20px 8px;display:flex;gap:16px;align-items:center;justify-content:center;text-align:left}
+  /* ---- survey ---- */
+  .survey-wrap{max-width:640px;margin:18px auto 0;padding:0 20px}
+  .survey{background:#fff;border:1px solid #e8e5f4;border-radius:18px;box-shadow:0 14px 44px rgba(26,26,110,.12);
+          padding:28px 26px 30px}
+  .progress{font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--cyan);text-transform:uppercase;margin-bottom:6px}
+  .pbar{height:6px;background:#eeecf7;border-radius:3px;margin-bottom:20px;overflow:hidden}
+  .pbar div{height:100%;background:var(--cyan);border-radius:3px;width:0;transition:width .25s ease}
+  .qtitle{font-size:22px;font-weight:800;color:var(--navy);line-height:1.3;margin-bottom:6px}
+  .qhint{font-size:15px;color:var(--soft);margin-bottom:14px}
+  .opt{display:flex;align-items:center;gap:12px;border:2px solid #e8e5f4;border-radius:12px;padding:16px 16px;
+       font-size:17px;line-height:1.35;cursor:pointer;margin-bottom:10px;background:#fdfcf9;transition:border-color .12s,background .12s}
+  .opt:hover{border-color:var(--cyan)}
+  .opt.sel{border-color:var(--navy);background:#f1efff}
+  .opt input{width:20px;height:20px;flex:0 0 20px;accent-color:var(--navy)}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+  .back{background:none;border:none;color:var(--soft);font-size:15px;cursor:pointer;text-decoration:underline;padding:8px}
+  .back[hidden]{visibility:hidden}
+  .next{background:var(--yellow);color:var(--navy);border:none;font-weight:900;font-size:18px;padding:15px 34px;
+        border-radius:999px;cursor:pointer;box-shadow:0 8px 24px rgba(26,26,110,.22)}
+  .next:disabled{opacity:.45;cursor:default;box-shadow:none}
+  .field{width:100%;border:2px solid #e8e5f4;border-radius:12px;padding:15px 14px;font-size:17px;margin-bottom:12px;
+         font-family:var(--sans);background:#fdfcf9}
+  .field:focus{outline:none;border-color:var(--cyan)}
+  .contact-row{display:flex;gap:12px}
+  .contact-row .field{flex:1}
+  .lock{font-size:14px;color:var(--soft);text-align:center;margin-top:12px}
+  .err{display:none;color:#c0392b;font-size:15px;font-weight:700;margin-bottom:10px}
+  /* ---- booked / calendar ---- */
+  .booked h2{font-size:26px;color:var(--navy);font-weight:900;text-align:center;margin-bottom:6px}
+  .booked .qhint{text-align:center}
+  .calframe{width:100%;min-height:780px;border:0;border-radius:14px;background:#fff}
+  .bio{max-width:640px;margin:44px auto 0;padding:0 20px 8px;text-align:center}
   .bio p{font-size:15px;line-height:1.6;color:var(--soft)}
   .bio strong{color:var(--navy)}
   footer{background:var(--navy);color:#c9c6e8;text-align:center;font-size:13px;padding:26px 20px;line-height:1.8;margin-top:44px}
+  [hidden]{display:none !important}
   @media (max-width:580px){
     .callout p{font-size:13px;line-height:1.45}
     h1{font-size:29px}
     .sub{font-size:16px}
     .instruction p{font-size:16px}
     .vsl-badge{font-size:17px}
-    .cta{font-size:18px;padding:18px 34px}
+    .qtitle{font-size:20px}
+    .opt{font-size:16px}
+    .contact-row{flex-direction:column;gap:0}
   }
 </style>
 <!-- Meta Pixel -->
@@ -121,13 +149,27 @@ document.head.appendChild(s);
 })();
 </script>
 
-<div class="instruction">
-  <p>After watching the video above, answer a few short questions and schedule your <strong>Relationship Clarity Call</strong>.</p>
+<div class="instruction" id="instr">
+  <p>Answer a few quick questions below and pick a time for your <strong>free Relationship Clarity Call</strong> &mdash; about 60 seconds.</p>
 </div>
 
-<div class="cta-wrap">
-  <a class="cta" href="apply.html?src=gads-vsl">Schedule Your Clarity Call &rarr;</a>
-  <p class="cta-sub">One short application, then pick your time &mdash; about 60 seconds.</p>
+<div class="survey-wrap" id="surveyWrap">
+  <div class="survey" id="survey">
+    <div class="progress" id="prog">Question 1 of 6</div>
+    <div class="pbar"><div id="pfill"></div></div>
+    <div id="step"></div>
+    <p class="err" id="err">Please answer to continue.</p>
+    <div class="nav">
+      <button class="back" id="backBtn" hidden>&larr; Back</button>
+      <button class="next" id="nextBtn" hidden>Continue &rarr;</button>
+    </div>
+  </div>
+
+  <div class="survey booked" id="booked" hidden>
+    <h2 id="bookedTitle">You're in&hellip;</h2>
+    <p class="qhint">Pick the time that works best &mdash; your details are already filled in.</p>
+    <iframe class="calframe" id="calframe" src="about:blank" title="Book your Relationship Clarity Call"></iframe>
+  </div>
 </div>
 
 <div class="bio">
@@ -141,6 +183,138 @@ document.head.appendChild(s);
   &copy; Parenting Adult Children Today &middot; PACT GROWTH, LLC
 </footer>
 
+<script>
+const API = 'https://pact-funnel-api.alex-f42.workers.dev';
+const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
+const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
+const SRC = new URLSearchParams(location.search).get('src') || 'gads-vsl';
+
+const QUESTIONS = [
+  { name:'relationship', title:'How would you describe your relationship with your adult child right now?', type:'radio',
+    opts:[['silence','Complete silence — no contact at all',3],
+          ['gatekeeper','A spouse or partner controls access to them',3],
+          ['cold',"They respond, but it's cold or brief",2],
+          ['tense',"We talk, but it's tense and fragile",1]] },
+  { name:'duration', title:'How long has it been this way?', type:'radio',
+    opts:[['3y+','More than 3 years',3],['1-3y','1–3 years',3],['6-12m','6–12 months',2],['<6m','Less than 6 months',1]] },
+  { name:'grandchildren', title:'Are grandchildren involved?', type:'radio',
+    opts:[['blocked',"Yes — and we can't see them",3],['limited','Yes — contact is limited',2],['none','No grandchildren',0]] },
+  { name:'tried', title:'What have you already tried?', hint:'Choose all that apply.', type:'check',
+    opts:[['letters','Letters, texts, or calls that went unanswered'],['therapy','Therapy or counseling'],
+          ['gifts','Gifts, visits, or invitations'],['waiting','Giving them space and waiting'],
+          ["nothing","Nothing yet — I don't want to make it worse"]] },
+  { name:'together', title:'Are you walking this alone, or with a spouse/partner?', type:'radio',
+    opts:[['couple','With my spouse or partner',1],['solo','On my own',0]] },
+  { name:'readiness', title:"If this call confirmed PACT was the right fit for your family, which best describes where you'd be?", type:'radio',
+    opts:[['whatever-it-takes','Ready to move forward — whatever it takes to get my family back',3],
+          ['right-plan','Ready, if the plan is clearly right for our situation',2],
+          ['understand-investment',"I'd need to understand the investment first",1],
+          ['exploring','Just exploring for now',0]] },
+];
+
+const answers = {}, pts = {};
+let idx = 0;
+const step = document.getElementById('step'), prog = document.getElementById('prog'),
+      pfill = document.getElementById('pfill'), backBtn = document.getElementById('backBtn'),
+      nextBtn = document.getElementById('nextBtn'), err = document.getElementById('err');
+const TOTAL = QUESTIONS.length + 1; // + contact step
+
+function render(){
+  err.style.display = 'none';
+  pfill.style.width = Math.round(idx / TOTAL * 100) + '%';
+  backBtn.hidden = idx === 0;
+  if (idx < QUESTIONS.length) renderQuestion(QUESTIONS[idx]);
+  else renderContact();
+  document.getElementById('survey').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function renderQuestion(q){
+  prog.textContent = `Question ${idx+1} of ${QUESTIONS.length}`;
+  let html = `<div class="qtitle">${q.title}</div>`;
+  if (q.hint) html += `<div class="qhint">${q.hint}</div>`;
+  for (const [val, label] of q.opts.map(o => o)) {
+    const type = q.type === 'check' ? 'checkbox' : 'radio';
+    const checked = q.type === 'check'
+      ? (answers[q.name] || []).includes(val) ? 'checked' : ''
+      : answers[q.name] === val ? 'checked' : '';
+    html += `<label class="opt ${checked ? 'sel' : ''}"><input type="${type}" name="q" value="${val}" ${checked}> ${label}</label>`;
+  }
+  step.innerHTML = html;
+  nextBtn.hidden = q.type !== 'check';
+  nextBtn.disabled = false; nextBtn.textContent = 'Continue →';
+  step.querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => {
+    if (q.type === 'check') {
+      answers[q.name] = [...step.querySelectorAll('input:checked')].map(i => i.value);
+      step.querySelectorAll('.opt').forEach(o => o.classList.toggle('sel', o.querySelector('input').checked));
+    } else {
+      answers[q.name] = inp.value;
+      pts[q.name] = q.opts.find(o => o[0] === inp.value)[2] || 0;
+      step.querySelectorAll('.opt').forEach(o => o.classList.toggle('sel', o.querySelector('input').checked));
+      setTimeout(() => { idx++; render(); }, 220); // auto-advance
+    }
+  }));
+}
+
+function renderContact(){
+  prog.textContent = 'Last step';
+  pfill.style.width = '92%';
+  step.innerHTML = `
+    <div class="qtitle">Where should we send your call confirmation?</div>
+    <div class="contact-row">
+      <input class="field" id="fname" placeholder="First name" autocomplete="given-name">
+      <input class="field" id="lname" placeholder="Last name" autocomplete="family-name">
+    </div>
+    <input class="field" id="email" type="email" placeholder="you@example.com" autocomplete="email">
+    <input class="field" id="phone" type="tel" placeholder="Mobile — so our team can confirm your time" autocomplete="tel">
+    <p class="lock">&#128274; Private &amp; confidential &middot; reviewed by a real human on Catherine's team</p>`;
+  nextBtn.hidden = false;
+  nextBtn.textContent = 'See Available Call Times →';
+}
+
+backBtn.addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
+
+nextBtn.addEventListener('click', async () => {
+  if (idx < QUESTIONS.length) { // only the checkbox step shows this button mid-survey
+    if (!(answers[QUESTIONS[idx].name] || []).length) answers[QUESTIONS[idx].name] = [];
+    idx++; render(); return;
+  }
+  const fname = document.getElementById('fname').value.trim(),
+        lname = document.getElementById('lname').value.trim(),
+        email = document.getElementById('email').value.trim(),
+        phone = document.getElementById('phone').value.trim();
+  if (!fname || !email.includes('@') || phone.length < 7) {
+    err.textContent = 'Please fill in your name, email, and mobile number.';
+    err.style.display = 'block'; return;
+  }
+  err.style.display = 'none';
+  nextBtn.disabled = true; nextBtn.textContent = 'One moment…';
+  const score = (pts.relationship||0)+(pts.duration||0)+(pts.grandchildren||0)+(pts.together||0)+(pts.readiness||0);
+  const severity = (pts.relationship||0)+(pts.duration||0)+(pts.grandchildren||0);
+  const payload = { first_name:fname, last_name:lname, email, phone, src:SRC,
+    answers:{ relationship:answers.relationship, duration:answers.duration, readiness:answers.readiness,
+      grandchildren:answers.grandchildren||'', together:answers.together||'', tried:answers.tried||[] },
+    score, severity, qualified:true };
+  let route = 'main';
+  try {
+    const r = await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    route = (await r.json()).route || 'main';
+  } catch(e){}
+  try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
+  try{
+    gtag('set','user_data',{email, phone_number:phone});
+    gtag('event','conversion',{'send_to':'AW-18385634480/KAjGCJfLwOAcELCJ-r5E'});
+  }catch(e){}
+  const pre = new URLSearchParams({first_name:fname, last_name:lname||'', email, phone}).toString();
+  document.getElementById('calframe').src = (route==='priority'?CAL_PRIORITY:CAL)+'?'+pre;
+  document.getElementById('bookedTitle').textContent = `You're in, ${fname} — pick your time below`;
+  document.getElementById('survey').hidden = true;
+  document.getElementById('instr').hidden = true;
+  document.getElementById('booked').hidden = false;
+  document.getElementById('booked').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+render();
+</script>
 <script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','reconnect-g')}catch(e){}</script>
 </body>
 </html>
