@@ -202,7 +202,7 @@ document.head.appendChild(s);
     </form>
 
     <!-- ─── calendar + booked view (revealed after submit) ─── -->
-    <div class="card" id="approved" hidden style="border:2px solid var(--gold)">
+    <div class="card" id="approved" hidden style="border:2px solid var(--gold);scroll-margin-top:14px">
       <div class="steplbl">Step 2 of 2 &middot; choose your time</div>
       <h2 style="font-size:22px">You&rsquo;re matched, <span id="ap-name"></span> &mdash; pick your time.</h2>
       <p>Your Estrangement Analysis is on its way to your Senior Advisor so they can prepare for your family&rsquo;s specific situation. Choose the time that works for you &mdash; your spouse is warmly welcome to join:</p>
@@ -356,7 +356,8 @@ async function submitApp(e){
     email:payload.email, phone:payload.phone||''}).toString();
   document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL)+'?'+pre;
   document.getElementById('approved').hidden=false;
-  window.scrollTo({top:0,behavior:'smooth'});
+  // land the buyer ON the calendar, not back at the hero
+  setTimeout(() => document.getElementById('approved').scrollIntoView({behavior:'smooth', block:'start'}), 60);
   return false;
 }
 </script>

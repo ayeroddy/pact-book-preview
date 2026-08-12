@@ -196,7 +196,7 @@ document.head.appendChild(s);
 </div>
 
   <!-- ─── calendar + post-booking intel ─── -->
-  <div class="card" id="approved" hidden>
+  <div class="card" id="approved" hidden style="scroll-margin-top:14px">
     <div class="result">
       <div style="font-size:13px;letter-spacing:.12em;font-weight:800;color:#8a8378;text-transform:uppercase;margin-bottom:10px">Step 2 of 2 &middot; choose your time</div>
       <h2>Pick your time, <span id="ap-name"></span>.</h2>
@@ -316,7 +316,8 @@ async function submitApp(e){
     email:payload.email, phone:payload.phone}).toString();
   document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL)+'?'+pre;
   document.getElementById('approved').hidden=false;
-  window.scrollTo({top:0,behavior:'smooth'});
+  // land the buyer ON the calendar, not back at the hero
+  setTimeout(() => document.getElementById('approved').scrollIntoView({behavior:'smooth', block:'start'}), 60);
   return false;
 }
 
