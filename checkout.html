@@ -228,17 +228,7 @@ document.head.appendChild(s);
           </div>
         </label>
 
-        <label class="bump armb-only" for="bump2box" style="display:none">
-          <div class="head">
-            <input type="checkbox" id="bump2box">
-            <span class="yes">YES — Add the 30-Day Reconnection Roadmap for $47 (reg. $97)</span>
-          </div>
-          <div class="body">
-            <p><span class="bname">The Reconnection Roadmap</span> — Catherine on video, walking you through your first 30 days day by day: 28 short filmed lessons, the daily schedule, and the first-contact protocol (gated to day 18, on purpose). The book teaches the method — this paces you through it. <span class="once">$97 everywhere else — $47 on this page only.</span></p>
-          </div>
-        </label>
-
-        <label class="bump armb-only" for="bump3box" style="display:none">
+                <label class="bump armb-only" for="bump3box" style="display:none">
           <div class="head">
             <input type="checkbox" id="bump3box">
             <span class="yes">YES — Add "The United Front" Couples Audio for $33 (one-time)</span>
@@ -278,7 +268,6 @@ document.head.appendChild(s);
         <div class="sumrow free"><span>"Why Therapy Didn't Work" class</span><span>FREE</span></div>
         <div class="sumrow free"><span>The Grandparent's Bridge</span><span>FREE</span></div>
         <div class="sumrow bumprow" id="bumprow"><span>The First Words Vault <i>(one-time)</i></span><span>$27.00</span></div>
-        <div class="sumrow bumprow" id="bumprow2"><span>30-Day Reconnection Roadmap <i>(one-time)</i></span><span>$47.00</span></div>
         <div class="sumrow bumprow" id="bumprow3"><span>The United Front — couples audio <i>(one-time)</i></span><span>$33.00</span></div>
         <div class="sumrow total"><span>Total due today</span><span id="total">$9.00</span></div>
         <p class="duetoday">One-time payment. No subscription. No hidden charges.</p>
@@ -362,23 +351,20 @@ document.head.appendChild(s);
   // toggle rebuilds the session ($9 <-> $36).
   const bump = document.getElementById('bumpbox'),
         row  = document.getElementById('bumprow'),
-        bump2 = document.getElementById('bump2box'), row2 = document.getElementById('bumprow2'),
         bump3 = document.getElementById('bump3box'), row3 = document.getElementById('bumprow3'),
         tot  = document.getElementById('total');
   if (WH_ARM === 'b') document.querySelectorAll('.armb-only').forEach(el => el.style.display = 'block');
   function pickedBumps() {
     const out = [];
     if (bump.checked) out.push('vault');
-    if (WH_ARM === 'b' && bump2.checked) out.push('roadmap-ds');
     if (WH_ARM === 'b' && bump3.checked) out.push('together-ds');
     return out;
   }
   function refreshSummary() {
     const sel = pickedBumps();
     row.classList.toggle('on', sel.includes('vault'));
-    row2.classList.toggle('on', sel.includes('roadmap-ds'));
     row3.classList.toggle('on', sel.includes('together-ds'));
-    const total = 9 + (sel.includes('vault') ? 27 : 0) + (sel.includes('roadmap-ds') ? 47 : 0) + (sel.includes('together-ds') ? 33 : 0);
+    const total = 9 + (sel.includes('vault') ? 27 : 0) + (sel.includes('together-ds') ? 33 : 0);
     tot.textContent = '$' + total + '.00';
   }
   const API = 'https://pact-funnel-api.alex-f42.workers.dev';
@@ -447,7 +433,7 @@ document.head.appendChild(s);
     if (pickedBumps().join(',') + '|' + leadEmail !== mountedKey) mountCheckout();
   }
 
-  [bump, bump2, bump3].forEach(b => b && b.addEventListener('change', () => { refreshSummary(); mountCheckout(); }));
+  [bump, bump3].forEach(b => b && b.addEventListener('change', () => { refreshSummary(); mountCheckout(); }));
 </script>
 
 <script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv', WH_ARM==='b' ? 'checkoutb' : 'checkout')}catch(e){}</script>
