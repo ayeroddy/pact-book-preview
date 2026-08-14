@@ -211,7 +211,7 @@ document.head.appendChild(s);
 
 <div class="gate" id="gate" hidden>
   <h1>Your course is waiting.</h1>
-  <p>Please open this page from your <b>order confirmation</b> — the “Open My Course” button on your thank-you page, or the link in your welcome email. Lost it? Email <a href="mailto:info@parentingadultchildrentoday.com">info@parentingadultchildrentoday.com</a> and we’ll send a fresh link the same day.</p>
+  <p>Please open this page from your <b>order confirmation</b> — the “Open My Course” button on your thank-you page, or the link in your welcome email. Lost it? <a href="access.html"><b>Get your link emailed to you here</b></a> — it takes about a minute.</p>
 </div>
 
 <div id="app" hidden>
@@ -406,6 +406,9 @@ function bookModule(){
   const lessons = [
     {ic:'📖',b:'Read the book — “Welcome Home”',s:'14 chapters · start with Chapter 1 tonight',
       act:"openDoc('deliverables/welcome-home-book.html','Welcome Home — The Book')", start:true},
+    {ic:'⬇️',b:'Download the book (PDF)',s:'Your own copy to keep — saves to your phone, tablet or computer',
+      act:"downloadDoc('deliverables/welcome-home-book.pdf','Welcome Home - Catherine Hickem.pdf')",
+      go:'Download →', nokey:true},
     {ic:'🧭',b:'The Estrangement Decoder',s:'Find your pattern — read after Chapter 1',
       act:"openDoc('deliverables/estrangement-decoder.html','The Estrangement Decoder')"},
     {ic:'🎧',b:'Recorded Class: Why Therapy Didn\u2019t Work',s:'Four lessons + tonight\u2019s assignment \u2014 why estrangement is a safety problem, not a communication problem',
@@ -436,11 +439,11 @@ function bookModule(){
     <div><h3>Welcome Home</h3><div class="sub">The book, your bonus guides, and the full audiobook.</div></div>
     <span class="badge owned">✓ Yours</span></div>
     <div class="body">
-      ${lessons.map(l=>{const dk=(l.act.match(/'([^']+)'/)||[])[1]||''; window.__items.push(dk);
-        const dn=isDone(dk);
+      ${lessons.map(l=>{const dk=(l.act.match(/'([^']+)'/)||[])[1]||''; if(!l.nokey) window.__items.push(dk);
+        const dn=!l.nokey&&isDone(dk);
         return `<div class="lesson ${dn?'isdone':''}" onclick="${l.act}"><div class="ic">${l.ic}</div>
         <div class="t"><b>${l.b}${l.start?'<span class="startflag">Start here</span>':''}${dn?'<span class="ck">✓</span>':''}</b><span>${l.s}</span></div>
-        <div class="go">${dn?'Again →':'Open →'}</div></div>`}).join('')}
+        <div class="go">${l.go||(dn?'Again →':'Open →')}</div></div>`}).join('')}
       <div class="audio-head"><div class="ic">🎧</div><div><b>The Audiobook</b><span>Read by Catherine — ${AUDIO_CHAPTERS.filter((t,i)=>isDone('bonus/audiobook/ch'+String(i+1).padStart(2,'0')+'.mp3')).length} of ${AUDIO_CHAPTERS.length} chapters finished</span></div></div>
       <div class="chaps">${chaps}</div>
     </div></div>`;
@@ -521,6 +524,10 @@ function playVideo(key,title){ ovbody.innerHTML=`<video controls autoplay playsi
   v.addEventListener('timeupdate',()=>{ if(v.duration && v.currentTime/v.duration>0.9) markDone(key); },{passive:true}); }
 function playAudio(key,title){ ovbody.innerHTML=`<div class="ov-audio"><h4>${esc(title)}</h4><audio controls autoplay src="${vurl(key)}"></audio><p style="color:var(--soft);font-size:15px;margin-top:14px">Listens right here — press ← Back when you’re done.</p></div>`; openOverlay('The Audiobook'); }
 function openDoc(path,title){ ovbody.innerHTML=`<iframe src="${vurl(path)}"></iframe>`; openOverlay(title); markDone(path); }
+/* Real file download. Buyers kept trying to "Save to Files" from the reader iframe,
+   which saves the web page, not the book, and then won't open. ?dl= sets
+   Content-Disposition so the phone saves a proper, openable PDF. */
+function downloadDoc(key,filename){ window.location.href = vurl(key)+'&dl='+encodeURIComponent(filename); }
 
 /* ── one-click unlock ── */
 function unlock(item){ const b=document.querySelector('.unlock[data-item="'+item+'"]'); if(b){ b.scrollIntoView({behavior:'smooth',block:'center'}); b.click(); } }

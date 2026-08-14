@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Find My Book — Welcome Home</title>
+<style>
+  :root{ --purple:#381876; --ink:#2e2740; --soft:#6b6480; --gold:#C9A227; --paper:#faf7f1; --rule:#e6e0d4; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:Georgia,'Iowan Old Style','Times New Roman',serif;
+    font-size:19px;line-height:1.6;-webkit-text-size-adjust:100%}
+  .wrap{max-width:560px;margin:0 auto;padding:44px 22px 72px}
+  h1{font-family:'Helvetica Neue',Arial,sans-serif;color:var(--purple);
+    font-size:31px;line-height:1.2;margin:0 0 14px;letter-spacing:-.01em}
+  p{margin:0 0 18px}
+  .lead{font-size:20px}
+  label{display:block;font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;
+    font-weight:600;color:var(--purple);margin:0 0 8px}
+  input{width:100%;font-family:inherit;font-size:20px;padding:16px 15px;
+    border:2px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink)}
+  input:focus{outline:none;border-color:var(--purple)}
+  button{width:100%;margin-top:14px;font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:19px;font-weight:700;color:#fff;background:var(--purple);
+    border:0;border-radius:10px;padding:18px 20px;cursor:pointer}
+  button:disabled{opacity:.6;cursor:default}
+  .card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:26px 22px;margin:26px 0}
+  .note{font-size:17px;color:var(--soft)}
+  .msg{margin-top:18px;padding:16px 18px;border-radius:10px;font-size:18px;display:none}
+  .msg.ok{display:block;background:#eaf5ea;border:1px solid #cfe4cf;color:#255c28}
+  .msg.bad{display:block;background:#fdf1e7;border:1px solid #f0d8c2;color:#8a4b13}
+  .rule{height:1px;background:var(--rule);margin:30px 0}
+  .help{font-size:17px;color:var(--soft)}
+  .help a{color:var(--purple)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Let's find your book.</h1>
+  <p class="lead">Type the email address you used when you bought <i>Welcome Home</i>, and we'll send your personal library link straight to your inbox.</p>
+
+  <div class="card">
+    <label for="em">Your email address</label>
+    <input id="em" type="email" inputmode="email" autocomplete="email"
+           autocapitalize="off" spellcheck="false" placeholder="you@example.com">
+    <button id="go">Email me my link</button>
+    <div class="msg" id="msg"></div>
+    <p class="note" style="margin:16px 0 0">The link only ever goes to the email address on your order, so no one else can use this.</p>
+  </div>
+
+  <div class="rule"></div>
+
+  <h1 style="font-size:23px">One thing that trips people up</h1>
+  <p>Your book lives in your online library — it opens right in your web browser. It isn't a file you save to your phone.</p>
+  <p>If you once tried to save it and it wouldn't open afterwards, that's why. Your phone saved the page, not the book. Nothing is wrong with your device.</p>
+  <p>Once your library opens on your phone, tap the <b>share button</b>, then <b>"Add to Home Screen."</b> It becomes an icon, just like an app — one tap, every time.</p>
+  <p>And if you'd rather keep your own copy, there's a <b>"Download the book (PDF)"</b> button waiting inside your library.</p>
+
+  <div class="rule"></div>
+
+  <p class="help">Still stuck? Email <a href="mailto:info@parentingadultchildrentoday.com">info@parentingadultchildrentoday.com</a> and a real person will get you reading today.</p>
+
+</div>
+
+<script>
+const API = 'https://pact-funnel-api.alex-f42.workers.dev';
+const em = document.getElementById('em'), go = document.getElementById('go'), msg = document.getElementById('msg');
+function show(kind, text){ msg.className = 'msg ' + kind; msg.textContent = text; }
+async function send(){
+  const email = em.value.trim();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    return show('bad', 'That doesn’t look like a complete email address — please check it and try again.');
+  }
+  go.disabled = true; go.textContent = 'Sending…'; msg.className = 'msg';
+  try {
+    const r = await fetch(API + '/relink', { method:'POST',
+      headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
+    const j = await r.json();
+    if (j.ok) {
+      show('ok', 'Done — your link is on its way to ' + email + '. It usually arrives within a minute or two. If you don’t see it, please check your spam or promotions folder.');
+      go.textContent = 'Sent ✓';
+      return;
+    }
+    if (j.reason === 'no-order') {
+      show('bad', 'We couldn’t find an order under that address. Many people buy with a different email than the one they check — try another, or email info@parentingadultchildrentoday.com and we’ll find it for you.');
+    } else {
+      show('bad', 'Something went wrong on our end. Please email info@parentingadultchildrentoday.com and we’ll send your link personally today.');
+    }
+  } catch (e) {
+    show('bad', 'We couldn’t reach our server just now. Please try once more, or email info@parentingadultchildrentoday.com.');
+  }
+  go.disabled = false; go.textContent = 'Email me my link';
+}
+go.addEventListener('click', send);
+em.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+</script>
+</body>
+</html>
