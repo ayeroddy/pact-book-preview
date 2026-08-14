@@ -258,6 +258,7 @@ function renderQuestion(q){
       answers[q.name] = [...step.querySelectorAll('input:checked')].map(i => i.value);
       step.querySelectorAll('.opt').forEach(o => o.classList.toggle('sel', o.querySelector('input').checked));
     } else {
+      if (!window.__q1) { window.__q1 = 1; try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','reconnect-q1')}catch(e){} }
       answers[q.name] = inp.value;
       pts[q.name] = q.opts.find(o => o[0] === inp.value)[2] || 0;
       step.querySelectorAll('.opt').forEach(o => o.classList.toggle('sel', o.querySelector('input').checked));
@@ -311,6 +312,7 @@ nextBtn.addEventListener('click', async () => {
     const r = await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     route = (await r.json()).route || 'main';
   } catch(e){}
+  try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','reconnect-sub')}catch(e){}
   try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
   try{
     gtag('set','user_data',{email, phone_number:phone});
