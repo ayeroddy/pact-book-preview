@@ -335,13 +335,17 @@ document.head.appendChild(s);
 <script>
   // Funnel-structure split test (Aug 12): A = classic OTO chain, B = 3-bump
   // compressed checkout -> straight to thank-you. Sticky 50/50; force ?arm=a|b.
+  // SPLIT CONCLUDED 2026-08-18: arm A won on revenue/visitor 4 straight days
+  // (B's CVR edge never overcame its AOV gap). 100% classic funnel; ?arm=b
+  // still forces B for testing. Mid-flight B buyers keep their B flow via
+  // their stored assignment being overwritten here intentionally — the OTO
+  // chain handles either arm safely.
   var WH_ARM = (function(){
     try {
       var f = new URLSearchParams(location.search).get('arm');
       if (f === 'a' || f === 'b') { localStorage.setItem('wh_arm', f); return f; }
-      var a = localStorage.getItem('wh_arm');
-      if (a !== 'a' && a !== 'b') { a = Math.random() < 0.5 ? 'a' : 'b'; localStorage.setItem('wh_arm', a); }
-      return a;
+      localStorage.setItem('wh_arm', 'a');
+      return 'a';
     } catch (e) { return 'a'; }
   })();
 </script>
