@@ -107,7 +107,7 @@ document.head.appendChild(s);
 
     <div class="kicker">One more step</div>
     <h1 style="font-size:clamp(28px,5vw,38px)">Find out which of the six patterns your family is in &mdash; this week.</h1>
-    <p style="font-size:19px;margin-top:10px">Complete your <strong>Estrangement Analysis</strong> below &mdash; six quick taps &mdash; and you&rsquo;ll be matched with one of <strong>Catherine&rsquo;s Senior Advisors of Family Development</strong> for your <strong>Relationship Clarity Call</strong>: 30 minutes, 1-on-1, the method applied to <em>your</em> child, <em>your</em> silence, <em>your</em> family.</p>
+    <p style="font-size:19px;margin-top:10px">Complete your <strong>Estrangement Analysis</strong> below &mdash; seven quick taps &mdash; and you&rsquo;ll be matched with one of <strong>Catherine&rsquo;s Senior Advisors of Family Development</strong> for your <strong>Relationship Clarity Call</strong>: 30 minutes, 1-on-1, the method applied to <em>your</em> child, <em>your</em> silence, <em>your</em> family.</p>
 
     <div style="background:#FFFDF6;border:2px solid var(--gold);border-radius:14px;padding:16px 20px;margin:0 0 18px">
       <p style="margin:0;font-size:17px"><strong>Catherine charges $497 for private diagnostic sessions like this.</strong> Because you purchased <em>Welcome Home</em> today, your session with her senior team is <strong style="color:var(--green)">complimentary</strong> &mdash; Catherine believes the diagnosis should never be the obstacle.</p>
@@ -123,7 +123,7 @@ document.head.appendChild(s);
 
     <!-- ─── inline application ─── -->
     <form class="card" id="appform" onsubmit="return submitApp(event)" style="border:2px solid var(--gold)">
-      <div class="steplbl">Your Estrangement Analysis &middot; step 1 of 2 &middot; six quick taps</div>
+      <div class="steplbl">Your Estrangement Analysis &middot; step 1 of 2 &middot; seven quick taps</div>
       <div class="prog"><span class="lbl" id="proglbl">Question 1 of 6</span><span class="bar"><i id="progbar" style="width:17%"></i></span></div>
       <span class="backlnk" id="backlnk">&larr; Back</span>
 
@@ -181,6 +181,15 @@ document.head.appendChild(s);
         </div>
       </div>
 
+      <div class="q" data-name="money"><label class="title">PACT families invest several thousand dollars to work directly with Catherine Hickem in helping them reconnect with their adult child, depending on the support they need. If the call confirms it&rsquo;s right for your family, which is true for you?</label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="money" value="can-invest" data-pts="3"> We can invest in the right solution — that's not the obstacle</label>
+          <label class="opt"><input type="radio" name="money" value="can-plan" data-pts="2"> We'd need to plan for it, but we could make it work</label>
+          <label class="opt"><input type="radio" name="money" value="payment-option" data-pts="1"> We'd need a payment option for it to be possible</label>
+          <label class="opt"><input type="radio" name="money" value="cant-invest" data-pts="0"> We can't invest anything right now — I'm here for the book</label>
+        </div>
+      </div>
+
       <div id="confirmstep">
       <!-- identity: auto-filled from the purchase; fields only appear if we can't -->
       <div class="whoami" id="whoami" style="display:none">Booking as <b id="who-name"></b> &middot; <span id="who-email"></span> <a href="#" id="who-edit" style="color:var(--indigo);font-weight:700">(not you?)</a></div>
@@ -218,6 +227,15 @@ document.head.appendChild(s);
           <p><a class="btn" id="library-btn2" href="members.html">📚 Open My Library &rarr;</a></p>
         </div>
       </details>
+    </div>
+
+    <!-- ─── book-only path: said they can't invest right now (no calendar) ─── -->
+    <div class="card" id="bookonly" hidden style="border:2px solid var(--gold);scroll-margin-top:14px">
+      <div class="steplbl">Your analysis is complete</div>
+      <h2 style="font-size:22px">Then the book is exactly where you should start, <span id="bo-name"></span>.</h2>
+      <p>Thank you for being straight with us — that honesty is the same thing this work asks of you with your child, and most people can&rsquo;t do it.</p>
+      <p>The Clarity Call is for families who are ready to work directly with Catherine&rsquo;s team, and there&rsquo;s no sense taking your time on a call about something you&rsquo;ve told us isn&rsquo;t possible right now. <strong>What you bought is not a preview of the real thing — it is the method.</strong> Parents have rebuilt these relationships with nothing but what&rsquo;s already in your library.</p>
+      <p style="margin:14px 0 0;font-size:15px;color:var(--muted)">If your situation changes, the door is open — just reply to any email from us and we&rsquo;ll set up your call.</p>
     </div>
 
     <!-- library card (hidden once they apply — the booked view has its own) -->
@@ -288,7 +306,7 @@ function val(n){ const el=document.querySelector(`input[name=${n}]:checked`); re
 function pts(n){ const el=document.querySelector(`input[name=${n}]:checked`); return el?Number(el.dataset.pts||0):0; }
 
 // ── one-question-at-a-time stepper ──
-const STEPS = ['relationship','duration','grandchildren','tried','together','readiness'];
+const STEPS = ['relationship','duration','grandchildren','tried','together','readiness','money'];
 let stepIdx = 0;
 function qEl(name){ return document.querySelector(`#appform .q[data-name="${name}"]`); }
 function showStep(i){
@@ -316,7 +334,7 @@ showStep(0);
 
 async function submitApp(e){
   e.preventDefault();
-  if (['relationship','duration','grandchildren','together','readiness'].some(n=>!val(n))){
+  if (['relationship','duration','grandchildren','together','readiness','money'].some(n=>!val(n))){
     document.getElementById('err').style.display='block'; return false;
   }
   const ident = IDENT || {
@@ -335,11 +353,15 @@ async function submitApp(e){
   const answers={
     relationship:val('relationship'), duration:val('duration'), readiness:val('readiness'),
     grandchildren:val('grandchildren')||'', together:val('together')||'',
+    money:val('money'),
     tried:[...document.querySelectorAll('input[name=tried]:checked')].map(c=>c.value),
   };
+  // "can't invest anything right now" = book-only. They keep everything they bought
+  // and stay in nurture, but they don't take a closer's calendar slot.
+  const qualified = val('money') !== 'cant-invest';
   const payload={ ...ident, src:'ty', answers,
-    score: pts('relationship')+pts('duration')+pts('grandchildren')+pts('together')+pts('readiness'),
-    severity: pts('relationship')+pts('duration')+pts('grandchildren'), qualified:true,
+    score: pts('relationship')+pts('duration')+pts('grandchildren')+pts('together')+pts('readiness')+pts('money'),
+    severity: pts('relationship')+pts('duration')+pts('grandchildren'), qualified,
     arm:(function(){try{const a=localStorage.getItem('wh_arm');return a==='a'||a==='b'?a:undefined}catch(e){return undefined}})(),
   };
   const btn=document.getElementById('subbtn'); btn.disabled=true; btn.textContent='One moment…';
@@ -348,9 +370,19 @@ async function submitApp(e){
     const r=await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     route=(await r.json()).route||'main';
   }catch(err){}
-  try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
   document.getElementById('appform').hidden=true;
-  document.getElementById('librarycard').hidden=true;
+
+  // Book-only: no calendar, no Lead event (it would teach Meta to find more of them).
+  // The library card is left alone — it stays at the bottom, under the survey.
+  if (!qualified) {
+    document.getElementById('bo-name').textContent=payload.first_name || 'friend';
+    document.getElementById('bookonly').hidden=false;
+    setTimeout(() => document.getElementById('bookonly').scrollIntoView({behavior:'smooth', block:'start'}), 60);
+    return false;
+  }
+
+  try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
+  document.getElementById('librarycard').hidden=true; // booked view carries its own
   document.getElementById('ap-name').textContent=payload.first_name || 'friend';
   const pre = new URLSearchParams({first_name:payload.first_name, last_name:payload.last_name||'',
     email:payload.email, phone:payload.phone||''}).toString();

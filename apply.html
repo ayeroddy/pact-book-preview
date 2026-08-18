@@ -150,6 +150,15 @@ document.head.appendChild(s);
       </div>
     </div>
 
+    <div class="q" data-name="money"><label class="title">PACT families invest several thousand dollars to work directly with Catherine Hickem in helping them reconnect with their adult child, depending on the support they need. If the call confirms it&rsquo;s right for your family, which is true for you?</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="money" value="can-invest" data-pts="3"> We can invest in the right solution — that's not the obstacle</label>
+        <label class="opt"><input type="radio" name="money" value="can-plan" data-pts="2"> We'd need to plan for it, but we could make it work</label>
+        <label class="opt"><input type="radio" name="money" value="payment-option" data-pts="1"> We'd need a payment option for it to be possible</label>
+        <label class="opt"><input type="radio" name="money" value="cant-invest" data-pts="0"> We can't invest anything right now — I'm here for the book</label>
+      </div>
+    </div>
+
     <div class="q"><label class="title">Where should we send your call confirmation?</label>
       <div class="row2">
         <input type="text" id="fname" placeholder="First name" required>
@@ -194,6 +203,16 @@ document.head.appendChild(s);
   })();
   </script>
 </div>
+
+  <!-- ─── book-only path: said they can't invest right now (no calendar) ─── -->
+  <div class="card" id="bookonly" hidden style="scroll-margin-top:14px">
+    <div class="result">
+      <h2>Then the book is exactly where you should start, <span id="bo-name"></span>.</h2>
+      <p>Thank you for being straight with us — that honesty is the same thing this work asks of you with your child, and most people can't do it.</p>
+      <p>The Clarity Call is for families who are ready to work directly with Catherine's team, and there's no sense taking your time on a call about something you've told us isn't possible right now. <b>What you have is not a preview of the real thing — it is the method.</b> Parents have rebuilt these relationships with nothing but what's already in your library.</p>
+      <p style="font-size:15px;color:#6f6884">If your situation changes, the door is open — just reply to any email from us and we'll set up your call.</p>
+    </div>
+  </div>
 
   <!-- ─── calendar + post-booking intel ─── -->
   <div class="card" id="approved" hidden style="scroll-margin-top:14px">
@@ -273,23 +292,24 @@ function buildPayload(){
   const answers={
     relationship:val('relationship'), duration:val('duration'), readiness:val('readiness'),
     grandchildren:val('grandchildren')||'', together:val('together')||'',
+    money:val('money'),
     tried:[...document.querySelectorAll('input[name=tried]:checked')].map(c=>c.value),
   };
-  const score = pts('relationship')+pts('duration')+pts('grandchildren')+pts('together')+pts('readiness');
+  const score = pts('relationship')+pts('duration')+pts('grandchildren')+pts('together')+pts('readiness')+pts('money');
   const severity = pts('relationship')+pts('duration')+pts('grandchildren');
   return {
     first_name:document.getElementById('fname').value.trim(),
     last_name:document.getElementById('lname').value.trim(),
     email:document.getElementById('email').value.trim(),
     phone:document.getElementById('phone').value.trim(),
-    src:SRC, answers, score, severity, qualified:true,
+    src:SRC, answers, score, severity, qualified: val('money') !== 'cant-invest',
     arm:(function(){try{const a=localStorage.getItem('wh_arm');return a==='a'||a==='b'?a:undefined}catch(e){return undefined}})(),
   };
 }
 
 async function submitApp(e){
   e.preventDefault();
-  if (['relationship','duration','grandchildren','together','readiness'].some(n=>!val(n))){
+  if (['relationship','duration','grandchildren','together','readiness','money'].some(n=>!val(n))){
     document.getElementById('err').style.display='block'; return false;
   }
   document.getElementById('err').style.display='none';
@@ -302,13 +322,23 @@ async function submitApp(e){
     const r=await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     route=(await r.json()).route||'main';
   }catch(err){}
+  document.getElementById('appform').hidden=true;
+  var avs=document.getElementById('avslsection'); if(avs) avs.hidden=true;
+
+  // Book-only: no calendar, and no Lead/conversion events — firing them would teach
+  // Meta and Google to go find more people who can't invest.
+  if (!payload.qualified) {
+    document.getElementById('bo-name').textContent=payload.first_name || 'friend';
+    document.getElementById('bookonly').hidden=false;
+    setTimeout(() => document.getElementById('bookonly').scrollIntoView({behavior:'smooth', block:'start'}), 60);
+    return false;
+  }
+
   try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
   try{
     gtag('set','user_data',{email:payload.email,phone_number:payload.phone});
     gtag('event','conversion',{'send_to':'AW-18385634480/KAjGCJfLwOAcELCJ-r5E'});
   }catch(e){}
-  document.getElementById('appform').hidden=true;
-  var avs=document.getElementById('avslsection'); if(avs) avs.hidden=true;
   document.getElementById('ap-name').textContent=payload.first_name;
   // Sticky contact: pass the applicant through to the GHL widget so the
   // booking form arrives prefilled — they only pick a time and confirm.
