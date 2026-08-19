@@ -81,6 +81,18 @@
            box-shadow:0 10px 30px rgba(26,26,110,.28);transition:transform .15s ease}
   .herocta:hover{transform:translateY(-2px)}
   .herocta small{display:block;font-size:13px;font-weight:700;color:#6a6410;letter-spacing:.02em;text-transform:none}
+  /* ---- ARM B: application first ----
+     The VSL is not the qualifier (the survey is), so in this arm it moves out of the way
+     of the action and is served at the booking step, where a committed viewer actually
+     watches it and it does its real job: pre-call framing. */
+  html[data-arm="b"] .vsl-wrap{display:none}
+  html[data-arm="b"] #instr p .arm-a-copy{display:none}
+  .arm-b-copy{display:none}
+  html[data-arm="b"] .arm-b-copy{display:inline}
+  html[data-arm="b"] .arm-a-copy{display:none}
+  .prevideo{margin:22px 0 6px;text-align:center}
+  .prevideo h3{font-size:19px;color:var(--navy);font-weight:900;margin-bottom:4px}
+  .prevideo p{font-size:15px;color:var(--soft)}
   @media (max-width:580px){
     .callout p{font-size:13px;line-height:1.45}
     h1{font-size:29px}
@@ -162,7 +174,7 @@ document.head.appendChild(s);
 </script>
 
 <div class="instruction" id="instr">
-  <p>Answer a few quick questions below and pick a time for your <strong>free Relationship Clarity Call</strong> &mdash; about 60 seconds.</p>
+  <p><span class="arm-a-copy">Answer a few quick questions below and pick a time for your <strong>free Relationship Clarity Call</strong> &mdash; about 60 seconds.</span><span class="arm-b-copy">Answer 7 quick questions and pick a time for your <strong>free Relationship Clarity Call</strong> &mdash; about 60 seconds. Catherine's training is waiting for you on the next step.</span></p>
 </div>
 
 <div class="survey-wrap" id="surveyWrap">
@@ -284,6 +296,7 @@ function renderQuestion(q){
       step.querySelectorAll('.opt').forEach(o => o.classList.toggle('sel', o.querySelector('input').checked));
     } else {
       if (!window.__q1) { window.__q1 = 1; try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','reconnect-q1')}catch(e){}
+        try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','reconnect-q1'+(window.ARM||'a'))}catch(e){}
         var hc=document.getElementById('heroCta'); if(hc) hc.style.display='none'; }
       answers[q.name] = inp.value;
       pts[q.name] = q.opts.find(o => o[0] === inp.value)[2] || 0;
@@ -335,7 +348,7 @@ nextBtn.addEventListener('click', async () => {
     answers:{ relationship:answers.relationship, duration:answers.duration, readiness:answers.readiness,
       grandchildren:answers.grandchildren||'', together:answers.together||'', tried:answers.tried||[],
       money:answers.money },
-    score, severity, qualified,
+    score, severity, qualified, arm: window.ARM || 'a',
     gclid:CLICK.gclid||'', gbraid:CLICK.gbraid||'', wbraid:CLICK.wbraid||'' };
   let route = 'main';
   try {
@@ -366,6 +379,19 @@ nextBtn.addEventListener('click', async () => {
   document.getElementById('survey').hidden = true;
   document.getElementById('instr').hidden = true;
   document.getElementById('booked').hidden = false;
+  if ((window.ARM||'a') === 'b') {
+    // Move the real video node (keeps its click-for-sound handler intact) under the calendar.
+    var vw = document.querySelector('.vsl-wrap');
+    if (vw && !document.getElementById('prevideo')) {
+      var lead = document.createElement('div');
+      lead.className = 'prevideo'; lead.id = 'prevideo';
+      lead.innerHTML = '<h3>While you pick your time &mdash; watch this first</h3>' +
+        '<p>Catherine explains the 7 Shifts so you walk into your call already ahead.</p>';
+      document.getElementById('booked').appendChild(lead);
+      document.getElementById('booked').appendChild(vw);
+      vw.style.display = 'block';
+    }
+  }
   document.getElementById('booked').scrollIntoView({behavior:'smooth', block:'start'});
 });
 
@@ -384,6 +410,17 @@ render();
   });
 })();
 </script>
-<script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','reconnect-g')}catch(e){}</script>
+<script>
+// A/B: 'a' = VSL first (control), 'b' = application first, VSL served at the booking step.
+// Sticky per visitor so a reload cannot flip the experience mid-funnel.
+(function(){
+  var A;
+  try{A=localStorage.getItem('pact_arm');}catch(e){}
+  if(A!=='a'&&A!=='b'){A=Math.random()<0.5?'a':'b'; try{localStorage.setItem('pact_arm',A);}catch(e){}}
+  window.ARM=A; document.documentElement.setAttribute('data-arm',A);
+  try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','reconnect-g')}catch(e){}
+  try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','reconnect-g'+A)}catch(e){}
+})();
+</script>
 </body>
 </html>
