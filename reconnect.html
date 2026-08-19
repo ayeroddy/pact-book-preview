@@ -90,9 +90,15 @@
   .arm-b-copy{display:none}
   html[data-arm="b"] .arm-b-copy{display:inline}
   html[data-arm="b"] .arm-a-copy{display:none}
-  .prevideo{margin:22px 0 6px;text-align:center}
-  .prevideo h3{font-size:19px;color:var(--navy);font-weight:900;margin-bottom:4px}
-  .prevideo p{font-size:15px;color:var(--soft)}
+  /* post-booking "next step" reveal (arm b) */
+  .nextstep{margin:26px 0 4px;text-align:center;padding-top:24px;border-top:2px dashed #e8e5f4}
+  .nextstep .kicker{display:inline-block;background:var(--cyan);color:#fff;font-size:12px;font-weight:900;
+                    letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:12px}
+  .nextstep h3{font-size:clamp(20px,2.6vw,25px);color:var(--navy);font-weight:900;line-height:1.25;margin-bottom:8px}
+  .nextstep p{font-size:16px;color:var(--soft);line-height:1.55;max-width:520px;margin:0 auto 6px}
+  .nextstep p strong{color:var(--ink)}
+  .bookedyet{display:block;margin:16px auto 0;background:none;border:none;color:var(--cyan);
+             font-family:var(--sans);font-size:15px;font-weight:800;text-decoration:underline;cursor:pointer}
   @media (max-width:580px){
     .callout p{font-size:13px;line-height:1.45}
     h1{font-size:29px}
@@ -380,16 +386,42 @@ nextBtn.addEventListener('click', async () => {
   document.getElementById('instr').hidden = true;
   document.getElementById('booked').hidden = false;
   if ((window.ARM||'a') === 'b') {
-    // Move the real video node (keeps its click-for-sound handler intact) under the calendar.
-    var vw = document.querySelector('.vsl-wrap');
-    if (vw && !document.getElementById('prevideo')) {
-      var lead = document.createElement('div');
-      lead.className = 'prevideo'; lead.id = 'prevideo';
-      lead.innerHTML = '<h3>While you pick your time &mdash; watch this first</h3>' +
-        '<p>Catherine explains the 7 Shifts so you walk into your call already ahead.</p>';
-      document.getElementById('booked').appendChild(lead);
-      document.getElementById('booked').appendChild(vw);
-      vw.style.display = 'block';
+    // The VSL is the REWARD for booking, not competition for it. It stays hidden until the
+    // call is actually on the calendar, then arrives as the next step — which is also when
+    // someone will genuinely watch 13 minutes.
+    var revealed = false;
+    function revealNextStep(){
+      if (revealed) return; revealed = true;
+      var vw = document.querySelector('.vsl-wrap');
+      var yet = document.getElementById('bookedYet'); if (yet) yet.remove();
+      var box = document.createElement('div');
+      box.className = 'nextstep'; box.id = 'nextstep';
+      box.innerHTML =
+        '<span class="kicker">Next step</span>' +
+        '<h3>Your call is booked. Now watch this before you get on it.</h3>' +
+        '<p>Catherine walks you through <strong>the 7 Shifts that reopen the door</strong> &mdash; ' +
+        'why your child pulled away, what has quietly been keeping the distance in place, and ' +
+        'the first shift that starts closing it.</p>' +
+        '<p>Parents who watch this first walk into their call already ahead.</p>';
+      document.getElementById('booked').appendChild(box);
+      if (vw) { document.getElementById('booked').appendChild(vw); vw.style.display = 'block'; }
+      try{navigator.sendBeacon(API+'/pv','reconnect-nxt')}catch(e){}
+      box.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    // GHL's booking widget posts to the parent when the appointment is confirmed. The event
+    // shape is not contractual, so match loosely on the LeadConnector origin, and always give
+    // a manual way through in case the message never arrives.
+    window.addEventListener('message', function(ev){
+      if (!/leadconnectorhq|gohighlevel/i.test(ev.origin || '')) return;
+      var blob = ''; try{ blob = typeof ev.data === 'string' ? ev.data : JSON.stringify(ev.data||''); }catch(e){}
+      if (/book|appoint|schedul|success|confirm/i.test(blob)) revealNextStep();
+    });
+    if (!document.getElementById('bookedYet')) {
+      var yet = document.createElement('button');
+      yet.type = 'button'; yet.id = 'bookedYet'; yet.className = 'bookedyet';
+      yet.textContent = 'Picked your time? Tap here for your next step \u2192';
+      yet.addEventListener('click', revealNextStep);
+      document.getElementById('booked').appendChild(yet);
     }
   }
   document.getElementById('booked').scrollIntoView({behavior:'smooth', block:'start'});
