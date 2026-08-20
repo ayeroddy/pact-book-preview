@@ -5,17 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order Complete — One More Step</title>
 <script>
-/* TY-frame split test (launched 2026-08-20): A = this classic frame, B = pattern-reveal
-   frame (thank-you-b.html). Sticky 50/50 via localStorage wh_tyarm; force with ?tyarm=a|b.
-   Orthogonal to the CONCLUDED checkout-structure split (wh_arm — do not reuse).
-   MUST stay the first script in <head>: redirecting before the pixel loads keeps the
-   Purchase event firing exactly once, on whichever variant the buyer lands on. */
+/* TY-frame split (variant B — pattern-reveal frame). Sticky via wh_tyarm; ?tyarm=a
+   forces back to classic. Orthogonal to the concluded checkout arm (wh_arm). */
 (function(){try{
   var f = new URLSearchParams(location.search).get('tyarm');
-  var v = (f === 'a' || f === 'b') ? f : localStorage.getItem('wh_tyarm');
-  if (v !== 'a' && v !== 'b') v = Math.random() < 0.5 ? 'a' : 'b';
-  localStorage.setItem('wh_tyarm', v);
-  if (v === 'b') { location.replace('thank-you-b.html' + location.search); return; }
+  if (f === 'a') { localStorage.setItem('wh_tyarm','a'); location.replace('thank-you.html' + location.search); return; }
+  localStorage.setItem('wh_tyarm','b');
 }catch(e){}})();
 </script>
 <style>
@@ -120,20 +115,20 @@ document.head.appendChild(s);
     <p style="background:#FFFDF6;border:1px dashed var(--gold);border-radius:10px;padding:10px 16px;font-size:14.5px;margin-bottom:6px"><b>📬</b> Your permanent library link is in your email now. Not there in 2 minutes? <b>Check spam or promotions</b> and drag it to your inbox.</p>
 
     <div class="kicker">One more step</div>
-    <h1 style="font-size:clamp(28px,5vw,38px)">Find out which of the six patterns your family is in &mdash; this week.</h1>
-    <p style="font-size:19px;margin-top:10px">Complete your <strong>Estrangement Analysis</strong> below &mdash; seven quick taps &mdash; and you&rsquo;ll be matched with one of <strong>Catherine&rsquo;s Senior Advisors of Family Development</strong> for your <strong>Relationship Clarity Call</strong>: 30 minutes, 1-on-1, the method applied to <em>your</em> child, <em>your</em> silence, <em>your</em> family.</p>
+    <h1 style="font-size:clamp(28px,5vw,38px)">Find out which of the six patterns your family is in &mdash; right now.</h1>
+    <p style="font-size:19px;margin-top:10px">Complete your <strong>Estrangement Analysis</strong> below &mdash; seven quick taps &mdash; and <strong>your family&rsquo;s pattern appears on this page the moment you finish</strong>, with your full written Analysis in your inbox minutes later. Then choose a time for your <strong>Relationship Clarity Call</strong>: 30 minutes, 1-on-1 with one of <strong>Catherine&rsquo;s Senior Advisors of Family Development</strong>, to see whether working with Catherine&rsquo;s team is the right fit for <em>your</em> child, <em>your</em> silence, <em>your</em> family.</p>
 
     <div style="background:#FFFDF6;border:2px solid var(--gold);border-radius:14px;padding:16px 20px;margin:0 0 18px">
-      <p style="margin:0;font-size:17px"><strong>Catherine charges $497 for private diagnostic sessions like this.</strong> Because you purchased <em>Welcome Home</em> today, your session with her senior team is <strong style="color:var(--green)">complimentary</strong> &mdash; Catherine believes the diagnosis should never be the obstacle.</p>
+      <p style="margin:0;font-size:17px"><strong>Catherine charges $497 for private consultations like this.</strong> Because you purchased <em>Welcome Home</em> today, your session with her senior team is <strong style="color:var(--green)">complimentary</strong> &mdash; Catherine believes the first conversation should never be the obstacle.</p>
     </div>
 
     <ul class="bullets">
-      <li><strong>Your pattern, diagnosed</strong> &mdash; the same six-pattern framework as your Estrangement Decoder, done <em>with</em> you instead of alone.</li>
-      <li><strong>A clear plan either way</strong> &mdash; whether or not you ever join anything. No pressure, no pitch-ambush, no countdown.</li>
+      <li><strong>Your pattern, revealed instantly</strong> &mdash; which of the six patterns from your Estrangement Decoder your family is in, on this page the moment you finish &mdash; plus your full written Analysis in your inbox within minutes.</li>
+      <li><strong>A call to see if it&rsquo;s a fit</strong> &mdash; your Senior Advisor comes prepared with your Analysis, and together you decide whether Catherine&rsquo;s mentorship &mdash; where her team helps you navigate your pattern &mdash; is right for your family. Openly, no pressure, no countdown.</li>
       <li><strong>No judgment &mdash; truly.</strong> Catherine spent 40 years in this work and was once the estranged child in her own family. Nothing about your story will shock this team, and nobody here thinks it&rsquo;s your fault.</li>
     </ul>
 
-    <p style="font-size:16.5px;margin-bottom:6px"><strong>If the silence is measured in years, not months &mdash; this call is especially for you.</strong> And the method is honest about time: silence hardens the longer it stands. The earlier your pattern is diagnosed, the more options your family has.</p>
+    <p style="font-size:16.5px;margin-bottom:6px"><strong>If the silence is measured in years, not months &mdash; this call is especially for you.</strong> The method is honest about time: silence hardens the longer it stands, and you can feel it getting heavier season by season. The earlier your pattern is diagnosed, the more options your family has.</p>
 
     <!-- ─── inline application ─── -->
     <form class="card" id="appform" onsubmit="return submitApp(event)" style="border:2px solid var(--gold)">
@@ -218,7 +213,7 @@ document.head.appendChild(s);
         </div>
       </div>
 
-      <button class="bigcta" id="subbtn" type="submit">Complete My Analysis &amp; Get Matched &rarr;</button>
+      <button class="bigcta" id="subbtn" type="submit">See My Family&rsquo;s Pattern &rarr;</button>
       <div class="err" id="err">Please answer every question above so we can match you with the right advisor.</div>
       <p class="quiet" style="margin-top:8px">A few call times are open this week &middot; 30 minutes on Zoom &middot; spouse warmly welcome &middot; nothing to prepare</p>
       </div>
@@ -226,9 +221,18 @@ document.head.appendChild(s);
 
     <!-- ─── calendar + booked view (revealed after submit) ─── -->
     <div class="card" id="approved" hidden style="border:2px solid var(--gold);scroll-margin-top:14px">
-      <div class="steplbl">Step 2 of 2 &middot; choose your time</div>
+      <div class="steplbl">Your pattern &middot; step 2 of 2: choose your time</div>
+      <div id="reveal-main"></div>
       <h2 style="font-size:22px">You&rsquo;re matched, <span id="ap-name"></span> &mdash; pick your time.</h2>
       <p>Your Estrangement Analysis is on its way to your Senior Advisor so they can prepare for your family&rsquo;s specific situation. Choose the time that works for you &mdash; your spouse is warmly welcome to join:</p>
+      <div style="background:#faf7f1;border:1.5px solid #e0d9cb;border-radius:12px;padding:14px 18px;margin:0 0 14px;font-size:15.5px">
+        <strong style="color:var(--indigo)">Your full written Analysis is on its way to your inbox now.</strong> Here&rsquo;s what your call is:
+        <ol style="margin:8px 0 0 20px;padding:0">
+          <li style="margin-bottom:6px">Your advisor hears <strong>your family&rsquo;s specific situation</strong> &mdash; they&rsquo;ll already have your Analysis in hand.</li>
+          <li style="margin-bottom:6px">Together you look at <strong>what turning this around would take</strong>, and what your first safe step is.</li>
+          <li>You decide whether <strong>Catherine&rsquo;s mentorship is the right fit for your family</strong> &mdash; the deeper pattern work happens there, with her team beside you. Come with your questions.</li>
+        </ol>
+      </div>
       <iframe class="calframe" id="calframe" src="about:blank" loading="lazy"></iframe>
 
       <details id="precallbox" style="margin-top:22px;border:1.5px solid #e0d9cb;border-radius:12px;background:#fff;padding:0;scroll-margin-top:14px">
@@ -236,6 +240,10 @@ document.head.appendChild(s);
         <div style="padding:4px 18px 18px">
           <p>Catherine&rsquo;s class on the one behavior to stop tonight &mdash; and what to do with that energy instead. The best nine minutes you can spend before we talk.</p>
           <video controls playsinline preload="metadata" src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/vb1.mp4?v=2" style="width:100%;border-radius:12px;display:block;background:#241c3a"></video>
+          <div style="background:#faf7f1;border-radius:10px;padding:12px 16px;margin:16px 0 0;font-size:15px">
+            <strong style="color:var(--indigo)">Before your call:</strong>
+            <span style="display:block;margin-top:6px">1&#65039;&#8419; Read your <strong>written Analysis</strong> when it lands in your inbox (minutes from now). &nbsp;2&#65039;&#8419; Watch the 9-minute class above. &nbsp;3&#65039;&#8419; Jot down the questions you want to ask about working with Catherine&rsquo;s team.</span>
+          </div>
           <h3 style="margin:22px 0 8px">And while you wait &mdash; your library is open.</h3>
           <p>Everything you bought is already unlocked. Your advisor may reference the Estrangement Decoder on your call &mdash; it&rsquo;s the perfect place to start.</p>
           <p><a class="btn" id="library-btn2" href="members.html">📚 Open My Library &rarr;</a></p>
@@ -246,6 +254,7 @@ document.head.appendChild(s);
     <!-- ─── book-only path: said they can't invest right now (no calendar) ─── -->
     <div class="card" id="bookonly" hidden style="border:2px solid var(--gold);scroll-margin-top:14px">
       <div class="steplbl">Your analysis is complete</div>
+      <div id="reveal-bookonly"></div>
       <h2 style="font-size:22px">Then the book is exactly where you should start, <span id="bo-name"></span>.</h2>
       <p>Thank you for being straight with us — that honesty is the same thing this work asks of you with your child, and most people can&rsquo;t do it.</p>
       <p>The Clarity Call is for families who are ready to work directly with Catherine&rsquo;s team, and there&rsquo;s no sense taking your time on a call about something you&rsquo;ve told us isn&rsquo;t possible right now. <strong>What you bought is not a preview of the real thing — it is the method.</strong> Parents have rebuilt these relationships with nothing but what&rsquo;s already in your library.</p>
@@ -319,6 +328,34 @@ document.addEventListener('change', e => {
 function val(n){ const el=document.querySelector(`input[name=${n}]:checked`); return el?el.value:null; }
 function pts(n){ const el=document.querySelector(`input[name=${n}]:checked`); return el?Number(el.dataset.pts||0):0; }
 
+// ── instant pattern reveal — MUST mirror the PATTERNS table in worker.js /apply
+// (the written Analysis email), so the page and the email never disagree.
+const PATTERNS = {
+  "silence-long": ["The Standoff", "both sides holding a position neither can leave without help — it often looks harder than it is",
+                   "The Shielded Door", "the silence is being held in place by someone or something on their side of the door"],
+  "silence-short": ["The Slow Fade", "distance that grew quietly, without one defining rupture — the pattern that punishes pursuit hardest",
+                   "The Rupture", "a break that traces back to one moment or one conversation, still unresolved"],
+  "cold": ["The Slow Fade", "distance that grows quietly — shorter replies, longer gaps, nothing announced",
+           "The Rewrite", "your child is retelling the family story to themselves, and the coldness protects the new version"],
+  "tense": ["The Rewrite", "the story of what happened is being rewritten on their side, and every conversation risks touching it",
+            "The Rupture", "an unresolved break that keeps the ground fragile under every exchange"],
+  "gatekeeper": ["The Shielded Door", "someone on their side of the door is holding it closed — and pushing past a gatekeeper locks it harder",
+                 "The New Household", "your child's new family system has its own rules, and the old family is renegotiating its place"],
+};
+function renderReveal(targetId, answers){
+  const rel = answers.relationship === "gatekeeper" ? "gatekeeper"
+    : answers.relationship === "silence" ? (["1-3y","3y+"].includes(answers.duration) ? "silence-long" : "silence-short")
+    : answers.relationship === "cold" ? "cold" : "tense";
+  const [p1, d1, p2, d2] = PATTERNS[rel] || PATTERNS["tense"];
+  document.getElementById(targetId).innerHTML =
+    `<div style="background:linear-gradient(135deg,#2a1259,#381876);border-radius:14px;padding:22px 24px;margin:0 0 18px;text-align:center">
+       <div style="color:#C9A227;font-size:12.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px">Your family's primary pattern</div>
+       <div style="font-family:Georgia,serif;color:#faf7f1;font-size:clamp(26px,5vw,34px);font-weight:700">${p1}</div>
+       <p style="color:#d9d3ea;font-size:15.5px;margin:10px 0 0;line-height:1.55">${d1[0].toUpperCase() + d1.slice(1)}.</p>
+       <p style="color:#b7aed6;font-size:14px;margin:12px 0 0;line-height:1.5">with traits of <b style="color:#d9d3ea">${p2}</b> &mdash; ${d2}.</p>
+     </div>`;
+}
+
 // ── one-question-at-a-time stepper ──
 const STEPS = ['relationship','duration','grandchildren','tried','together','readiness','money'];
 let stepIdx = 0;
@@ -373,7 +410,7 @@ async function submitApp(e){
   // "can't invest anything right now" = book-only. They keep everything they bought
   // and stay in nurture, but they don't take a closer's calendar slot.
   const qualified = val('money') !== 'cant-invest';
-  const payload={ ...ident, src:'ty', tyarm:'a', answers,
+  const payload={ ...ident, src:'ty', tyarm:'b', answers,
     score: pts('relationship')+pts('duration')+pts('grandchildren')+pts('together')+pts('readiness')+pts('money'),
     severity: pts('relationship')+pts('duration')+pts('grandchildren'), qualified,
     arm:(function(){try{const a=localStorage.getItem('wh_arm');return a==='a'||a==='b'?a:undefined}catch(e){return undefined}})(),
@@ -390,6 +427,7 @@ async function submitApp(e){
   // The library card is left alone — it stays at the bottom, under the survey.
   if (!qualified) {
     document.getElementById('bo-name').textContent=payload.first_name || 'friend';
+    renderReveal('reveal-bookonly', answers);
     document.getElementById('bookonly').hidden=false;
     setTimeout(() => document.getElementById('bookonly').scrollIntoView({behavior:'smooth', block:'start'}), 60);
     return false;
@@ -398,6 +436,7 @@ async function submitApp(e){
   try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
   document.getElementById('librarycard').hidden=true; // booked view carries its own
   document.getElementById('ap-name').textContent=payload.first_name || 'friend';
+  renderReveal('reveal-main', answers);
   const pre = new URLSearchParams({first_name:payload.first_name, last_name:payload.last_name||'',
     email:payload.email, phone:payload.phone||''}).toString();
   document.getElementById('calframe').src=(route==='priority'?CAL_PRIORITY:CAL)+'?'+pre;
@@ -427,6 +466,6 @@ async function submitApp(e){
 }
 </script>
 
-<script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','ty')}catch(e){}</script>
+<script>try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','ty');navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','tyb')}catch(e){}</script>
 </body>
 </html>
