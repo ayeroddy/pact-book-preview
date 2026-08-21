@@ -223,8 +223,16 @@ document.head.appendChild(s);
 
 <script>
 const API = 'https://pact-funnel-api.alex-f42.workers.dev';
-const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
-const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
+// ALL Google funnel traffic books the GREEN "[G]" calendar (Alex 2026-08-21) so Google
+// calls are visible at a glance in GHL — attribution reporting could not be trusted, a
+// colour on the calendar can. [G] is a field-for-field clone of the main RCC drawing on
+// the SAME 11 closers' hours, so this adds visibility without fragmenting capacity.
+// Both constants point at it on purpose: P1 applicants keep their p1-priority TAG (so the
+// routing data is preserved and this is one line to revert) but book the same green
+// calendar for now. The priority closers are all in [G]'s round-robin pool anyway.
+const CAL_G = 'https://api.leadconnectorhq.com/widget/booking/NWv02XiQtQDrqvCE3LoE';
+const CAL = CAL_G;
+const CAL_PRIORITY = CAL_G;
 const SRC = new URLSearchParams(location.search).get('src') || 'gads-vsl';
 // Capture Google click ids for the server-side booked-call conversion (survives revisits)
 const QS = new URLSearchParams(location.search);
