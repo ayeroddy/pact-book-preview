@@ -235,7 +235,6 @@ const API = 'https://pact-funnel-api.alex-f42.workers.dev';
 const CAL_G = 'https://api.leadconnectorhq.com/widget/booking/NWv02XiQtQDrqvCE3LoE';
 const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
 const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
-const SRC = new URLSearchParams(location.search).get('src') || 'gads-vsl';
 // Capture Google click ids for the server-side booked-call conversion (survives revisits)
 const QS = new URLSearchParams(location.search);
 let CLICK = {};
@@ -244,6 +243,16 @@ try {
   if (fresh.gclid || fresh.gbraid || fresh.wbraid) localStorage.setItem('pact_gads_click', JSON.stringify(fresh));
   CLICK = JSON.parse(localStorage.getItem('pact_gads_click') || '{}');
 } catch(e){}
+// Source tag. This page is BOTH the Google VSL landing page AND the destination of the
+// house email campaigns, so it must never brand traffic by the page it happens to be.
+// Defaulting to 'gads-vsl' is what tagged every email clicker as Google: on 2026-08-22,
+// 77 people wore app-src-gads-vsl while only 21 had a real click id. Two of the four
+// bookings on the green [G] calendar came from the Aug 20/21 campaign, not from an ad.
+// Order: explicit ?src= wins -> campaign links carry ?el= -> a real Google click id ->
+// otherwise direct. ONLY a stored click id may ever produce 'gads-vsl'.
+const SRC = (QS.get('src') || '').slice(0, 20)
+  || (QS.get('el') ? ('email-' + QS.get('el').replace(/[^A-Za-z0-9]/g, '').replace(/^email/i, '').slice(0, 14)) : '')
+  || ((CLICK.gclid || CLICK.gbraid || CLICK.wbraid) ? 'gads-vsl' : 'direct');
 
 const QUESTIONS = [
   { name:'relationship', title:'How would you describe your relationship with your adult child right now?', type:'radio',
