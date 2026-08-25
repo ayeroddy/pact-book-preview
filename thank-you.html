@@ -5,15 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order Complete — One More Step</title>
 <script>
-/* TY-frame split test (launched 2026-08-20): A = this classic frame, B = pattern-reveal
-   frame (thank-you-b.html). Sticky 50/50 via localStorage wh_tyarm; force with ?tyarm=a|b.
-   Orthogonal to the CONCLUDED checkout-structure split (wh_arm — do not reuse).
+/* TY-frame SPLIT CONCLUDED 2026-08-25: 100% variant B (thank-you-b.html).
+   Over 5 days on even traffic, B produced 3x the applications (15 vs 5), 2.5x the
+   qualified applicants and 4x the bookings (4 vs 1) — the instant pattern reveal
+   pulls buyers THROUGH the quiz instead of satisfying the curiosity that drove it.
+   This classic frame is kept only as the ?tyarm=a escape hatch / rollback target.
+   Stored wh_tyarm is deliberately ignored so prior A-assigned buyers move to B too.
    MUST stay the first script in <head>: redirecting before the pixel loads keeps the
    Purchase event firing exactly once, on whichever variant the buyer lands on. */
 (function(){try{
-  var f = new URLSearchParams(location.search).get('tyarm');
-  var v = (f === 'a' || f === 'b') ? f : localStorage.getItem('wh_tyarm');
-  if (v !== 'a' && v !== 'b') v = Math.random() < 0.5 ? 'a' : 'b';
+  var v = new URLSearchParams(location.search).get('tyarm') === 'a' ? 'a' : 'b';
   localStorage.setItem('wh_tyarm', v);
   if (v === 'b') { location.replace('thank-you-b.html' + location.search); return; }
 }catch(e){}})();
