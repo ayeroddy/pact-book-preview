@@ -419,13 +419,15 @@ nextBtn.addEventListener('click', async () => {
   document.getElementById('survey').hidden = true;
   document.getElementById('instr').hidden = true;
   document.getElementById('booked').hidden = false;
-  // Post-booking next step, BOTH arms: the 3-minute pre-call cut (six parents' testimonials +
-  // "before your call, have handy"). Same video the closers run in the Zoom waiting room, so the
-  // A/B stays purely "VSL above the form or not" and everyone gets the same show-rate nudge.
+  // Post-booking next step, BOTH arms: Catherine's post-booking video, then the 3-minute
+  // pre-call testimonials cut. GATED ON A REAL BOOKING — Alex 2026-10-03: "make sure it makes
+  // them book the call before showing the TY page videos and testimonials." The truth lives
+  // server-side: the worker's /booked?e= checks GHL for a non-cancelled appointment on this
+  // email. There is deliberately NO manual "tap here" bypass on this page.
   var revealed = false;
   function revealNextStep(){
     if (revealed) return; revealed = true;
-    var yet = document.getElementById('bookedYet'); if (yet) yet.remove();
+    var wait = document.getElementById('bookedWait'); if (wait) wait.remove();
     var box = document.createElement('div');
     box.className = 'nextstep'; box.id = 'nextstep';
     box.innerHTML =
@@ -447,20 +449,30 @@ nextBtn.addEventListener('click', async () => {
     try{navigator.sendBeacon(API+'/pv','email-nxt')}catch(e){}
     box.scrollIntoView({behavior:'smooth', block:'start'});
   }
-  // GHL's booking widget posts to the parent when the appointment is confirmed. The event
-  // shape is not contractual, so match loosely on the LeadConnector origin, and always give
-  // a manual way through in case the message never arrives.
+  // Poll the worker until GHL shows the appointment. Every 5s for up to 15 minutes; a
+  // message from the booking widget just triggers an immediate check — it never reveals
+  // on its own, because the widget's message shape is not contractual.
+  var polls = 0, polling = false;
+  async function checkBooked(){
+    if (revealed || polling) return; polling = true;
+    try {
+      var r = await fetch(API + '/booked?e=' + encodeURIComponent(email), {cache:'no-store'});
+      var j = await r.json();
+      if (j && j.booked) revealNextStep();
+    } catch(e){}
+    polling = false;
+  }
+  var timer = setInterval(function(){ if (revealed || ++polls > 180) { clearInterval(timer); return; } checkBooked(); }, 5000);
   window.addEventListener('message', function(ev){
     if (!/leadconnectorhq|gohighlevel/i.test(ev.origin || '')) return;
     var blob = ''; try{ blob = typeof ev.data === 'string' ? ev.data : JSON.stringify(ev.data||''); }catch(e){}
-    if (/book|appoint|schedul|success|confirm/i.test(blob)) revealNextStep();
+    if (/book|appoint|schedul|success|confirm/i.test(blob)) checkBooked();
   });
-  if (!document.getElementById('bookedYet')) {
-    var yet = document.createElement('button');
-    yet.type = 'button'; yet.id = 'bookedYet'; yet.className = 'bookedyet';
-    yet.textContent = 'Picked your time? Tap here for your next step \u2192';
-    yet.addEventListener('click', revealNextStep);
-    document.getElementById('booked').appendChild(yet);
+  if (!document.getElementById('bookedWait')) {
+    var wait = document.createElement('p');
+    wait.id = 'bookedWait'; wait.className = 'qhint'; wait.style.marginTop = '14px';
+    wait.textContent = 'Once your time is confirmed, your next step will appear right here.';
+    document.getElementById('booked').appendChild(wait);
   }
   document.getElementById('booked').scrollIntoView({behavior:'smooth', block:'start'});
 });
