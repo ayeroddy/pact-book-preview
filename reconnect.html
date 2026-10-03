@@ -235,6 +235,7 @@ const API = 'https://pact-funnel-api.alex-f42.workers.dev';
 const CAL_G = 'https://api.leadconnectorhq.com/widget/booking/NWv02XiQtQDrqvCE3LoE';
 const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
 const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
+const CAL_E = 'https://api.leadconnectorhq.com/widget/booking/lI7NFnwn70qYraus5Cb1'; // [E] email calendar
 // Capture Google click ids for the server-side booked-call conversion (survives revisits)
 const QS = new URLSearchParams(location.search);
 let CLICK = {};
@@ -253,6 +254,13 @@ try {
 const SRC = (QS.get('src') || '').slice(0, 20)
   || (QS.get('el') ? ('email-' + QS.get('el').replace(/[^A-Za-z0-9]/g, '').replace(/^email/i, '').slice(0, 14)) : '')
   || ((CLICK.gclid || CLICK.gbraid || CLICK.wbraid) ? 'gads-vsl' : 'direct');
+// Email calendar [E]: Chris's bulk sends carry ?el=, which SRC turns into 'email-*'.
+// Sticky like the Google click, so a return visit from an email still lands on [E].
+let FROM_EMAIL = false;
+try {
+  if (SRC.startsWith('email-')) localStorage.setItem('pact_email_src', '1');
+  FROM_EMAIL = localStorage.getItem('pact_email_src') === '1';
+} catch(e){}
 
 const QUESTIONS = [
   { name:'relationship', title:'How would you describe your relationship with your adult child right now?', type:'radio',
@@ -399,9 +407,9 @@ nextBtn.addEventListener('click', async () => {
     gtag('event','conversion',{'send_to':'AW-18385634480/KAjGCJfLwOAcELCJ-r5E'});
   }catch(e){}
   const pre = new URLSearchParams({first_name:fname, last_name:lname||'', email, phone}).toString();
-  // Green ONLY for a verified Google click; everyone else keeps main/priority routing.
+  // Green ONLY for a verified Google click; email sends go to [E]; everyone else keeps main/priority.
   const fromGoogle = !!(CLICK.gclid || CLICK.gbraid || CLICK.wbraid);
-  const cal = fromGoogle ? CAL_G : (route === 'priority' ? CAL_PRIORITY : CAL);
+  const cal = fromGoogle ? CAL_G : FROM_EMAIL ? CAL_E : (route === 'priority' ? CAL_PRIORITY : CAL);
   document.getElementById('calframe').src = cal + '?' + pre;
   document.getElementById('bookedTitle').textContent = `You're in, ${fname} — pick your time below`;
   document.getElementById('survey').hidden = true;
