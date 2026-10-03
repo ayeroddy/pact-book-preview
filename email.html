@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 7 Shifts That Reopen the Door | Parenting Adult Children Today</title>
+<meta name="description" content="Free training from Catherine Taylor Hickem, LCSW — for parents of an adult child who has pulled away, shut down, or stopped speaking to you.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<style>
+  :root{--navy:#1a1a6e;--cyan:#3aa8cc;--yellow:#f5e642;--pink:#e020a0;--ink:#232038;--soft:#5d5876;
+        --sans:'Helvetica Neue',Arial,system-ui,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);color:var(--ink);background:#fff}
+  .callout{background:var(--navy);color:#fff;text-align:center;padding:12px 18px}
+  .callout p{font-size:16px;font-weight:700;letter-spacing:.02em}
+  .hero{background:linear-gradient(180deg,#f7f6ff 0%,#fff 100%);padding:38px 20px 8px;text-align:center}
+  .hero-inner{max-width:860px;margin:0 auto}
+  h1{font-size:clamp(29px,4.4vw,44px);line-height:1.18;color:var(--navy);font-weight:900}
+  .accent{color:var(--pink)}
+  .rule{width:110px;height:4px;background:var(--cyan);border-radius:2px;margin:20px auto}
+  .sub{font-size:clamp(16px,2.1vw,21px);line-height:1.55;color:var(--soft);max-width:720px;margin:0 auto}
+  .sub strong{color:var(--ink)}
+  .vsl-wrap{max-width:860px;margin:30px auto 0;padding:0 20px}
+  .vsl-box{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#000;
+           box-shadow:0 18px 60px rgba(26,26,110,.28)}
+  .vsl-video{position:absolute;inset:0;cursor:pointer}
+  .vsl-video video{display:block;width:100%;height:100%;object-fit:cover}
+  .vsl-sound{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .vsl-sound.off{display:none}
+  .vsl-badge{display:flex;align-items:center;gap:10px;background:var(--yellow);color:var(--navy);font-weight:900;
+             font-size:clamp(15px,2vw,20px);letter-spacing:.02em;padding:14px 26px;border-radius:999px;
+             box-shadow:0 8px 30px rgba(26,26,110,.45);animation:pulse 1.5s ease-in-out infinite;text-transform:uppercase}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+  @media(prefers-reduced-motion:reduce){.vsl-badge{animation:none}}
+  .instruction{text-align:center;padding:26px 20px 4px}
+  .instruction p{font-size:18px;color:var(--soft);max-width:640px;margin:0 auto;line-height:1.5}
+  /* ---- survey ---- */
+  .survey-wrap{max-width:640px;margin:18px auto 0;padding:0 20px}
+  .survey{background:#fff;border:1px solid #e8e5f4;border-radius:18px;box-shadow:0 14px 44px rgba(26,26,110,.12);
+          padding:28px 26px 30px}
+  .progress{font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--cyan);text-transform:uppercase;margin-bottom:6px}
+  .pbar{height:6px;background:#eeecf7;border-radius:3px;margin-bottom:20px;overflow:hidden}
+  .pbar div{height:100%;background:var(--cyan);border-radius:3px;width:0;transition:width .25s ease}
+  .qtitle{font-size:22px;font-weight:800;color:var(--navy);line-height:1.3;margin-bottom:6px}
+  .qhint{font-size:15px;color:var(--soft);margin-bottom:14px}
+  .opt{display:flex;align-items:center;gap:12px;border:2px solid #e8e5f4;border-radius:12px;padding:16px 16px;
+       font-size:17px;line-height:1.35;cursor:pointer;margin-bottom:10px;background:#fdfcf9;transition:border-color .12s,background .12s}
+  .opt:hover{border-color:var(--cyan)}
+  .opt.sel{border-color:var(--navy);background:#f1efff}
+  .opt input{width:20px;height:20px;flex:0 0 20px;accent-color:var(--navy)}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+  .back{background:none;border:none;color:var(--soft);font-size:15px;cursor:pointer;text-decoration:underline;padding:8px}
+  .back[hidden]{visibility:hidden}
+  .next{background:var(--yellow);color:var(--navy);border:none;font-weight:900;font-size:18px;padding:15px 34px;
+        border-radius:999px;cursor:pointer;box-shadow:0 8px 24px rgba(26,26,110,.22)}
+  .next:disabled{opacity:.45;cursor:default;box-shadow:none}
+  .field{width:100%;border:2px solid #e8e5f4;border-radius:12px;padding:15px 14px;font-size:17px;margin-bottom:12px;
+         font-family:var(--sans);background:#fdfcf9}
+  .field:focus{outline:none;border-color:var(--cyan)}
+  .contact-row{display:flex;gap:12px}
+  .contact-row .field{flex:1}
+  .lock{font-size:14px;color:var(--soft);text-align:center;margin-top:12px}
+  .err{display:none;color:#c0392b;font-size:15px;font-weight:700;margin-bottom:10px}
+  /* ---- booked / calendar ---- */
+  .booked h2{font-size:26px;color:var(--navy);font-weight:900;text-align:center;margin-bottom:6px}
+  .booked .qhint{text-align:center}
+  .calframe{width:100%;min-height:780px;border:0;border-radius:14px;background:#fff}
+  .bio{max-width:640px;margin:44px auto 0;padding:0 20px 8px;text-align:center}
+  .bio p{font-size:15px;line-height:1.6;color:var(--soft)}
+  .bio strong{color:var(--navy)}
+  footer{background:var(--navy);color:#c9c6e8;text-align:center;font-size:13px;padding:26px 20px;line-height:1.8;margin-top:44px}
+  [hidden]{display:none !important}
+  /* ---- start CTAs (added 2026-08-19) ----
+     ~80% of visitors were leaving without ever starting the survey: it sits below a
+     12:53 video, so nothing above the fold told them an action existed. These give an
+     immediate route in WITHOUT touching the video. Both hide once the survey starts. */
+  .herocta{margin:22px auto 0;display:inline-flex;flex-direction:column;align-items:center;gap:3px;background:var(--yellow);
+           color:var(--navy);font-weight:900;font-size:clamp(17px,2.2vw,20px);letter-spacing:.01em;
+           padding:16px 32px;border:none;border-radius:999px;cursor:pointer;font-family:var(--sans);
+           box-shadow:0 10px 30px rgba(26,26,110,.28);transition:transform .15s ease}
+  .herocta:hover{transform:translateY(-2px)}
+  .herocta small{display:block;font-size:13px;font-weight:700;color:#6a6410;letter-spacing:.02em;text-transform:none}
+  /* ---- ARM B: application first ----
+     The VSL is not the qualifier (the survey is), so in this arm it moves out of the way
+     of the action and is served at the booking step, where a committed viewer actually
+     watches it and it does its real job: pre-call framing. */
+  html[data-arm="b"] .vsl-wrap{display:none}
+  html[data-arm="b"] #instr p .arm-a-copy{display:none}
+  .arm-b-copy{display:none}
+  html[data-arm="b"] .arm-b-copy{display:inline}
+  html[data-arm="b"] .arm-a-copy{display:none}
+  /* post-booking "next step" reveal (arm b) */
+  .nextstep{margin:26px 0 4px;text-align:center;padding-top:24px;border-top:2px dashed #e8e5f4}
+  .nextstep .kicker{display:inline-block;background:var(--cyan);color:#fff;font-size:12px;font-weight:900;
+                    letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:12px}
+  .nextstep h3{font-size:clamp(20px,2.6vw,25px);color:var(--navy);font-weight:900;line-height:1.25;margin-bottom:8px}
+  .nextstep p{font-size:16px;color:var(--soft);line-height:1.55;max-width:520px;margin:0 auto 6px}
+  .nextstep p strong{color:var(--ink)}
+  .bookedyet{display:block;margin:16px auto 0;background:none;border:none;color:var(--cyan);
+             font-family:var(--sans);font-size:15px;font-weight:800;text-decoration:underline;cursor:pointer}
+  @media (max-width:580px){
+    .callout p{font-size:13px;line-height:1.45}
+    h1{font-size:29px}
+    .sub{font-size:16px}
+    .instruction p{font-size:16px}
+    .vsl-badge{font-size:17px}
+    .qtitle{font-size:20px}
+    .opt{font-size:16px}
+    .contact-row{flex-direction:column;gap:0}
+  }
+</style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1511568519903735');fbq('init','1387545469584384');
+fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1511568519903735&ev=PageView&noscript=1"/></noscript>
+<!-- Hyros Universal Tracking -->
+<script>
+(function(){
+var s = document.createElement('script');
+s.type = 'text/javascript';
+s.src = "https://215347.t.hyros.com/v1/lst/universal-script?ph=80e0d167794caa546cdc56006c3b29ced01bd1778457b28346daf7acb5660416&tag=!clicked&ref_url=" + encodeURI(document.URL);
+document.head.appendChild(s);
+})();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18385634480"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18385634480');
+</script>
+</head>
+<body>
+
+<div class="callout">
+  <p>For Parents of an Adult Child Who Has Pulled Away, Shut Down, or Stopped Speaking to You</p>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Your Child Isn't Gone&hellip; The Role Changed &amp; Nobody Gave You The New Rules &mdash;
+        Here Are The <span class="accent">7 Shifts That Reopen The Door</span></h1>
+    <div class="rule"></div>
+    <p class="sub">You don't need your child to show up, apologize, or agree to anything.
+      <strong>It only takes one person to change this &mdash; and since you're reading this, it gets to be you.</strong></p>
+    <button class="herocta" id="heroCta" type="button">Pick Your Call Time
+      <small>Takes about 60 seconds &mdash; no cost</small></button>
+  </div>
+</div>
+
+<div class="vsl-wrap">
+  <div class="vsl-box">
+    <div class="vsl-video" id="vslWrap">
+      <video id="vsl" autoplay muted playsinline preload="auto" poster="https://book.parentingadultstoday.com/assets/pact-vsl-poster.jpg">
+        <source src="https://pact-funnel-api.alex-f42.workers.dev/watch/bonus/vb/pact-vsl-2.mp4?v=1" type="video/mp4">
+      </video>
+      <div class="vsl-sound" id="vslSound">
+        <div class="vsl-badge">&#128266; Click for sound</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var w=document.getElementById('vslWrap'),v=document.getElementById('vsl'),
+      s=document.getElementById('vslSound'),b=s.querySelector('.vsl-badge'),un=false;
+  var p=v.play(); if(p&&p.catch)p.catch(function(){b.innerHTML='&#9654;&#65039; Click to play';});
+  w.addEventListener('click',function(){
+    if(!un){un=true;v.currentTime=0;v.muted=false;v.volume=1;v.controls=true;s.classList.add('off');v.play().catch(function(){});}
+  });
+})();
+</script>
+
+<div class="instruction" id="instr">
+  <p><span class="arm-a-copy">Answer a few quick questions below and pick a time for your <strong>free Relationship Clarity Call</strong> &mdash; about 60 seconds.</span><span class="arm-b-copy">Answer 7 quick questions and pick a time for your <strong>free Relationship Clarity Call</strong> &mdash; about 60 seconds. Catherine's training is waiting for you on the next step.</span></p>
+</div>
+
+<div class="survey-wrap" id="surveyWrap">
+  <div class="survey" id="survey">
+    <div class="progress" id="prog">Question 1 of 6</div>
+    <div class="pbar"><div id="pfill"></div></div>
+    <div id="step"></div>
+    <p class="err" id="err">Please answer to continue.</p>
+    <div class="nav">
+      <button class="back" id="backBtn" hidden>&larr; Back</button>
+      <button class="next" id="nextBtn" hidden>Continue &rarr;</button>
+    </div>
+  </div>
+
+  <div class="survey booked" id="notfit" hidden>
+    <h2 id="notfitTitle">Thank you for being straight with us.</h2>
+    <p class="qhint">The Clarity Call is for families ready to work directly with Catherine&rsquo;s team, and there&rsquo;s no sense taking your time on a call about something you&rsquo;ve told us isn&rsquo;t possible right now.</p>
+    <p class="qhint">If you want her method anyway, it&rsquo;s written down. <b>Welcome Home</b> is the full method &mdash; ebook plus the audiobook in Catherine&rsquo;s own voice &mdash; for $9, yours to keep.</p>
+    <p style="text-align:center;margin:22px 0 6px"><a class="next" style="display:inline-block;text-decoration:none" href="https://book.parentingadultstoday.com/">Get the book &mdash; $9 &rarr;</a></p>
+    <p class="qhint">If your situation changes, the door is open &mdash; just reply to any email from us and we&rsquo;ll set up your call.</p>
+  </div>
+
+  <div class="survey booked" id="booked" hidden>
+    <h2 id="bookedTitle">You're in&hellip;</h2>
+    <p class="qhint">Pick the time that works best &mdash; your details are already filled in.</p>
+    <iframe class="calframe" id="calframe" src="about:blank" title="Book your Relationship Clarity Call"></iframe>
+  </div>
+</div>
+
+<div class="bio">
+  <p><strong>Catherine Taylor Hickem, LCSW</strong> &mdash; Licensed Clinical Social Worker and psychotherapist
+     with 40 years of experience working with families &mdash; and 20 years of her own estrangement story,
+     which ended in 33 good years with her father. It's never too late to grow and change.</p>
+</div>
+
+<footer>
+  Results vary. No outcome is promised. Educational content; not therapy.<br>
+  &copy; Parenting Adult Children Today &middot; PACT GROWTH, LLC
+</footer>
+
+<script>
+const API = 'https://pact-funnel-api.alex-f42.workers.dev';
+// The GREEN "[G]" calendar means ONE thing: this person clicked a Google ad. Alex
+// 2026-08-22: "the only way contacts should reach the google calendar is if they book
+// straight from google."
+//
+// This page is ALSO reachable from email, Meta retargeting and direct — Memory Mejia (a
+// May contact with no click id) booked [G] on 08-22 and would have been counted as a
+// Google call. That is the same page-vs-source confusion that made the app-src tag
+// over-report Google 4x. So the calendar is gated on the CLICK ID, never on the page.
+// Everyone else keeps the original routing, priority calendar included.
+const CAL_G = 'https://api.leadconnectorhq.com/widget/booking/NWv02XiQtQDrqvCE3LoE';
+const CAL = 'https://api.leadconnectorhq.com/widget/booking/Z23jeSuOjQWlKHY3Mrex';
+const CAL_PRIORITY = 'https://api.leadconnectorhq.com/widget/booking/3lYJ3oxFvlVKjpxPPWYA';
+const CAL_E = 'https://api.leadconnectorhq.com/widget/booking/lI7NFnwn70qYraus5Cb1'; // [E] email calendar
+// Capture Google click ids for the server-side booked-call conversion (survives revisits)
+const QS = new URLSearchParams(location.search);
+let CLICK = {};
+try {
+  const fresh = { gclid:QS.get('gclid')||'', gbraid:QS.get('gbraid')||'', wbraid:QS.get('wbraid')||'' };
+  if (fresh.gclid || fresh.gbraid || fresh.wbraid) localStorage.setItem('pact_gads_click', JSON.stringify(fresh));
+  CLICK = JSON.parse(localStorage.getItem('pact_gads_click') || '{}');
+} catch(e){}
+// Source tag. This page is BOTH the Google VSL landing page AND the destination of the
+// house email campaigns, so it must never brand traffic by the page it happens to be.
+// Defaulting to 'gads-vsl' is what tagged every email clicker as Google: on 2026-08-22,
+// 77 people wore app-src-gads-vsl while only 21 had a real click id. Two of the four
+// bookings on the green [G] calendar came from the Aug 20/21 campaign, not from an ad.
+// Order: explicit ?src= wins -> campaign links carry ?el= -> a real Google click id ->
+// otherwise direct. ONLY a stored click id may ever produce 'gads-vsl'.
+// EMAIL PAGE. Every visitor here came from a send, so the source is always email —
+// named by ?el= when Chris's link carries it, plain 'email' when it doesn't.
+const SRC = (QS.get('src') || '').slice(0, 20)
+  || (QS.get('el') ? ('email-' + QS.get('el').replace(/[^A-Za-z0-9]/g, '').replace(/^email/i, '').slice(0, 14)) : 'email');
+
+const QUESTIONS = [
+  { name:'relationship', title:'How would you describe your relationship with your adult child right now?', type:'radio',
+    opts:[['silence','Complete silence — no contact at all',3],
+          ['gatekeeper','A spouse or partner controls access to them',3],
+          ['cold',"They respond, but it's cold or brief",2],
+          ['tense',"We talk, but it's tense and fragile",1]] },
+  { name:'duration', title:'How long has it been this way?', type:'radio',
+    opts:[['3y+','More than 3 years',3],['1-3y','1–3 years',3],['6-12m','6–12 months',2],['<6m','Less than 6 months',1]] },
+  { name:'grandchildren', title:'Are grandchildren involved?', type:'radio',
+    opts:[['blocked',"Yes — and we can't see them",3],['limited','Yes — contact is limited',2],['none','No grandchildren',0]] },
+  { name:'tried', title:'What have you already tried?', hint:'Choose all that apply.', type:'check',
+    opts:[['letters','Letters, texts, or calls that went unanswered'],['therapy','Therapy or counseling'],
+          ['books','Books, podcasts, or online research'],
+          ['gifts','Gifts, visits, or invitations'],['waiting','Giving them space and waiting'],
+          ["nothing","Nothing yet — I don't want to make it worse"]] },
+  { name:'together', title:'Are you walking this alone, or with a spouse/partner?', type:'radio',
+    opts:[['couple','With my spouse or partner',1],['solo','On my own',0]] },
+  { name:'readiness', title:"If this call confirmed PACT was the right fit for your family, which best describes where you'd be?", type:'radio',
+    opts:[['whatever-it-takes','Ready to move forward — whatever it takes to get my family back',3],
+          ['right-plan','Ready, if the plan is clearly right for our situation',2],
+          ['understand-investment',"I'd need to understand the investment first",1],
+          ['exploring','Just exploring for now',0]] },
+  { name:'money', title:"PACT families invest several thousand dollars to work directly with Catherine Hickem in helping them reconnect with their adult child, depending on the support they need. If the call confirms it's right for your family, which is true for you?", type:'radio',
+    opts:[['can-invest',"We can invest in the right solution — that's not the obstacle",3],
+          ['can-plan',"We'd need to plan for it, but we could make it work",2],
+          ['payment-option',"We'd need a payment option for it to be possible",1],
+          ['cant-invest',"We can't invest anything right now",0]] },
+];
+
+const answers = {}, pts = {};
+let idx = 0;
+const step = document.getElementById('step'), prog = document.getElementById('prog'),
+      pfill = document.getElementById('pfill'), backBtn = document.getElementById('backBtn'),
+      nextBtn = document.getElementById('nextBtn'), err = document.getElementById('err');
+const TOTAL = QUESTIONS.length + 1; // + contact step
+
+let booted = false;
+function render(){
+  err.style.display = 'none';
+  pfill.style.width = Math.round(idx / TOTAL * 100) + '%';
+  backBtn.hidden = idx === 0;
+  if (idx < QUESTIONS.length) renderQuestion(QUESTIONS[idx]);
+  else renderContact();
+  // never scroll on initial page load — only when moving between questions
+  if (booted) document.getElementById('survey').scrollIntoView({behavior:'smooth', block:'nearest'});
+  booted = true;
+}
+
+function renderQuestion(q){
+  prog.textContent = `Question ${idx+1} of ${QUESTIONS.length}`;
+  let html = `<div class="qtitle">${q.title}</div>`;
+  if (q.hint) html += `<div class="qhint">${q.hint}</div>`;
+  for (const [val, label] of q.opts.map(o => o)) {
+    const type = q.type === 'check' ? 'checkbox' : 'radio';
+    const checked = q.type === 'check'
+      ? (answers[q.name] || []).includes(val) ? 'checked' : ''
+      : answers[q.name] === val ? 'checked' : '';
+    html += `<label class="opt ${checked ? 'sel' : ''}"><input type="${type}" name="q" value="${val}" ${checked}> ${label}</label>`;
+  }
+  step.innerHTML = html;
+  nextBtn.hidden = q.type !== 'check';
+  nextBtn.disabled = false; nextBtn.textContent = 'Continue →';
+  step.querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => {
+    if (q.type === 'check') {
+      answers[q.name] = [...step.querySelectorAll('input:checked')].map(i => i.value);
+      step.querySelectorAll('.opt').forEach(o => o.classList.toggle('sel', o.querySelector('input').checked));
+    } else {
+      if (!window.__q1) { window.__q1 = 1; try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','email-q1')}catch(e){}
+        try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','email-q1'+(window.ARM||'a'))}catch(e){}
+        var hc=document.getElementById('heroCta'); if(hc) hc.style.display='none'; }
+      answers[q.name] = inp.value;
+      pts[q.name] = q.opts.find(o => o[0] === inp.value)[2] || 0;
+      step.querySelectorAll('.opt').forEach(o => o.classList.toggle('sel', o.querySelector('input').checked));
+      setTimeout(() => { idx++; render(); }, 220); // auto-advance
+    }
+  }));
+}
+
+function renderContact(){
+  prog.textContent = 'Last step';
+  pfill.style.width = '92%';
+  step.innerHTML = `
+    <div class="qtitle">Where should we send your call confirmation?</div>
+    <div class="contact-row">
+      <input class="field" id="fname" placeholder="First name" autocomplete="given-name">
+      <input class="field" id="lname" placeholder="Last name" autocomplete="family-name">
+    </div>
+    <input class="field" id="email" type="email" placeholder="you@example.com" autocomplete="email">
+    <input class="field" id="phone" type="tel" placeholder="Mobile — so our team can confirm your time" autocomplete="tel">
+    ${answers.together === 'couple' ? `
+    <div class="qhint" style="margin-top:14px">Your spouse or partner is welcome on the call &mdash; Catherine's team works with both of you.</div>
+    <div class="contact-row">
+      <input class="field" id="sname" placeholder="Spouse/partner first name">
+      <input class="field" id="semail" type="email" placeholder="Their email (optional)">
+    </div>` : ''}
+    <p class="lock">&#128274; Private &amp; confidential &middot; reviewed by a real human on Catherine's team</p>`;
+  nextBtn.hidden = false;
+  nextBtn.textContent = 'See Available Call Times →';
+}
+
+backBtn.addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
+
+nextBtn.addEventListener('click', async () => {
+  if (idx < QUESTIONS.length) { // only the checkbox step shows this button mid-survey
+    if (!(answers[QUESTIONS[idx].name] || []).length) answers[QUESTIONS[idx].name] = [];
+    idx++; render(); return;
+  }
+  const fname = document.getElementById('fname').value.trim(),
+        lname = document.getElementById('lname').value.trim(),
+        email = document.getElementById('email').value.trim(),
+        phone = document.getElementById('phone').value.trim(),
+        sname = (document.getElementById('sname') || {value:''}).value.trim(),
+        semail = (document.getElementById('semail') || {value:''}).value.trim();
+  if (!fname || !email.includes('@') || phone.length < 7) {
+    err.textContent = 'Please fill in your name, email, and mobile number.';
+    err.style.display = 'block'; return;
+  }
+  err.style.display = 'none';
+  nextBtn.disabled = true; nextBtn.textContent = 'One moment…';
+  const score = (pts.relationship||0)+(pts.duration||0)+(pts.grandchildren||0)+(pts.together||0)+(pts.readiness||0)+(pts.money||0);
+  const severity = (pts.relationship||0)+(pts.duration||0)+(pts.grandchildren||0);
+  // "can't invest anything right now" — they still land in the CRM and the nurture,
+  // but they don't take a closer's slot.
+  const qualified = answers.money !== 'cant-invest';
+  const payload = { first_name:fname, last_name:lname, email, phone, src:SRC,
+    answers:{ relationship:answers.relationship, duration:answers.duration, readiness:answers.readiness,
+      grandchildren:answers.grandchildren||'', together:answers.together||'', tried:answers.tried||[],
+      money:answers.money },
+    score, severity, qualified, arm: window.ARM || 'a', page:'email',
+    spouse_name:sname, spouse_email:semail,
+    gclid:CLICK.gclid||'', gbraid:CLICK.gbraid||'', wbraid:CLICK.wbraid||'' };
+  let route = 'main';
+  try {
+    const r = await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    route = (await r.json()).route || 'main';
+  } catch(e){}
+  try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','email-sub')}catch(e){}
+
+  // Can't invest: no calendar, and no Lead/conversion events — counting these would
+  // teach Meta and Google to go find more people who can't invest.
+  if (!qualified) {
+    document.getElementById('notfitTitle').textContent = `Thank you for being straight with us, ${fname}.`;
+    document.getElementById('survey').hidden = true;
+    document.getElementById('instr').hidden = true;
+    document.getElementById('notfit').hidden = false;
+    document.getElementById('notfit').scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+
+  try{fbq('track','Lead',{content_name:'Clarity Call Application'});}catch(e){}
+  try{
+    gtag('set','user_data',{email, phone_number:phone});
+    gtag('event','conversion',{'send_to':'AW-18385634480/KAjGCJfLwOAcELCJ-r5E'});
+  }catch(e){}
+  const pre = new URLSearchParams({first_name:fname, last_name:lname||'', email, phone}).toString();
+  // Email page: everyone books the [E] email calendar so email revenue reads straight off it.
+  const cal = CAL_E;
+  document.getElementById('calframe').src = cal + '?' + pre;
+  document.getElementById('bookedTitle').textContent = `You're in, ${fname} — pick your time below`;
+  document.getElementById('survey').hidden = true;
+  document.getElementById('instr').hidden = true;
+  document.getElementById('booked').hidden = false;
+  if ((window.ARM||'a') === 'b') {
+    // The VSL is the REWARD for booking, not competition for it. It stays hidden until the
+    // call is actually on the calendar, then arrives as the next step — which is also when
+    // someone will genuinely watch 13 minutes.
+    var revealed = false;
+    function revealNextStep(){
+      if (revealed) return; revealed = true;
+      var vw = document.querySelector('.vsl-wrap');
+      var yet = document.getElementById('bookedYet'); if (yet) yet.remove();
+      var box = document.createElement('div');
+      box.className = 'nextstep'; box.id = 'nextstep';
+      box.innerHTML =
+        '<span class="kicker">Next step</span>' +
+        '<h3>Your call is booked. Now watch this before you get on it.</h3>' +
+        '<p>Catherine walks you through <strong>the 7 Shifts that reopen the door</strong> &mdash; ' +
+        'why your child pulled away, what has quietly been keeping the distance in place, and ' +
+        'the first shift that starts closing it.</p>' +
+        '<p>Parents who watch this first walk into their call already ahead.</p>';
+      document.getElementById('booked').appendChild(box);
+      if (vw) { document.getElementById('booked').appendChild(vw); vw.style.display = 'block'; }
+      try{navigator.sendBeacon(API+'/pv','email-nxt')}catch(e){}
+      box.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    // GHL's booking widget posts to the parent when the appointment is confirmed. The event
+    // shape is not contractual, so match loosely on the LeadConnector origin, and always give
+    // a manual way through in case the message never arrives.
+    window.addEventListener('message', function(ev){
+      if (!/leadconnectorhq|gohighlevel/i.test(ev.origin || '')) return;
+      var blob = ''; try{ blob = typeof ev.data === 'string' ? ev.data : JSON.stringify(ev.data||''); }catch(e){}
+      if (/book|appoint|schedul|success|confirm/i.test(blob)) revealNextStep();
+    });
+    if (!document.getElementById('bookedYet')) {
+      var yet = document.createElement('button');
+      yet.type = 'button'; yet.id = 'bookedYet'; yet.className = 'bookedyet';
+      yet.textContent = 'Picked your time? Tap here for your next step \u2192';
+      yet.addEventListener('click', revealNextStep);
+      document.getElementById('booked').appendChild(yet);
+    }
+  }
+  document.getElementById('booked').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+render();
+</script>
+<script>
+(function(){
+  // ONE call-to-action, above the fold. A sticky bar was tried and removed: this page is
+  // short enough that by the time the hero button scrolls away the survey is already on
+  // screen, so the bar could only ever appear alongside it — two CTAs competing, or none.
+  var hero=document.getElementById('heroCta'), wrap=document.getElementById('surveyWrap');
+  hero&&hero.addEventListener('click',function(){
+    try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','email-cta')}catch(e){}
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+    var opt=wrap.querySelector('.opt'); if(opt){setTimeout(function(){opt.focus&&opt.focus();},450);}
+  });
+})();
+</script>
+<script>
+// A/B: 'a' = VSL first (control), 'b' = application first, VSL served at the booking step.
+// Sticky per visitor so a reload cannot flip the experience mid-funnel.
+(function(){
+  var A;
+  try{A=localStorage.getItem('pact_email_arm');}catch(e){}
+  if(A!=='a'&&A!=='b'){A=Math.random()<0.5?'a':'b'; try{localStorage.setItem('pact_email_arm',A);}catch(e){}}
+  window.ARM=A; document.documentElement.setAttribute('data-arm',A);
+  try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','email-g')}catch(e){}
+  try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','email-g'+A)}catch(e){}
+})();
+</script>
+</body>
+</html>
