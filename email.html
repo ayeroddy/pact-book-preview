@@ -431,13 +431,19 @@ nextBtn.addEventListener('click', async () => {
     box.innerHTML =
       '<span class="kicker">Next step</span>' +
       '<h3>Your call is booked. Watch this before you get on it.</h3>' +
-      '<p>Three minutes: <strong>what to have handy for your call</strong>, and six parents who sat ' +
-      'exactly where you&rsquo;re sitting &mdash; in their own words.</p>' +
+      '<p>First, a short message from Catherine about your call. Then three minutes with ' +
+      '<strong>what to have handy</strong>, and six parents who sat exactly where you&rsquo;re sitting.</p>' +
+      // 1) our post-booking video — the same one the GHL post-booking page plays (Wistia ukhhw6wiwf)
+      // .vsl-box already makes the 16:9 box and .vsl-video fills it — the iframe just fills that.
+      '<div class="vsl-box"><div class="vsl-video" style="cursor:default">' +
+      '<iframe src="https://fast.wistia.net/embed/iframe/ukhhw6wiwf?videoFoam=true" title="A message from Catherine" ' +
+      'allow="autoplay; fullscreen" allowfullscreen style="display:block;width:100%;height:100%;border:0"></iframe></div></div>' +
+      '<h3 style="margin-top:22px">Then: hear from six parents who were where you are</h3>' +
+      // 2) the pre-call testimonials cut (same cut the closers run in the Zoom waiting room)
       '<div class="vsl-box"><div class="vsl-video">' +
       '<video id="nextVid" controls playsinline preload="metadata" style="width:100%;display:block;border-radius:14px">' +
       '<source src="' + API + '/watch/bonus/vb/pact-testimonials.mp4" type="video/mp4"></video></div></div>';
     document.getElementById('booked').appendChild(box);
-    var v = document.getElementById('nextVid'); if (v) { v.muted = false; var pr = v.play(); if (pr && pr.catch) pr.catch(function(){}); }
     try{navigator.sendBeacon(API+'/pv','email-nxt')}catch(e){}
     box.scrollIntoView({behavior:'smooth', block:'start'});
   }
