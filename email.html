@@ -388,10 +388,10 @@ nextBtn.addEventListener('click', async () => {
     score, severity, qualified, arm: window.ARM || 'a', page:'email',
     spouse_name:sname, spouse_email:semail,
     gclid:CLICK.gclid||'', gbraid:CLICK.gbraid||'', wbraid:CLICK.wbraid||'' };
-  let route = 'main';
+  let route = 'main', cid = '';
   try {
     const r = await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    route = (await r.json()).route || 'main';
+    const j = await r.json(); route = j.route || 'main'; cid = j.cid || '';
   } catch(e){}
   try{navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','email-sub')}catch(e){}
 
@@ -449,19 +449,26 @@ nextBtn.addEventListener('click', async () => {
     try{navigator.sendBeacon(API+'/pv','email-nxt')}catch(e){}
     box.scrollIntoView({behavior:'smooth', block:'start'});
   }
-  // Poll the worker until GHL shows the appointment. Every 5s for up to 15 minutes; a
+  // Poll the worker until GHL shows a NEW appointment. Every 5s for up to 15 minutes; a
   // message from the booking widget just triggers an immediate check — it never reveals
   // on its own, because the widget's message shape is not contractual.
-  var polls = 0, polling = false;
+  // "New" = an appointment id that was not in the first response after submitting. That is
+  // what stops someone who booked a call months ago from unlocking the videos without
+  // picking a time now (Alex, 2026-10-03). Nobody can pick a time in the ~5s before the
+  // first poll, so the first response is a safe baseline.
+  var polls = 0, polling = false, baseline = null;
   async function checkBooked(){
     if (revealed || polling) return; polling = true;
     try {
-      var r = await fetch(API + '/booked?e=' + encodeURIComponent(email), {cache:'no-store'});
+      var r = await fetch(API + '/booked?e=' + encodeURIComponent(email) + (cid ? '&c=' + encodeURIComponent(cid) : ''), {cache:'no-store'});
       var j = await r.json();
-      if (j && j.booked) revealNextStep();
+      var ids = (j && j.ids) || [];
+      if (baseline === null) baseline = ids.slice();
+      else if (ids.some(function(id){ return baseline.indexOf(id) === -1; })) revealNextStep();
     } catch(e){}
     polling = false;
   }
+  checkBooked(); // baseline now
   var timer = setInterval(function(){ if (revealed || ++polls > 180) { clearInterval(timer); return; } checkBooked(); }, 5000);
   window.addEventListener('message', function(ev){
     if (!/leadconnectorhq|gohighlevel/i.test(ev.origin || '')) return;
