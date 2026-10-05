@@ -210,8 +210,10 @@ document.head.appendChild(s);
 </div>
 
 <div class="gate" id="gate" hidden>
-  <h1>Your course is waiting.</h1>
-  <p>Please open this page from your <b>order confirmation</b> — the “Open My Course” button on your thank-you page, or the link in your welcome email. Lost it? <a href="access.html"><b>Get your link emailed to you here</b></a> — it takes about a minute.</p>
+  <h1>Let’s find your book.</h1>
+  <p style="font-size:20px">Tap the button below and we will find it for you. It takes about a minute.</p>
+  <p><a href="access.html" style="display:block;max-width:420px;margin:18px auto;text-align:center;font:700 23px -apple-system,'Helvetica Neue',Arial,sans-serif;color:#33270a;background:#C9A227;border-radius:14px;padding:22px 18px;text-decoration:none">Find my book</a></p>
+  <p>Or open the email we sent you called <b>“Your Welcome Home library is open”</b> and tap the button inside it.</p>
 </div>
 
 <div id="app" hidden>
@@ -329,7 +331,12 @@ async function boot(){
   if (!t){ document.getElementById('gate').hidden=false; return; }
   try { const r = await fetch(API+'/me',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t})});
     ME = await r.json(); if(!ME.owned) throw 0; TOKEN=t; PROG = new Set(ME.progress||[]); }
-  catch(e){ localStorage.removeItem('pact_token'); document.getElementById('gate').hidden=false; return; }
+  catch(e){
+    // A saved token that no longer works must not lock out someone holding a good
+    // link: if this URL carries a sid, trade it for a fresh token once before gating.
+    localStorage.removeItem('pact_token');
+    if (sid && !boot.retried) { boot.retried = true; return boot(); }
+    document.getElementById('gate').hidden=false; return; }
   render();
 }
 
@@ -523,7 +530,12 @@ function playVideo(key,title){ ovbody.innerHTML=`<video controls autoplay playsi
   const v=ovbody.querySelector('video'); v.addEventListener('ended',()=>markDone(key));
   v.addEventListener('timeupdate',()=>{ if(v.duration && v.currentTime/v.duration>0.9) markDone(key); },{passive:true}); }
 function playAudio(key,title){ ovbody.innerHTML=`<div class="ov-audio"><h4>${esc(title)}</h4><audio controls autoplay src="${vurl(key)}"></audio><p style="color:var(--soft);font-size:15px;margin-top:14px">Listens right here — press ← Back when you’re done.</p></div>`; openOverlay('The Audiobook'); }
-function openDoc(path,title){ ovbody.innerHTML=`<iframe src="${vurl(path)}"></iframe>`; openOverlay(title); markDone(path); }
+/* PDFs never go in the iframe: iPhone/iPad Safari renders only PAGE ONE of a framed
+   PDF and it will not scroll ("I can only see the title page" — Maria D., Sep 30).
+   Open them in their own tab, where the phone's real PDF viewer takes over. */
+function openDoc(path,title){
+  if (/\.pdf$/i.test(path)) { const u=vurl(path); const w=window.open(u,'_blank'); if(!w) window.location.href=u; markDone(path); return; }
+  ovbody.innerHTML=`<iframe src="${vurl(path)}"></iframe>`; openOverlay(title); markDone(path); }
 /* Real file download. Buyers kept trying to "Save to Files" from the reader iframe,
    which saves the web page, not the book, and then won't open. ?dl= sets
    Content-Disposition so the phone saves a proper, openable PDF. */

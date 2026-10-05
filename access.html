@@ -50,6 +50,29 @@
     <p class="note" style="margin:16px 0 0">The link only ever goes to the email address on your order, so no one else can use this.</p>
   </div>
 
+  <!-- Step 2 — only ever shown after step 1 fails to find an order. Most people
+       who land here bought under a different address than the one they check. -->
+  <div class="card" id="step2" style="display:none">
+    <h1 style="font-size:23px;margin-bottom:10px">Let's try it another way.</h1>
+    <p>Very often the order is under a different email — a typo, a partner's address, or the private address Apple creates for you. So let's find it by your card instead.</p>
+    <label for="nm">The name on your card</label>
+    <input id="nm" type="text" autocomplete="name" autocapitalize="words" spellcheck="false" placeholder="Jane Smith">
+    <label for="l4" style="margin-top:16px">Last 4 digits of that card</label>
+    <input id="l4" type="text" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="4358">
+    <button id="go2">Find my book</button>
+    <div class="msg" id="msg2"></div>
+    <p class="note" style="margin:16px 0 0">We never see your full card number — just these last 4 digits, which is enough for us to match your order.</p>
+  </div>
+
+  <!-- Success — the link is shown on screen, not emailed. The people who reach
+       this step are frequently the ones our email cannot reach at all. -->
+  <div class="card" id="found" style="display:none;border-color:#cfe4cf;background:#f6fbf6">
+    <h1 style="font-size:23px;margin-bottom:10px">Found it. Here's your book.</h1>
+    <p id="foundAs" class="note"></p>
+    <p style="margin:18px 0"><a id="lib" href="#" style="display:block;text-align:center;font-family:'Helvetica Neue',Arial,sans-serif;font-size:19px;font-weight:700;color:#fff;background:var(--purple);border-radius:10px;padding:18px 20px;text-decoration:none">Open my library →</a></p>
+    <p><b>Bookmark this page or save that link</b> — it's yours and it never expires. On a phone, open it, tap the share button, then "Add to Home Screen" and it becomes an icon just like an app.</p>
+  </div>
+
   <div class="rule"></div>
 
   <h1 style="font-size:23px">One thing that trips people up</h1>
@@ -83,8 +106,15 @@ async function send(){
       go.textContent = 'Sent ✓';
       return;
     }
-    if (j.reason === 'no-order') {
-      show('bad', 'We couldn’t find an order under that address. Many people buy with a different email than the one they check — try another, or email info@parentingadultchildrentoday.com and we’ll find it for you.');
+    // no-order  = nothing under that address (the two-email case)
+    // no-contact / send-failed = we found the order but cannot email them
+    //   (no CRM contact, or they opted out — which is often WHY delivery failed)
+    // All three have the same remedy: verify by card and show the link on screen.
+    if (j.reason === 'no-order' || j.reason === 'no-contact' || j.reason === 'send-failed') {
+      show('bad', j.reason === 'no-order'
+        ? 'We couldn’t find an order under that address — so let’s try your card instead.'
+        : 'We found your order, but we can’t email you at that address. Let’s get you your link right here instead.');
+      openStep2();
     } else {
       show('bad', 'Something went wrong on our end. Please email info@parentingadultchildrentoday.com and we’ll send your link personally today.');
     }
@@ -95,6 +125,47 @@ async function send(){
 }
 go.addEventListener('click', send);
 em.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+
+// ---- Step 2: find the order by name + card last 4 ----
+const step2 = document.getElementById('step2'), nm = document.getElementById('nm'),
+      l4 = document.getElementById('l4'), go2 = document.getElementById('go2'),
+      msg2 = document.getElementById('msg2'), found = document.getElementById('found');
+function show2(kind, text){ msg2.className = 'msg ' + kind; msg2.textContent = text; }
+function openStep2(){
+  if (step2.style.display === 'block') return;
+  step2.style.display = 'block';
+  step2.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+async function findByCard(){
+  const name = nm.value.trim(), last4 = l4.value.trim();
+  if (name.length < 2) return show2('bad', 'Please enter the name as it appears on the card.');
+  if (!/^\d{4}$/.test(last4)) return show2('bad', 'Please enter exactly the last 4 digits of the card.');
+  go2.disabled = true; go2.textContent = 'Looking…'; msg2.className = 'msg';
+  try {
+    const r = await fetch(API + '/relink-card', { method:'POST',
+      headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, last4 }) });
+    const j = await r.json();
+    if (j.ok && j.link) {
+      document.getElementById('lib').href = j.link;
+      document.getElementById('foundAs').textContent =
+        j.boughtAs ? 'Your order was placed under ' + j.boughtAs + ' — that’s why the other address didn’t work.' : '';
+      step2.style.display = 'none';
+      found.style.display = 'block';
+      found.scrollIntoView({ behavior:'smooth', block:'center' });
+      return;
+    }
+    if (j.reason === 'throttled') {
+      show2('bad', 'We’ve tried that a few times now. Please email info@parentingadultchildrentoday.com and a real person will get you reading today.');
+    } else {
+      show2('bad', 'We still couldn’t match that. Card orders are sometimes under a partner’s name — or just email info@parentingadultchildrentoday.com and we’ll find it for you today.');
+    }
+  } catch (e) {
+    show2('bad', 'We couldn’t reach our server just now. Please try once more, or email info@parentingadultchildrentoday.com.');
+  }
+  go2.disabled = false; go2.textContent = 'Find my book';
+}
+go2.addEventListener('click', findByCard);
+l4.addEventListener('keydown', e => { if (e.key === 'Enter') findByCard(); });
 </script>
 </body>
 </html>
