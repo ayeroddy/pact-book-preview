@@ -27,8 +27,8 @@
 
   /* header above Q1 */
   .head{padding:40px 0 8px;text-align:center}
-  .kicker{font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:16px}
-  .head h1{font-size:clamp(48px,8.6vw,78px);line-height:1.04;letter-spacing:-.015em;margin:0 auto 24px;max-width:720px}
+  .kicker{font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:22px}
+  .head h1{font-size:clamp(48px,8.6vw,78px);line-height:1.04;letter-spacing:-.015em;margin:0 auto 34px;max-width:720px}
   .head h1 em{font-style:normal;background:linear-gradient(transparent 56%,var(--yellow) 56% 90%,transparent 90%);padding:0 .08em;margin:0 -.08em}
   .head p{font-size:24px;line-height:1.5;max-width:580px;margin:0 auto}
 
@@ -91,15 +91,14 @@
   .consent{display:flex;gap:12px;align-items:flex-start;font-size:16.5px;color:var(--muted);margin-top:14px;line-height:1.5}
   .consent input{width:24px;height:24px;accent-color:var(--ink);flex:0 0 20px;margin-top:3px}
   .err{color:var(--red);font-size:17px;margin-top:8px;display:none}
+  .fine{font-size:14px;line-height:1.5;color:var(--muted);text-align:center;margin:14px 0 0}
 
-  footer{background:var(--cream);border-top:1.5px solid var(--cream-deep);color:var(--muted);text-align:center;font-size:17px;padding:30px 20px 60px;line-height:1.7;margin-top:48px}
-  footer .fine{font-size:15px;max-width:640px;margin:12px auto 0}
   @media(max-width:560px){
     /* phone: bigger type, less air — side gutters in, vertical padding out; Q1 sits on the first screen */
     .wrap{padding:0 12px}
     .top{padding:8px 0}.mark{width:28px;height:28px}.lockup{font-size:15.5px;gap:8px}
-    .head{padding:22px 0 2px}.kicker{font-size:12.5px;letter-spacing:.08em;margin-bottom:6px}
-    .head h1{font-size:46px;line-height:1.02;margin-bottom:14px}.head p{font-size:20px;line-height:1.4}
+    .head{padding:22px 0 2px}.kicker{font-size:12.5px;letter-spacing:.08em;margin-bottom:14px}
+    .head h1{font-size:46px;line-height:1.02;margin-bottom:24px}.head p{font-size:20px;line-height:1.4}
     .progress{padding:8px 0 6px}.progress .meta{font-size:12.5px;margin-bottom:5px}.bar{height:8px}
     .card{padding:16px 14px;border-radius:16px;margin:10px 0}
     .qtitle{font-size:26px;line-height:1.14;margin-bottom:4px}.qhint{font-size:16.5px;margin-bottom:10px}
@@ -109,7 +108,7 @@
     .inter p{font-size:19.5px;line-height:1.5}.inter .qtitle{font-size:26px}
     .calc{padding:16px 0}.ticks li{font-size:18px;padding:6px 0 6px 32px}
     .row2{gap:10px}.field{margin-top:10px}input[type=text],input[type=email],input[type=tel]{padding:14px 16px;font-size:19px}
-    footer{padding:18px 14px 40px;font-size:15px;margin-top:24px}footer .fine{font-size:13.5px}
+    .fine{font-size:13px}
   }
 </style>
 <script>
@@ -185,15 +184,12 @@ document.head.appendChild(s);
       <label class="consent"><input type="checkbox" id="g-sms"> Text me about my result and occasional messages from Catherine's team. Message and data rates may apply. Reply STOP to opt out.</label>
       <button class="btn" type="submit" id="g-btn" style="margin-top:18px">Show my result</button>
       <div class="err" id="g-err">Please enter your first name and a valid email.</div>
-      <div class="trust">🔒 Private. No spam, ever. Educational content, not therapy.</div>
+      <div class="trust">🔒 Private. No spam, ever.</div>
+      <p class="fine">This quiz is educational, not therapy or a diagnosis, and no outcome is promised. Where a child is keeping distance to protect themselves from genuine harm, please let that boundary be honored, with a licensed professional alongside you.</p>
     </form>
   </div>
 </div>
 
-<footer>
-  © 2026 Parenting Adult Children Today · info@parentingadultchildrentoday.com
-  <div class="fine">This quiz is educational and reflects patterns observed across many families in clinical practice. It is not therapy, not a diagnosis, and not a substitute for care from a licensed mental-health professional — especially where abuse, addiction, or mental illness is present in any part of the family. Where a child is keeping distance to protect themselves from genuine harm, please let that boundary be honored on their terms, with a licensed professional alongside you. Reconciliation depends on many factors, including the choices of others; no outcome is promised or implied.</div>
-</footer>
 
 <script>
 const API = 'https://pact-funnel-api.alex-f42.workers.dev';
