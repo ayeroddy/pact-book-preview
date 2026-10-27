@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Result — What Kind of Silence Is This? | Welcome Home</title>
+<title>Your Result: The Standoff — What Kind of Silence Is This?</title>
 <meta name="robots" content="noindex">
 <meta name="description" content="Catherine Taylor Hickem's step-by-step method for parents of estranged adult children. Instant ebook + audiobook, $9. Yours to keep.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -268,8 +268,8 @@ document.head.appendChild(s);
 <!-- ======================= SILENCE QUIZ RESULT (Oct 2026) =======================
      Personalised block rendered by quiz-result.js from localStorage.wh_quiz (same
      device) or GET /quiz-result?r= (opaque id — nothing about the result rides in the
-     URL). The unchanged Book VSL sales page follows. Role Trap mode hides the book
-     body and shows the workshop CTA instead. ======================================== -->
+     URL). The pattern is fixed per page by window.QUIZ_PATTERN (build-quiz-pages.py).
+     The unchanged Book VSL sales page follows. ====================================== -->
 <style>
   .qr-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px 26px;margin:22px auto 6px;max-width:860px;
     box-shadow:0 14px 40px -18px rgba(42,18,89,.35)}
@@ -292,7 +292,6 @@ document.head.appendChild(s);
   .qr-sec li::before{content:"✕";position:absolute;left:4px;color:#b5352a;font-weight:800}
   .qr-first{background:#fbf1ef;border:1px solid #efd8d3;border-radius:10px;padding:12px 16px;margin:0}
   .qr-timeline{font-style:italic;color:#555}
-  .qr-role .qr-h{margin-top:4px}
   @media(max-width:600px){.qr-card{padding:22px 18px;border-radius:14px}}
 </style>
 <div class="wrap" id="qr" hidden>
@@ -324,23 +323,7 @@ document.head.appendChild(s);
     </div>
   </div>
 </div>
-<div class="wrap" id="qr-fallback" hidden>
-  <div class="qr-card">
-    <div class="qr-eyebrow">Your result</div>
-    <h2 class="qr-h">Your full result is saved on the device where you took the quiz.</h2>
-    <p style="margin:0">Watch the video below first — Catherine explains why the usual moves have not worked, and what works instead. Or <a href="quiz.html" style="color:var(--navy)">take the 2-minute quiz again</a> on this device.</p>
-  </div>
-</div>
-<div class="wrap qr-role" id="qr-role" hidden>
-  <div class="qr-card">
-    <div class="qr-eyebrow">Your result</div>
-    <p class="qr-love">Your love for <b id="qr-role-child">your child</b>: never in question.</p>
-    <h2 class="qr-h">You're in what Catherine calls <em>the Role Trap</em>.</h2>
-    <div id="qr-role-body"></div>
-    <a class="cta-btn qr-cta" id="qr-role-cta" href="https://parentingadultstoday.com/thrive?src=quiz-role">Save my seat at the free live workshop →</a>
-    <p class="qr-under">Free · live on Zoom with Catherine Hickem, LCSW · built for parents who still talk, but feel the distance</p>
-  </div>
-</div>
+<script>window.QUIZ_PATTERN = "The Standoff";</script>
 <script src="quiz-result.js"></script>
 
 <!-- ======================= PRE-HEAD + HEADLINE ======================= -->

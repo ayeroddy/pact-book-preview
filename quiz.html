@@ -263,34 +263,9 @@ const ESTRANGED = [
       {t:'Knowing I’ve done everything I can', v:'done-everything'},
     ] },
 ];
-// Strained track — four short questions from the live workshop. Options drafted for
-// Catherine's review; the proposal names only the topics.
-const STRAINED = [
-  { id:'s_decision', title:'When {they} {has} shared a decision you didn’t agree with, what usually happened?',
-    opts:[
-      {t:'I said what I thought, as kindly as I could', v:'said-it'},
-      {t:'I asked questions until {they} saw my point', v:'questions'},
-      {t:'I kept it to myself, but it showed', v:'kept-it-showed'},
-      {t:'I let it go', v:'let-go'},
-    ] },
-  { id:'s_advice', title:'How often do you give advice {they} didn’t ask for?',
-    opts:[ {t:'Most conversations', v:'most'}, {t:'Now and then', v:'sometimes'}, {t:'Rarely', v:'rarely'}, {t:'Honestly, I’m not sure', v:'unsure'} ] },
-  { id:'s_holiday', title:'Did the last holiday go the way you hoped?',
-    opts:[ {t:'Yes', v:'yes'}, {t:'Mostly', v:'mostly'}, {t:'Not really', v:'not-really'}, {t:'We didn’t spend it together', v:'apart'} ] },
-  { id:'s_hoping', title:'Is there anything in {their} life you’re quietly hoping changes?', hint:'Tick all that fit, then continue.', multi:true,
-    opts:[
-      {t:'{Their} partner', v:'partner'},
-      {t:'{Their} faith', v:'faith'},
-      {t:'Money choices', v:'money'},
-      {t:'How {they} {works} and {loves} — the life {they} {has} built', v:'life'},
-      {t:'How {they} parent', v:'parenting'},
-      {t:'Nothing — I just miss being close', v:'nothing', excl:true},
-    ] },
-];
-const STRAINED_LABELS = {
-  s_decision:'When they shared a decision you disagreed with', s_advice:'Advice they did not ask for',
-  s_holiday:'Did the last holiday go the way you hoped', s_hoping:'Quietly hoping changes',
-};
+// Q2 "we still talk, but it's tense" = the live workshop's audience. They go straight to
+// registration; the webinar was written for them.
+const THRIVE = 'https://parentingadultstoday.com/thrive';
 
 /* ───────────── engine ───────────── */
 const state = { i:0, list:COMMON.concat(ESTRANGED), answers:{}, started:false };
@@ -312,8 +287,7 @@ function render(){
   const realQs = state.list.filter(x=>!x.inter).length;
   const answered = state.list.slice(0,state.i).filter(x=>!x.inter).length;
   $('head').hidden = state.i > 0;
-  // The total is unknown until Q2 picks the track (12 estranged / 6 strained) — show none before that.
-  $('qcount').textContent = q.inter ? 'A note from Catherine' : `Question ${answered+1}${state.answers.contact ? ` of ${realQs}` : ''}`;
+  $('qcount').textContent = q.inter ? 'A note from Catherine' : `Question ${answered+1} of ${realQs}`;
   const pct = Math.round(answered/realQs*100);
   $('qpct').textContent = pct + '%';
   $('qbar').style.width = Math.max(pct,4) + '%';
@@ -358,7 +332,11 @@ function pick(idx){
   const q = state.list[state.i];
   state.answers[q.id] = q.opts[idx].v;
   firstAnswer();
-  if (q.id === 'contact') state.list = COMMON.concat(state.answers.contact === 'strained' ? STRAINED : ESTRANGED);
+  if (q.id === 'contact' && q.opts[idx].v === 'strained'){
+    const p = carry(); p.set('src', 'quiz-' + SRC);
+    location.href = THRIVE + '?' + p.toString();
+    return;
+  }
   next();
 }
 function pickMulti(){
@@ -376,9 +354,7 @@ function back(){ if(state.i>0){ state.i--; render(); window.scrollTo({top:0}); }
 
 /* ───────────── calculating → gate ───────────── */
 function showCalc(){
-  const strained = state.answers.contact === 'strained';
-  const ticks = strained ? ['Reading your answers', 'Finding your role', 'Preparing your result']
-                         : ['Matching your pattern', 'Reading your silence', 'Checking your Safety Account'];
+  const ticks = ['Matching your pattern', 'Reading your silence', 'Checking your Safety Account'];
   $('ticks').innerHTML = ticks.map(t=>`<li>${t}</li>`).join('');
   $('quiz').hidden = true; $('calc').hidden = false; window.scrollTo({top:0});
   const lis = $('ticks').querySelectorAll('li');
@@ -402,16 +378,14 @@ async function submitGate(e){
 
   const res = QuizScore.score(state.answers);
   const r = (crypto.randomUUID ? crypto.randomUUID() : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));
-  const result = { r, first:fname, who:res.who, track:res.track, pattern:res.pattern, silence:res.silence,
+  const result = { r, first:fname, who:res.who, pattern:res.pattern, silence:res.silence,
     safety:res.safety, band:res.band, goal:state.answers.goal || '', ts:Date.now() };
   try{ localStorage.setItem('wh_quiz', JSON.stringify(result)); }catch(err){}
 
   if (window.LIVE){
-    const strained = {};
-    if (res.track === 'strained') STRAINED.forEach(q=>{ const a = state.answers[q.id]; if (a != null) strained[STRAINED_LABELS[q.id]] = Array.isArray(a) ? a.join(', ') : a; });
     const payload = { r, first_name:fname, email, phone:$('g-phone').value.trim() || undefined, sms_consent:$('g-sms').checked,
-      src:SRC, track:res.track, who:res.who, pattern:res.pattern.name, silence:res.silence, safety:res.safety,
-      band:res.band ? res.band.label : null, fields:res.fields, strained,
+      src:SRC, who:res.who, pattern:res.pattern.name, silence:res.silence, safety:res.safety,
+      band:res.band ? res.band.label : null, fields:res.fields,
       utm: Object.fromEntries([...QS].filter(([k])=>/^utm_/i.test(k))) };
     // Fail-open: the lead call gets ~2.5s, then the result shows regardless.
     const ctl = new AbortController(); const timer = setTimeout(()=>ctl.abort(), 2500);
@@ -420,8 +394,9 @@ async function submitGate(e){
     try{ fbq('track','Lead',{content_name:'Silence Quiz'},{eventID:r}); }catch(err){}
     try{ navigator.sendBeacon(API+'/pv','quiz-gate'); }catch(err){}
   }
+  // One page per pattern (silence-<slug>.html); score, silence and name come from storage, never the URL.
   const p = carry(); p.set('r', r);
-  location.href = 'result.html?' + p.toString();
+  location.href = 'silence-' + res.pattern.slug + '.html?' + p.toString();
   return false;
 }
 

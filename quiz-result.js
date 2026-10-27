@@ -1,18 +1,18 @@
-/* result.html — renders the "What Kind of Silence Is This?" result block.
-   Data: localStorage.wh_quiz (written by quiz.html on the same device) or, on the live
-   domain, GET /quiz-result?r=<opaque id>. Pattern / silence copy is condensed from
-   Welcome Home ch. 3 (patterns) and ch. 4 (silences); the Role Trap copy from the
-   workshop belief ("they're not distant, they're performing"). Catherine reviews all
-   of it before launch. */
+/* silence-<pattern>.html — renders the "What Kind of Silence Is This?" result block.
+   The page itself fixes the pattern (window.QUIZ_PATTERN, set by build-quiz-pages.py).
+   Score, silence and first name come from localStorage.wh_quiz (written by quiz.html on
+   the same device) or, on the live domain, GET /quiz-result?r=<opaque id> — never the URL.
+   Copy is condensed from Welcome Home ch. 3 (patterns) and ch. 4 (silences); Catherine
+   reviews all of it before launch. */
 (function () {
   const API = 'https://pact-funnel-api.alex-f42.workers.dev';
   const LIVE = /parentingadultstoday\.com$/.test(location.hostname);
   const QS = new URLSearchParams(location.search);
 
   const WHO = {
-    son:      { they:'he',   them:'him',  their:'his',   themselves:'himself',    child:'your son',      is:'is',  has:'has',  wants:'wants', lives:'lives', finds:'finds', looks:'looks', gives:'gives' },
-    daughter: { they:'she',  them:'her',  their:'her',   themselves:'herself',    child:'your daughter', is:'is',  has:'has',  wants:'wants', lives:'lives', finds:'finds', looks:'looks', gives:'gives' },
-    children: { they:'they', them:'them', their:'their', themselves:'themselves', child:'your children', is:'are', has:'have', wants:'want',  lives:'live',  finds:'find',  looks:'look',  gives:'give'  },
+    son:      { they:'he',   them:'him',  their:'his',   themselves:'himself',    child:'your son',      is:'is',  has:'has',  wants:'wants', lives:'lives', finds:'finds', looks:'looks' },
+    daughter: { they:'she',  them:'her',  their:'her',   themselves:'herself',    child:'your daughter', is:'is',  has:'has',  wants:'wants', lives:'lives', finds:'finds', looks:'looks' },
+    children: { they:'they', them:'them', their:'their', themselves:'themselves', child:'your children', is:'are', has:'have', wants:'want',  lives:'live',  finds:'find',  looks:'look'  },
   };
   function pron(text, who) {
     const p = WHO[who] || WHO.children;
@@ -78,13 +78,8 @@
       time: 'Honest timeline: years. The work is to be worth discovering when contact becomes thinkable. Catherine’s own father got his opening at year twenty.' },
   };
 
-  const ROLE_TRAP = [
-    'You still talk. That is a real advantage — and it is also why the usual advice doesn’t fit you. Nothing is broken here. The trouble is that a role never changed: you kept managing — advising, checking, quietly hoping something in {their} life turns out differently — long after {they} became an adult who needed a trusted ally instead.',
-    '{They} can feel every bit of it. So {they} {gives} you a careful version of {themselves}: pleasant, short, guarded. That version is tiring to keep up, so {they} ration it. The rationing is what you are feeling as distance. {They} {is} not pulling away from you. {They} {is} protecting {themselves} from a scorecard you didn’t know you were holding.',
-    'Catherine’s free live workshop is built for exactly this: how to step out of the manager’s chair, find the conditions you didn’t know you were attaching to your love, and become the person {they} can be fully {themselves} around again.',
-  ];
-
   const BAND_LABEL = { overdrawn: 'Overdrawn', 'running-low': 'Running Low', rebuilding: 'Rebuilding', steady: 'Steady' };
+  const PAGE_PATTERN = PATTERNS[window.QUIZ_PATTERN] ? window.QUIZ_PATTERN : null;
 
   function carry() {
     const out = new URLSearchParams();
@@ -97,42 +92,24 @@
     const extra = carry();
     if (extra) document.querySelectorAll('a[href^="checkout.html"]').forEach(a => { a.href += (a.href.includes('?') ? '&' : '?') + extra; });
 
-    if (!d) { document.getElementById('qr-fallback').hidden = false; return; }
-    const who = WHO[d.who] ? d.who : 'children';
-    const patName = typeof d.pattern === 'string' ? d.pattern : (d.pattern && d.pattern.name) || '';
-    const first = (d.first || '').trim();
-    const childLabel = first ? pron('{child}', who) : pron('{child}', who);
+    const who = d && WHO[d.who] ? d.who : null;
+    const first = d && d.first ? String(d.first).trim() : '';
+    const dataPat = d ? (typeof d.pattern === 'string' ? d.pattern : d.pattern && d.pattern.name) : null;
+    const pName = PAGE_PATTERN || (PATTERNS[dataPat] ? dataPat : 'The Slow Fade');
+    const P = PATTERNS[pName];
+    const S = d && SILENCES[d.silence] ? SILENCES[d.silence] : null;
+    const safety = d && Number.isInteger(d.safety) ? d.safety : null;
+    const bandLabel = d ? (typeof d.band === 'string' ? d.band : (d.band && (d.band.label || BAND_LABEL[d.band.key])) || '') : '';
 
-    if (d.track === 'strained' || patName === 'The Role Trap') {
-      const keep = new Set(['helpbar', 'logobar']);
-      document.querySelectorAll('body > *').forEach(el => {
-        const tag = el.tagName.toLowerCase();
-        if (tag === 'script' || tag === 'style' || tag === 'footer' || el.id === 'qr-role') return;
-        if ([...el.classList].some(c => keep.has(c))) return;
-        el.hidden = true; el.style.display = 'none'; // the VSL's own display rules outrank [hidden]
-      });
-      text('qr-role-child', childLabel);
-      document.getElementById('qr-role-body').innerHTML = ROLE_TRAP.map(p => '<p>' + pron(p, who) + '</p>').join('');
-      const cta = document.getElementById('qr-role-cta');
-      if (extra) cta.href += '&' + extra;
-      document.getElementById('qr-role').hidden = false;
-      document.title = 'Your Result — The Role Trap | Catherine Hickem';
-      return;
-    }
-
-    const P = PATTERNS[patName] || PATTERNS['The Slow Fade'];
-    const pName = PATTERNS[patName] ? patName : 'The Slow Fade';
-    const S = SILENCES[d.silence] || null;
-    const safety = Number.isInteger(d.safety) ? d.safety : null;
-    const bandLabel = typeof d.band === 'string' ? d.band : (d.band && (d.band.label || BAND_LABEL[d.band.key])) || '';
-
-    text('qr-child', childLabel);
+    text('qr-child', who ? pron('{child}', who) : 'your child');
     if (safety != null) {
       text('qr-score', String(safety));
       text('qr-band', bandLabel);
       document.getElementById('qr-fill').style.left = Math.max(2, Math.min(98, safety)) + '%';
     } else {
-      document.querySelectorAll('.qr-score, .qr-bar, .qr-bands, .qr-note').forEach(el => { el.hidden = true; });
+      // No stored result on this device (e.g. a link opened elsewhere): the pattern still reads.
+      document.querySelectorAll('.qr-score, .qr-bar, .qr-bands').forEach(el => { el.hidden = true; });
+      document.querySelector('.qr-note').textContent = 'Your Safety Account score and your silence are saved on the device where you took the quiz. Your pattern is below.';
     }
     const line = (first ? first + ', your' : 'Your') + ' family is in ' + pName.replace(/^The /, 'the ') + ' pattern' +
       (S ? ', with ' + S.name + '.' : '.');

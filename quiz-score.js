@@ -101,18 +101,8 @@
     if (situation.includes('addiction-mh')) base.tags.push('quiz-addiction-mh');
     if (situation.includes('spouse-split')) base.tags.push('quiz-spouse-split');
 
-    if (a.contact === 'strained') {
-      base.track = 'strained';
-      base.pattern = { key: 'role-trap', slug: 'role-trap', name: 'The Role Trap' };
-      base.silence = null; base.safety = null; base.band = null;
-      base.fields['Quiz Pattern'] = base.pattern.name;
-      base.fields['Quiz Situation'] = situation.join(', ');
-      base.tags.push('quiz-track-strained', 'quiz-pattern-role-trap');
-      return base;
-    }
-
+    // Q2 "still talk but tense" never reaches here — quiz.html sends them to the workshop.
     const pk = pattern(a), sil = silence(a), sa = safetyScore(a), b = band(sa);
-    base.track = 'estranged';
     base.pattern = Object.assign({ key: pk }, PATTERNS[pk]);
     base.silence = sil;
     base.safety = sa;
