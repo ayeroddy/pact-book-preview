@@ -7,81 +7,94 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--purple:#381876;--purple-deep:#2a1259;--peri:#60A3D9;--gold:#C9A227;--gold-deep:#a5811a;
-    --ink:#2e2740;--soft:#6f6884;--cream:#faf7f1;--line:#eae4d8;--green:#2E7D32;--red:#b5352a;
-    --serif:'Playfair Display',Georgia,serif;--sans:'Poppins',-apple-system,Helvetica,sans-serif}
+  /* Summit brand kit (pact/summit): cream ground, ink borders, blue progress, yellow buttons with the arrow. */
+  :root{--cream:#f3eee2;--cream-deep:#e9e2d0;--blue:#0070d2;--blue-deep:#0057ad;--ink:#0d0d0d;--body:#26241f;
+    --yellow:#ffe640;--muted:#5d594f;--green:#1e7e34;--red:#b5352a;
+    --serif:'Bricolage Grotesque','Arial Black',Arial,sans-serif;--sans:'Atkinson Hyperlegible Next',Verdana,Arial,sans-serif}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:var(--sans);color:var(--ink);background:var(--cream);font-size:19px;line-height:1.6}
+  body{font-family:var(--sans);color:var(--body);background:var(--cream);font-size:19px;line-height:1.55;-webkit-font-smoothing:antialiased}
   .wrap{max-width:680px;margin:0 auto;padding:0 20px}
-  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:14px 0;text-align:center;
-    font-family:var(--serif);font-weight:600;color:var(--purple);font-size:18px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px 30px;margin:26px 0;
-    box-shadow:0 10px 34px rgba(56,24,118,.08)}
-  .btn{display:block;width:100%;background:linear-gradient(180deg,#d9b34a,var(--gold) 60%,var(--gold-deep));color:#33270a;
-    font-weight:700;font-size:21px;text-align:center;padding:20px;border-radius:999px;border:0;cursor:pointer;
-    font-family:var(--sans);box-shadow:0 8px 20px rgba(201,162,39,.35);transition:transform .12s;text-decoration:none}
-  .btn:hover{transform:translateY(-2px)}
-  .btn[disabled]{opacity:.6;pointer-events:none}
-  .trust{text-align:center;font-size:14.5px;color:var(--soft);margin-top:14px}
+  ::selection{background:var(--yellow);color:var(--ink)}
   [hidden]{display:none !important}
+  h1,h2{font-family:var(--serif);font-weight:800;color:var(--ink);line-height:1.04;letter-spacing:-.025em;text-wrap:balance}
+
+  /* top bar + lockup */
+  .top{padding:16px 0;border-bottom:1.5px solid var(--cream-deep);background:var(--cream)}
+  .lockup{display:inline-flex;align-items:center;gap:12px;font-family:var(--serif);font-weight:800;font-size:19px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+  .mark{width:38px;height:38px;flex:none;display:block}
 
   /* header above Q1 */
-  .head{text-align:center;padding:30px 0 6px}
-  .head .eyebrow{font-size:13px;letter-spacing:.16em;font-weight:700;text-transform:uppercase;color:var(--gold-deep);margin-bottom:10px}
-  .head h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,5.4vw,40px);line-height:1.2;color:var(--purple);margin-bottom:10px}
-  .head p{color:var(--soft);font-size:17.5px;max-width:560px;margin:0 auto}
+  .head{padding:30px 0 6px}
+  .kicker{font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);margin-bottom:14px}
+  .head h1{font-size:clamp(38px,7vw,58px);margin-bottom:14px}
+  .head h1 em{font-style:normal;background:linear-gradient(transparent 56%,var(--yellow) 56% 90%,transparent 90%);padding:0 .08em;margin:0 -.08em}
+  .head p{font-size:19px;max-width:560px}
 
   /* progress */
   .progress{position:sticky;top:0;z-index:5;background:var(--cream);padding:14px 0 10px}
-  .progress .meta{display:flex;justify-content:space-between;font-size:14px;color:var(--soft);margin-bottom:7px}
-  .bar{height:8px;background:#e9e2d4;border-radius:999px;overflow:hidden}
-  .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--peri),var(--purple));border-radius:999px;transition:width .35s ease}
+  .progress .meta{display:flex;justify-content:space-between;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .bar{height:10px;background:var(--cream-deep);border-radius:999px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0%;background:var(--blue);border-radius:999px;transition:width .35s ease}
 
-  /* questions */
-  .qtitle{font-family:var(--serif);font-weight:600;font-size:clamp(22px,4vw,27px);line-height:1.3;color:var(--purple);margin-bottom:8px}
-  .qhint{font-size:16px;color:var(--soft);margin-bottom:20px}
+  /* cards + questions */
+  .card{background:#fff;border:2.5px solid var(--ink);border-radius:24px;padding:30px 28px;margin:22px 0;box-shadow:0 24px 40px -28px rgba(0,0,0,.5)}
+  .qtitle{font-family:var(--serif);font-weight:700;font-size:clamp(24px,4.4vw,30px);line-height:1.15;letter-spacing:-.02em;color:var(--ink);margin-bottom:8px;text-wrap:balance}
+  .qhint{font-size:16.5px;color:var(--muted);margin-bottom:18px}
   .opts{display:flex;flex-direction:column;gap:12px}
-  .opt{display:flex;align-items:center;gap:14px;padding:18px 20px;border:2px solid var(--line);border-radius:14px;
-    background:#fdfcf9;cursor:pointer;font-size:18.5px;line-height:1.45;transition:all .12s;min-height:58px}
-  .opt:hover{border-color:var(--peri)}
-  .opt.sel{border-color:var(--purple);background:#f4effc}
-  .opt input{width:22px;height:22px;accent-color:var(--purple);flex:0 0 22px}
-  .backlink{display:inline-block;margin-top:18px;font-size:15.5px;color:var(--soft);cursor:pointer;background:none;border:0;font-family:var(--sans);text-decoration:underline}
+  .opt{display:flex;align-items:center;gap:14px;padding:16px 18px;border:2px solid var(--cream-deep);border-radius:16px;
+    background:var(--cream);cursor:pointer;font-size:18.5px;line-height:1.4;min-height:58px;color:var(--ink);transition:border-color .12s,background .12s}
+  .opt:hover{border-color:var(--blue)}
+  .opt.sel{background:var(--yellow);border-color:var(--ink)}
+  .opt input{width:22px;height:22px;accent-color:var(--ink);flex:0 0 22px}
+  .backlink{display:inline-block;margin-top:18px;font-size:15.5px;color:var(--muted);cursor:pointer;background:none;border:0;font-family:var(--sans);text-decoration:underline}
   .fade-in{animation:fadein .3s ease}
   @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  @media(prefers-reduced-motion:reduce){.fade-in{animation:none}}
+  @media(prefers-reduced-motion:reduce){.fade-in{animation:none}.btn,.btn::after{transition:none}}
 
-  /* education screen */
-  .inter{background:linear-gradient(170deg,var(--purple),var(--purple-deep));color:#fff;text-align:center}
+  /* the button: yellow pill, ink arrow circle */
+  .btn{display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;font-family:var(--sans);font-weight:700;font-size:21px;line-height:1.15;
+    text-align:left;padding:10px 10px 10px 28px;border-radius:999px;background:var(--yellow);color:var(--ink);border:0;cursor:pointer;text-decoration:none;
+    box-shadow:0 16px 30px -14px rgba(0,0,0,.6);transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s cubic-bezier(.16,1,.3,1)}
+  .btn::after{content:"";flex:0 0 52px;height:52px;border-radius:50%;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffe640' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/24px 24px no-repeat;transition:transform .3s cubic-bezier(.16,1,.3,1)}
+  .btn:hover{transform:translateY(-3px);box-shadow:0 24px 38px -16px rgba(0,0,0,.65)}
+  .btn:hover::after{transform:translateX(5px)}
+  .btn:focus-visible{outline:4px solid var(--ink);outline-offset:4px}
+  .btn[disabled]{opacity:.6;pointer-events:none}
+  .trust{text-align:center;font-size:14.5px;color:var(--muted);margin-top:14px}
+
+  /* education screen: the summit's blue band */
+  .inter{background:var(--blue);border-color:var(--blue-deep);color:#fff;text-align:center}
   .inter .qtitle{color:#fff}
-  .inter p{color:#D9CFF0;font-size:18.5px;max-width:540px;margin:0 auto 14px}
+  .inter p{color:#fff;font-size:18.5px;max-width:540px;margin:0 auto 14px}
+  .inter p b{background:var(--yellow);color:var(--ink);padding:0 .22em;border-radius:4px}
   .inter .btn{max-width:380px;margin:22px auto 0}
 
   /* calculating */
   .calc{text-align:center;padding:30px 0}
-  .ring{width:74px;height:74px;border-radius:50%;border:6px solid #e9e2d4;border-top-color:var(--purple);margin:0 auto 22px;animation:spin 1s linear infinite}
+  .ring{width:74px;height:74px;border-radius:50%;border:6px solid var(--cream-deep);border-top-color:var(--blue);margin:0 auto 22px;animation:spin 1s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   .ticks{list-style:none;max-width:320px;margin:18px auto 0;text-align:left}
-  .ticks li{padding:8px 0 8px 34px;position:relative;color:#b9b3c4;font-size:17px;transition:color .3s}
-  .ticks li::before{content:"";position:absolute;left:4px;top:13px;width:16px;height:16px;border-radius:50%;border:2px solid #d9d3e2}
+  .ticks li{padding:8px 0 8px 34px;position:relative;color:#b7b1a3;font-size:17px;transition:color .3s}
+  .ticks li::before{content:"";position:absolute;left:4px;top:13px;width:16px;height:16px;border-radius:50%;border:2px solid var(--cream-deep)}
   .ticks li.on{color:var(--ink)}
-  .ticks li.on::before{content:"✓";border-color:var(--green);background:var(--green);color:#fff;font-size:11px;line-height:16px;text-align:center}
+  .ticks li.on::before{content:"✓";border-color:var(--blue);background:var(--blue);color:#fff;font-size:11px;line-height:16px;text-align:center}
 
   /* gate */
-  input[type=text],input[type=email],input[type=tel]{width:100%;padding:17px 18px;font-size:18px;border:2px solid var(--line);
-    border-radius:12px;font-family:var(--sans);background:#fdfcf9}
-  input:focus{outline:none;border-color:var(--peri)}
+  input[type=text],input[type=email],input[type=tel]{width:100%;padding:16px 18px;font-size:18px;border:2px solid var(--cream-deep);
+    border-radius:14px;font-family:var(--sans);background:var(--cream);color:var(--ink)}
+  input:focus{outline:none;border-color:var(--blue)}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media(max-width:560px){.row2{grid-template-columns:1fr}}
   .field{margin-top:14px}
-  .consent{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;color:var(--soft);margin-top:12px;line-height:1.5}
-  .consent input{width:20px;height:20px;accent-color:var(--purple);flex:0 0 20px;margin-top:3px}
+  .consent{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.5}
+  .consent input{width:20px;height:20px;accent-color:var(--ink);flex:0 0 20px;margin-top:3px}
   .err{color:var(--red);font-size:15px;margin-top:8px;display:none}
 
-  footer{background:var(--purple-deep);color:#BFB2DE;text-align:center;font-size:14px;padding:28px 20px;line-height:1.8;margin-top:48px}
-  footer .fine{font-size:12.5px;color:#8d7fb0;max-width:640px;margin:10px auto 0}
+  footer{background:var(--cream);border-top:1.5px solid var(--cream-deep);color:var(--muted);text-align:center;font-size:14px;padding:30px 20px 60px;line-height:1.7;margin-top:48px}
+  footer .fine{font-size:12.5px;max-width:640px;margin:10px auto 0}
+  @media(max-width:560px){.card{padding:24px 20px;border-radius:20px}.btn{font-size:19px}.mark{width:34px;height:34px}.lockup{font-size:17px}}
 </style>
 <script>
 // Trackers and network calls fire only on the live domain — local preview stays silent.
@@ -122,12 +135,12 @@ document.head.appendChild(s);
 </head>
 <body>
 
-<div class="topbar">Parenting Adult Children Today</div>
+<div class="top"><div class="wrap"><span class="lockup"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#0070d2"/><path d="M25 53h20l9 7H16z" fill="#ffe640" opacity=".45"/><rect x="25" y="12" width="20" height="41" fill="#ffe640"/><path d="M25 12 13 17v40l12-4z" fill="#f3eee2"/><circle cx="16.5" cy="36" r="1.7" fill="#0d0d0d"/></svg>Parenting Adult Children Today</span></div></div>
 
 <div class="wrap" id="quiz">
   <div class="head" id="head">
-    <div class="eyebrow">The 2-minute quiz · from Catherine Hickem, LCSW</div>
-    <h1>What Kind of Silence Is This?</h1>
+    <div class="kicker">The 2-minute quiz · from Catherine Hickem, L.C.S.W.</div>
+    <h1>What kind of <em>silence</em> is this?</h1>
     <p>Find out which of the six estrangement patterns your family is in, and the one step that comes first for yours.</p>
   </div>
   <div class="progress"><div class="meta"><span id="qcount"></span><span id="qpct"></span></div><div class="bar"><i id="qbar"></i></div></div>
