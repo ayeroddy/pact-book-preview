@@ -64,12 +64,12 @@
   .btn[disabled]{opacity:.6;pointer-events:none}
   .trust{text-align:center;font-size:14.5px;color:var(--muted);margin-top:14px}
 
-  /* education screen: the summit's blue band */
-  .inter{background:var(--blue);border-color:var(--blue-deep);color:#fff;text-align:center}
-  .inter .qtitle{color:#fff}
-  .inter p{color:#fff;font-size:18.5px;max-width:540px;margin:0 auto 14px}
-  .inter p b{background:var(--yellow);color:var(--ink);padding:0 .22em;border-radius:4px}
-  .inter .btn{max-width:380px;margin:22px auto 0}
+  /* education screen: same white card as the questions, dark text, one blue kicker */
+  .inter .kicker{color:var(--blue);margin-bottom:10px}
+  .inter .qtitle{font-size:clamp(26px,4.8vw,32px);margin-bottom:14px}
+  .inter p{font-size:20px;line-height:1.6;color:var(--body);margin:0 0 6px}
+  .inter p b{background:linear-gradient(transparent 56%,var(--yellow) 56% 90%,transparent 90%);color:var(--ink);padding:0 .08em}
+  .inter .btn{margin-top:22px}
 
   /* calculating */
   .calc{text-align:center;padding:30px 0}
@@ -168,7 +168,7 @@ document.head.appendChild(s);
       </div>
       <div class="field"><input type="tel" id="g-phone" placeholder="Mobile (optional)" autocomplete="tel"></div>
       <label class="consent"><input type="checkbox" id="g-sms"> Text me about my result and occasional messages from Catherine's team. Message and data rates may apply. Reply STOP to opt out.</label>
-      <button class="btn" type="submit" id="g-btn" style="margin-top:18px">Show my result →</button>
+      <button class="btn" type="submit" id="g-btn" style="margin-top:18px">Show my result</button>
       <div class="err" id="g-err">Please enter your first name and a valid email.</div>
       <div class="trust">🔒 Private. No spam, ever. Educational content, not therapy.</div>
     </form>
@@ -254,8 +254,8 @@ const ESTRANGED = [
       {t:'Nothing yet', v:'nothing', excl:true},
     ] },
   { inter:true, title:'Here’s why none of that was your fault',
-    body:'Estrangement is a <b style="color:#fff">safety problem</b>. Most of what loving parents try treats it like a communication problem. That’s why letters go unanswered, and why giving space can harden the silence. Two quick checks will show where your Safety Account stands.',
-    btn:'Start the check →' },
+    body:'Estrangement is a <b>safety problem</b>. Most of what loving parents try treats it like a communication problem. That’s why letters go unanswered, and why giving space can harden the silence. Two quick checks will show where your Safety Account stands.',
+    btn:'Start the check' },
   { id:'count', title:'Self-check 1. Open your messages to {them}. In the last 30 days, how many messages, calls, or cards went out from you without an answer?',
     opts:[ {t:'None', v:'none'}, {t:'1 to 3', v:'1-3'}, {t:'4 to 10', v:'4-10'}, {t:'More than 10', v:'10+'} ] },
   { id:'portrait', title:'Self-check 2. Without looking anything up, could you name where {they} {works} now, {their} closest friend, and one thing {they} {loves} right now?',
@@ -306,7 +306,7 @@ function render(){
   $('qbar').style.width = Math.max(pct,4) + '%';
 
   if (q.inter){
-    host.innerHTML = `<div class="card inter fade-in"><div class="qtitle">${q.title}</div><p>${q.body}</p>
+    host.innerHTML = `<div class="card inter fade-in"><div class="kicker">A note from Catherine</div><div class="qtitle">${q.title}</div><p>${q.body}</p>
       <button class="btn" onclick="next()">${q.btn}</button></div>`;
     return;
   }
@@ -318,7 +318,7 @@ function render(){
   host.innerHTML = `<div class="card fade-in">
     <div class="qtitle">${pron(q.title)}</div>${q.hint?`<div class="qhint">${q.hint}</div>`:''}
     <div class="opts">${opts}</div>
-    ${q.multi?`<button class="btn" style="margin-top:20px" onclick="pickMulti()">Continue →</button>`:''}
+    ${q.multi?`<button class="btn" style="margin-top:20px" onclick="pickMulti()">Continue</button>`:''}
     ${state.i>0?`<button class="backlink" onclick="back()">← Back</button>`:''}
   </div>`;
   host.querySelectorAll('.opt input').forEach(inp=>{
