@@ -101,7 +101,10 @@
     if (situation.includes('addiction-mh')) base.tags.push('quiz-addiction-mh');
     if (situation.includes('spouse-split')) base.tags.push('quiz-spouse-split');
 
-    // Q2 "still talk but tense" never reaches here — quiz.html sends them to the workshop.
+    // Q2 "still talk but tense" = the strained track: same questions, same score, but the
+    // result page recommends the live training instead of the book.
+    base.track = a.contact === 'strained' ? 'strained' : 'estranged';
+    if (base.track === 'strained') base.tags.push('quiz-track-strained');
     const pk = pattern(a), sil = silence(a), sa = safetyScore(a), b = band(sa);
     base.pattern = Object.assign({ key: pk }, PATTERNS[pk]);
     base.silence = sil;

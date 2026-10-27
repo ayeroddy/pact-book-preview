@@ -298,9 +298,8 @@ const ESTRANGED = [
       {t:'Knowing I’ve done everything I can', v:'done-everything'},
     ] },
 ];
-// Q2 "we still talk, but it's tense" = the live workshop's audience. They go straight to
-// registration; the webinar was written for them.
-const THRIVE = 'https://parentingadultstoday.com/thrive';
+// Q2 "we still talk, but it's tense" = the strained track. Same questions and capture; their
+// result page recommends Catherine's live training instead of the book.
 
 /* ───────────── engine ───────────── */
 const state = { i:0, list:COMMON.concat(ESTRANGED), answers:{}, started:false };
@@ -367,11 +366,6 @@ function pick(idx){
   const q = state.list[state.i];
   state.answers[q.id] = q.opts[idx].v;
   firstAnswer();
-  if (q.id === 'contact' && q.opts[idx].v === 'strained'){
-    const p = carry(); p.set('src', 'quiz-' + SRC);
-    location.href = THRIVE + '?' + p.toString();
-    return;
-  }
   next();
 }
 function pickMulti(){
@@ -413,13 +407,13 @@ async function submitGate(e){
 
   const res = QuizScore.score(state.answers);
   const r = (crypto.randomUUID ? crypto.randomUUID() : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));
-  const result = { r, first:fname, who:res.who, pattern:res.pattern, silence:res.silence,
+  const result = { r, first:fname, who:res.who, track:res.track, pattern:res.pattern, silence:res.silence,
     safety:res.safety, band:res.band, goal:state.answers.goal || '', ts:Date.now() };
   try{ localStorage.setItem('wh_quiz', JSON.stringify(result)); }catch(err){}
 
   if (window.LIVE){
     const payload = { r, first_name:fname, email, phone:$('g-phone').value.trim() || undefined, sms_consent:$('g-sms').checked,
-      src:SRC, who:res.who, pattern:res.pattern.name, silence:res.silence, safety:res.safety,
+      src:SRC, who:res.who, track:res.track, pattern:res.pattern.name, silence:res.silence, safety:res.safety,
       band:res.band ? res.band.label : null, fields:res.fields,
       utm: Object.fromEntries([...QS].filter(([k])=>/^utm_/i.test(k))) };
     // Fail-open: the lead call gets ~2.5s, then the result shows regardless.

@@ -125,7 +125,32 @@
     } else {
       document.getElementById('qr-silname').closest('.qr-sec').hidden = true;
     }
+    if (d && d.track === 'strained') strainedMode(d, who, S);
     document.getElementById('qr').hidden = false;
+  }
+
+  // Still talking, but tense: the live training fits them, not the book. Same diagnosis on
+  // top; the recommendation and the button change, and the book page underneath is hidden.
+  function strainedMode(d, who, S) {
+    const THRIVE = 'https://parentingadultstoday.com/thrive?src=quiz-strained' + (carry() ? '&' + carry() : '');
+    const silName = S ? S.name : 'a silence that has not hardened';
+    const rec = document.createElement('p');
+    rec.className = 'qr-rec';
+    rec.innerHTML = pron('You still talk to {them}, and that changes the first step. Your silence is <b>' + silName + '</b>, which means the door is open. The fastest help is <b>Catherine\u2019s free live training</b>: how to step out of the manager\u2019s chair before a strained silence hardens into a closed one. Save your seat below.', who);
+    const cta = document.getElementById('qr-cta');
+    cta.before(rec);
+    cta.href = THRIVE;
+    cta.innerHTML = '<span>Save my seat at Catherine\u2019s free live training<small>Free \u00b7 live on Zoom \u00b7 spouses welcome</small></span>';
+    const under = document.querySelector('.qr-under'); if (under) under.textContent = 'No camera, no talking, and no one is told you came.';
+    const mech = document.getElementById('qr-mech');
+    if (mech) mech.innerHTML = 'Every relationship runs on an account of safety. Every contact is a deposit or a withdrawal. While you still talk, every conversation is a chance to make a deposit instead of a withdrawal, and most loving parents do not know which one they are making. <b>That is what the live training teaches.</b> Save your seat above.';
+    document.querySelectorAll('body > *').forEach(el => {
+      const tag = el.tagName.toLowerCase();
+      if (tag === 'script' || tag === 'style' || tag === 'footer' || el.id === 'qr') return;
+      if (el.classList.contains('helpbar') || el.classList.contains('logobar')) return;
+      el.hidden = true; el.style.display = 'none';
+    });
+    document.title = 'Your Result \u2014 Catherine\u2019s Free Live Training';
   }
 
   async function load() {
