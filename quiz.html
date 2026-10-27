@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Kind of Silence Is This? | Catherine Hickem, LCSW</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#381876;--purple-deep:#2a1259;--peri:#60A3D9;--gold:#C9A227;--gold-deep:#a5811a;
+    --ink:#2e2740;--soft:#6f6884;--cream:#faf7f1;--line:#eae4d8;--green:#2E7D32;--red:#b5352a;
+    --serif:'Playfair Display',Georgia,serif;--sans:'Poppins',-apple-system,Helvetica,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);color:var(--ink);background:var(--cream);font-size:19px;line-height:1.6}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:14px 0;text-align:center;
+    font-family:var(--serif);font-weight:600;color:var(--purple);font-size:18px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px 30px;margin:26px 0;
+    box-shadow:0 10px 34px rgba(56,24,118,.08)}
+  .btn{display:block;width:100%;background:linear-gradient(180deg,#d9b34a,var(--gold) 60%,var(--gold-deep));color:#33270a;
+    font-weight:700;font-size:21px;text-align:center;padding:20px;border-radius:999px;border:0;cursor:pointer;
+    font-family:var(--sans);box-shadow:0 8px 20px rgba(201,162,39,.35);transition:transform .12s;text-decoration:none}
+  .btn:hover{transform:translateY(-2px)}
+  .btn[disabled]{opacity:.6;pointer-events:none}
+  .trust{text-align:center;font-size:14.5px;color:var(--soft);margin-top:14px}
+  [hidden]{display:none !important}
+
+  /* header above Q1 */
+  .head{text-align:center;padding:30px 0 6px}
+  .head .eyebrow{font-size:13px;letter-spacing:.16em;font-weight:700;text-transform:uppercase;color:var(--gold-deep);margin-bottom:10px}
+  .head h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,5.4vw,40px);line-height:1.2;color:var(--purple);margin-bottom:10px}
+  .head p{color:var(--soft);font-size:17.5px;max-width:560px;margin:0 auto}
+
+  /* progress */
+  .progress{position:sticky;top:0;z-index:5;background:var(--cream);padding:14px 0 10px}
+  .progress .meta{display:flex;justify-content:space-between;font-size:14px;color:var(--soft);margin-bottom:7px}
+  .bar{height:8px;background:#e9e2d4;border-radius:999px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--peri),var(--purple));border-radius:999px;transition:width .35s ease}
+
+  /* questions */
+  .qtitle{font-family:var(--serif);font-weight:600;font-size:clamp(22px,4vw,27px);line-height:1.3;color:var(--purple);margin-bottom:8px}
+  .qhint{font-size:16px;color:var(--soft);margin-bottom:20px}
+  .opts{display:flex;flex-direction:column;gap:12px}
+  .opt{display:flex;align-items:center;gap:14px;padding:18px 20px;border:2px solid var(--line);border-radius:14px;
+    background:#fdfcf9;cursor:pointer;font-size:18.5px;line-height:1.45;transition:all .12s;min-height:58px}
+  .opt:hover{border-color:var(--peri)}
+  .opt.sel{border-color:var(--purple);background:#f4effc}
+  .opt input{width:22px;height:22px;accent-color:var(--purple);flex:0 0 22px}
+  .backlink{display:inline-block;margin-top:18px;font-size:15.5px;color:var(--soft);cursor:pointer;background:none;border:0;font-family:var(--sans);text-decoration:underline}
+  .fade-in{animation:fadein .3s ease}
+  @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.fade-in{animation:none}}
+
+  /* education screen */
+  .inter{background:linear-gradient(170deg,var(--purple),var(--purple-deep));color:#fff;text-align:center}
+  .inter .qtitle{color:#fff}
+  .inter p{color:#D9CFF0;font-size:18.5px;max-width:540px;margin:0 auto 14px}
+  .inter .btn{max-width:380px;margin:22px auto 0}
+
+  /* calculating */
+  .calc{text-align:center;padding:30px 0}
+  .ring{width:74px;height:74px;border-radius:50%;border:6px solid #e9e2d4;border-top-color:var(--purple);margin:0 auto 22px;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .ticks{list-style:none;max-width:320px;margin:18px auto 0;text-align:left}
+  .ticks li{padding:8px 0 8px 34px;position:relative;color:#b9b3c4;font-size:17px;transition:color .3s}
+  .ticks li::before{content:"";position:absolute;left:4px;top:13px;width:16px;height:16px;border-radius:50%;border:2px solid #d9d3e2}
+  .ticks li.on{color:var(--ink)}
+  .ticks li.on::before{content:"✓";border-color:var(--green);background:var(--green);color:#fff;font-size:11px;line-height:16px;text-align:center}
+
+  /* gate */
+  input[type=text],input[type=email],input[type=tel]{width:100%;padding:17px 18px;font-size:18px;border:2px solid var(--line);
+    border-radius:12px;font-family:var(--sans);background:#fdfcf9}
+  input:focus{outline:none;border-color:var(--peri)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  .field{margin-top:14px}
+  .consent{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;color:var(--soft);margin-top:12px;line-height:1.5}
+  .consent input{width:20px;height:20px;accent-color:var(--purple);flex:0 0 20px;margin-top:3px}
+  .err{color:var(--red);font-size:15px;margin-top:8px;display:none}
+
+  footer{background:var(--purple-deep);color:#BFB2DE;text-align:center;font-size:14px;padding:28px 20px;line-height:1.8;margin-top:48px}
+  footer .fine{font-size:12.5px;color:#8d7fb0;max-width:640px;margin:10px auto 0}
+</style>
+<script>
+// Trackers and network calls fire only on the live domain — local preview stays silent.
+window.LIVE = /parentingadultstoday\.com$/.test(location.hostname);
+</script>
+<!-- Meta Pixel -->
+<script>
+if (window.LIVE) {
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1511568519903735');fbq('init','1387545469584384');
+fbq('track','PageView');
+}
+</script>
+<!-- Hyros Universal Tracking -->
+<script>
+if (window.LIVE) {(function(){
+var s = document.createElement('script');
+s.type = 'text/javascript';
+s.src = "https://215347.t.hyros.com/v1/lst/universal-script?ph=80e0d167794caa546cdc56006c3b29ced01bd1778457b28346daf7acb5660416&tag=!clicked&ref_url=" + encodeURI(document.URL);
+document.head.appendChild(s);
+})();}
+</script>
+<!-- Google tag (gtag.js) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  if (window.LIVE) {
+    var gs=document.createElement('script');gs.async=true;gs.src='https://www.googletagmanager.com/gtag/js?id=AW-18385634480';document.head.appendChild(gs);
+    gtag('js', new Date());
+    gtag('config', 'AW-18385634480');
+  }
+</script>
+<script src="quiz-score.js"></script>
+</head>
+<body>
+
+<div class="topbar">Parenting Adult Children Today</div>
+
+<div class="wrap" id="quiz">
+  <div class="head" id="head">
+    <div class="eyebrow">The 2-minute quiz · from Catherine Hickem, LCSW</div>
+    <h1>What Kind of Silence Is This?</h1>
+    <p>Find out which of the six estrangement patterns your family is in, and the one step that comes first for yours.</p>
+  </div>
+  <div class="progress"><div class="meta"><span id="qcount"></span><span id="qpct"></span></div><div class="bar"><i id="qbar"></i></div></div>
+  <div id="qhost"></div>
+</div>
+
+<!-- ─── CALCULATING ─── -->
+<div class="wrap" id="calc" hidden>
+  <div class="card calc fade-in">
+    <div class="ring"></div>
+    <div class="qtitle" style="text-align:center">Reading your answers…</div>
+    <ul class="ticks" id="ticks"></ul>
+  </div>
+</div>
+
+<!-- ─── GATE ─── -->
+<div class="wrap" id="gate" hidden>
+  <div class="card fade-in">
+    <div class="qtitle">Your result is ready.</div>
+    <p class="qhint">Enter your first name and email to see it.</p>
+    <form onsubmit="return submitGate(event)" novalidate>
+      <div class="row2">
+        <input type="text" id="g-fname" placeholder="First name" required autocomplete="given-name">
+        <input type="email" id="g-email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="field"><input type="tel" id="g-phone" placeholder="Mobile (optional)" autocomplete="tel"></div>
+      <label class="consent"><input type="checkbox" id="g-sms"> Text me about my result and occasional messages from Catherine's team. Message and data rates may apply. Reply STOP to opt out.</label>
+      <button class="btn" type="submit" id="g-btn" style="margin-top:18px">Show my result →</button>
+      <div class="err" id="g-err">Please enter your first name and a valid email.</div>
+      <div class="trust">🔒 Private. No spam, ever. Educational content, not therapy.</div>
+    </form>
+  </div>
+</div>
+
+<footer>
+  © 2026 Parenting Adult Children Today · info@parentingadultchildrentoday.com
+  <div class="fine">This quiz is educational and reflects patterns observed across many families in clinical practice. It is not therapy, not a diagnosis, and not a substitute for care from a licensed mental-health professional — especially where abuse, addiction, or mental illness is present in any part of the family. Where a child is keeping distance to protect themselves from genuine harm, please let that boundary be honored on their terms, with a licensed professional alongside you. Reconciliation depends on many factors, including the choices of others; no outcome is promised or implied.</div>
+</footer>
+
+<script>
+const API = 'https://pact-funnel-api.alex-f42.workers.dev';
+const QS = new URLSearchParams(location.search);
+const SRC = (QS.get('src') || 'quiz').replace(/[^a-z0-9_-]/gi, '').slice(0, 40) || 'quiz';
+const $ = id => document.getElementById(id);
+
+/* ───────────── questions (every line is drawn from the book's own "ask yourself" lists) ───────────── */
+// Tokens {they}{them}{their}{child}{has}{watches}{replies}{needs}{works}{loves} resolve from Q1.
+const VERBS = {
+  son:      { has:'has',  watches:'watches', replies:'replies', needs:'needs', works:'works', loves:'loves' },
+  daughter: { has:'has',  watches:'watches', replies:'replies', needs:'needs', works:'works', loves:'loves' },
+  children: { has:'have', watches:'watch',   replies:'reply',   needs:'need',  works:'work',  loves:'love'  },
+};
+const COMMON = [
+  { id:'who', title:'Who are you thinking about?', hint:'Everything that follows is written for them.',
+    opts:[ {t:'My son', v:'son'}, {t:'My daughter', v:'daughter'}, {t:'More than one of my children', v:'children'} ] },
+  { id:'contact', title:'Where do things stand with {them} right now?', hint:'Go with the one that feels most true.',
+    opts:[
+      {t:'We still talk, but it feels tense or guarded', v:'strained'},
+      {t:'We talk, but rarely, and it’s thin and polite', v:'thin'},
+      {t:'{They} {has} stopped talking to me', v:'stopped'},
+      {t:'I’m blocked, or I’ve been told not to contact {them}', v:'blocked'},
+    ] },
+];
+const ESTRANGED = [
+  { id:'start', title:'How did the distance start?', hint:'Go with the one that feels most true, not the one that sounds best.',
+    opts:[
+      {t:'There was no fight. The calls just got shorter.', v:'fade'},
+      {t:'There was one event everyone can name.', v:'rupture'},
+      {t:'A letter or talk described a childhood I don’t recognize.', v:'rewrite'},
+      {t:'It started after {they} met {their} partner.', v:'household'},
+      {t:'{They} named something specific in our family {they} {needs} distance from.', v:'shielded'},
+      {t:'A falling-out over money, property, or a betrayal, and we’re both waiting for an apology.', v:'standoff'},
+      {t:'I’m honestly not sure.', v:'unsure'},
+    ] },
+  { id:'heard', title:'Have you heard any of these from {them}?', hint:'Tick all that fit, then continue.', multi:true,
+    opts:[
+      {t:'“We’re just really busy.”', v:'fade'},
+      {t:'“I’m done. Don’t contact me.”', v:'rupture'},
+      {t:'Words like toxic, boundaries, trauma, or narcissist', v:'rewrite'},
+      {t:'Plans and replies come through {their} partner', v:'household'},
+      {t:'Drinking, temper, or how the grandkids were treated came up', v:'shielded'},
+      {t:'“Not until you apologize.”', v:'standoff'},
+      {t:'None of these', v:'none', excl:true},
+    ] },
+  { id:'duration', title:'How long since you had a real conversation?',
+    opts:[ {t:'Under 6 months', v:'<6m'}, {t:'6 to 12 months', v:'6-12m'}, {t:'1 to 3 years', v:'1-3y'}, {t:'More than 3 years', v:'3y+'} ] },
+  { id:'messages', title:'When you send {them} a message, what usually happens?',
+    opts:[
+      {t:'It’s read quickly, but no reply', v:'read-no-reply'},
+      {t:'It’s read late, or not at all', v:'read-late'},
+      {t:'I’m blocked, or mail comes back', v:'blocked'},
+      {t:'I’ve stopped sending messages', v:'stopped'},
+    ] },
+  { id:'leaks', title:'Does anything still get through?', hint:'Tick all that fit, then continue.', multi:true,
+    opts:[
+      {t:'{They} asked after someone who was sick', v:'sick'},
+      {t:'{They} {watches} family posts or the group chat', v:'watches'},
+      {t:'I hear news through a sibling or relative', v:'sibling'},
+      {t:'{They} {replies} on birthdays or holidays', v:'holidays'},
+      {t:'Nothing gets through', v:'none', excl:true},
+    ] },
+  { id:'tried', title:'What have you already tried?', hint:'Tick all that fit, then continue.', multi:true,
+    opts:[
+      {t:'A long letter or message explaining my side', v:'letter'},
+      {t:'Apologizing more than once', v:'apologise'},
+      {t:'Asking a relative to talk to {them}', v:'relative'},
+      {t:'A heartfelt talk about our relationship', v:'talk'},
+      {t:'Cards or gifts', v:'gifts'},
+      {t:'Giving {them} space and waiting', v:'space'},
+      {t:'Therapy or counseling', v:'therapy'},
+      {t:'Nothing yet', v:'nothing', excl:true},
+    ] },
+  { inter:true, title:'Here’s why none of that was your fault',
+    body:'Estrangement is a <b style="color:#fff">safety problem</b>. Most of what loving parents try treats it like a communication problem. That’s why letters go unanswered, and why giving space can harden the silence. Two quick checks will show where your Safety Account stands.',
+    btn:'Start the check →' },
+  { id:'count', title:'Self-check 1. Open your messages to {them}. In the last 30 days, how many messages, calls, or cards went out from you without an answer?',
+    opts:[ {t:'None', v:'none'}, {t:'1 to 3', v:'1-3'}, {t:'4 to 10', v:'4-10'}, {t:'More than 10', v:'10+'} ] },
+  { id:'portrait', title:'Self-check 2. Without looking anything up, could you name where {they} {works} now, {their} closest friend, and one thing {they} {loves} right now?',
+    opts:[ {t:'All three', v:'three'}, {t:'Two', v:'two'}, {t:'One', v:'one'}, {t:'None', v:'none'} ] },
+  { id:'situation', title:'Are any of these part of your situation?', hint:'Tick all that fit, then continue.', multi:true,
+    opts:[
+      {t:'Grandchildren I’m not seeing', v:'grandchildren'},
+      {t:'My spouse and I see this differently', v:'spouse-split'},
+      {t:'My child struggles with addiction or mental health', v:'addiction-mh'},
+      {t:'I’m going through a divorce or a loss', v:'divorce-loss'},
+      {t:'None of these', v:'none', excl:true},
+    ] },
+  { id:'goal', title:'What would mean the most to you right now?',
+    opts:[
+      {t:'Hearing {their} voice again', v:'voice'},
+      {t:'Seeing my grandchildren', v:'grandchildren'},
+      {t:'Sleeping without replaying it all', v:'sleep'},
+      {t:'Knowing I’ve done everything I can', v:'done-everything'},
+    ] },
+];
+// Strained track — four short questions from the live workshop. Options drafted for
+// Catherine's review; the proposal names only the topics.
+const STRAINED = [
+  { id:'s_decision', title:'When {they} {has} shared a decision you didn’t agree with, what usually happened?',
+    opts:[
+      {t:'I said what I thought, as kindly as I could', v:'said-it'},
+      {t:'I asked questions until {they} saw my point', v:'questions'},
+      {t:'I kept it to myself, but it showed', v:'kept-it-showed'},
+      {t:'I let it go', v:'let-go'},
+    ] },
+  { id:'s_advice', title:'How often do you give advice {they} didn’t ask for?',
+    opts:[ {t:'Most conversations', v:'most'}, {t:'Now and then', v:'sometimes'}, {t:'Rarely', v:'rarely'}, {t:'Honestly, I’m not sure', v:'unsure'} ] },
+  { id:'s_holiday', title:'Did the last holiday go the way you hoped?',
+    opts:[ {t:'Yes', v:'yes'}, {t:'Mostly', v:'mostly'}, {t:'Not really', v:'not-really'}, {t:'We didn’t spend it together', v:'apart'} ] },
+  { id:'s_hoping', title:'Is there anything in {their} life you’re quietly hoping changes?', hint:'Tick all that fit, then continue.', multi:true,
+    opts:[
+      {t:'{Their} partner', v:'partner'},
+      {t:'{Their} faith', v:'faith'},
+      {t:'Money choices', v:'money'},
+      {t:'How {they} {works} and {loves} — the life {they} {has} built', v:'life'},
+      {t:'How {they} parent', v:'parenting'},
+      {t:'Nothing — I just miss being close', v:'nothing', excl:true},
+    ] },
+];
+const STRAINED_LABELS = {
+  s_decision:'When they shared a decision you disagreed with', s_advice:'Advice they did not ask for',
+  s_holiday:'Did the last holiday go the way you hoped', s_hoping:'Quietly hoping changes',
+};
+
+/* ───────────── engine ───────────── */
+const state = { i:0, list:COMMON.concat(ESTRANGED), answers:{}, started:false };
+
+function pron(text){
+  const who = state.answers.who || 'children';
+  const p = Object.assign({}, QuizScore.PRONOUNS[who], VERBS[who]);
+  return text.replace(/\{(\w+)\}/g, (m, k) => {
+    const lk = k.charAt(0).toLowerCase() + k.slice(1);
+    if (!(lk in p)) return m;
+    const w = p[lk];
+    return k.charAt(0) === k.charAt(0).toUpperCase() ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+  });
+}
+
+function render(){
+  const q = state.list[state.i];
+  const host = $('qhost');
+  const realQs = state.list.filter(x=>!x.inter).length;
+  const answered = state.list.slice(0,state.i).filter(x=>!x.inter).length;
+  $('head').hidden = state.i > 0;
+  // The total is unknown until Q2 picks the track (12 estranged / 6 strained) — show none before that.
+  $('qcount').textContent = q.inter ? 'A note from Catherine' : `Question ${answered+1}${state.answers.contact ? ` of ${realQs}` : ''}`;
+  const pct = Math.round(answered/realQs*100);
+  $('qpct').textContent = pct + '%';
+  $('qbar').style.width = Math.max(pct,4) + '%';
+
+  if (q.inter){
+    host.innerHTML = `<div class="card inter fade-in"><div class="qtitle">${q.title}</div><p>${q.body}</p>
+      <button class="btn" onclick="next()">${q.btn}</button></div>`;
+    return;
+  }
+  const prev = state.answers[q.id];
+  const opts = q.opts.map((o,idx)=>{
+    const on = q.multi ? (Array.isArray(prev) && prev.includes(o.v)) : prev === o.v;
+    return `<label class="opt${on?' sel':''}"><input type="${q.multi?'checkbox':'radio'}" name="cur" value="${idx}"${on?' checked':''}> ${pron(o.t)}</label>`;
+  }).join('');
+  host.innerHTML = `<div class="card fade-in">
+    <div class="qtitle">${pron(q.title)}</div>${q.hint?`<div class="qhint">${q.hint}</div>`:''}
+    <div class="opts">${opts}</div>
+    ${q.multi?`<button class="btn" style="margin-top:20px" onclick="pickMulti()">Continue →</button>`:''}
+    ${state.i>0?`<button class="backlink" onclick="back()">← Back</button>`:''}
+  </div>`;
+  host.querySelectorAll('.opt input').forEach(inp=>{
+    inp.addEventListener('change', e=>{
+      if(q.multi){
+        const o = q.opts[Number(e.target.value)];
+        if (o.excl && e.target.checked) host.querySelectorAll('.opt input').forEach(x=>{ if(x!==e.target){x.checked=false;x.closest('.opt').classList.remove('sel');} });
+        else if (e.target.checked) host.querySelectorAll('.opt input').forEach(x=>{ if(q.opts[Number(x.value)].excl){x.checked=false;x.closest('.opt').classList.remove('sel');} });
+        e.target.closest('.opt').classList.toggle('sel', e.target.checked); return;
+      }
+      host.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+      e.target.closest('.opt').classList.add('sel');
+      setTimeout(()=>pick(Number(e.target.value)), 260);
+    });
+  });
+}
+
+function firstAnswer(){
+  if (state.started) return;
+  state.started = true;
+  try{ if(window.LIVE) fbq('trackCustom','QuizStart'); }catch(e){}
+}
+function pick(idx){
+  const q = state.list[state.i];
+  state.answers[q.id] = q.opts[idx].v;
+  firstAnswer();
+  if (q.id === 'contact') state.list = COMMON.concat(state.answers.contact === 'strained' ? STRAINED : ESTRANGED);
+  next();
+}
+function pickMulti(){
+  const q = state.list[state.i];
+  state.answers[q.id] = [...document.querySelectorAll('#qhost input:checked')].map(i=>q.opts[Number(i.value)].v);
+  firstAnswer();
+  next();
+}
+function next(){
+  state.i++;
+  if (state.i >= state.list.length){ showCalc(); return; }
+  render(); window.scrollTo({top:0});
+}
+function back(){ if(state.i>0){ state.i--; render(); window.scrollTo({top:0}); } }
+
+/* ───────────── calculating → gate ───────────── */
+function showCalc(){
+  const strained = state.answers.contact === 'strained';
+  const ticks = strained ? ['Reading your answers', 'Finding your role', 'Preparing your result']
+                         : ['Matching your pattern', 'Reading your silence', 'Checking your Safety Account'];
+  $('ticks').innerHTML = ticks.map(t=>`<li>${t}</li>`).join('');
+  $('quiz').hidden = true; $('calc').hidden = false; window.scrollTo({top:0});
+  const lis = $('ticks').querySelectorAll('li');
+  lis.forEach((li,i)=> setTimeout(()=>li.classList.add('on'), 1100*(i+1)));
+  setTimeout(()=>{ $('calc').hidden = true; $('gate').hidden = false; window.scrollTo({top:0}); $('g-fname').focus(); }, 4500);
+}
+
+function carry(){
+  // Non-PII context only: campaign params and the click id ride through to the result page and checkout.
+  const out = new URLSearchParams();
+  for (const [k,v] of QS) if (/^utm_/i.test(k) || k === 'fbclid' || k === 'src') out.set(k, v);
+  return out;
+}
+
+async function submitGate(e){
+  e.preventDefault();
+  const fname = $('g-fname').value.trim(), email = $('g-email').value.trim();
+  if (!fname || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ $('g-err').style.display='block'; return false; }
+  $('g-err').style.display='none';
+  const btn = $('g-btn'); btn.disabled = true; btn.textContent = 'One moment…';
+
+  const res = QuizScore.score(state.answers);
+  const r = (crypto.randomUUID ? crypto.randomUUID() : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));
+  const result = { r, first:fname, who:res.who, track:res.track, pattern:res.pattern, silence:res.silence,
+    safety:res.safety, band:res.band, goal:state.answers.goal || '', ts:Date.now() };
+  try{ localStorage.setItem('wh_quiz', JSON.stringify(result)); }catch(err){}
+
+  if (window.LIVE){
+    const strained = {};
+    if (res.track === 'strained') STRAINED.forEach(q=>{ const a = state.answers[q.id]; if (a != null) strained[STRAINED_LABELS[q.id]] = Array.isArray(a) ? a.join(', ') : a; });
+    const payload = { r, first_name:fname, email, phone:$('g-phone').value.trim() || undefined, sms_consent:$('g-sms').checked,
+      src:SRC, track:res.track, who:res.who, pattern:res.pattern.name, silence:res.silence, safety:res.safety,
+      band:res.band ? res.band.label : null, fields:res.fields, strained,
+      utm: Object.fromEntries([...QS].filter(([k])=>/^utm_/i.test(k))) };
+    // Fail-open: the lead call gets ~2.5s, then the result shows regardless.
+    const ctl = new AbortController(); const timer = setTimeout(()=>ctl.abort(), 2500);
+    try{ await fetch(API+'/quiz-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:ctl.signal,keepalive:true}); }catch(err){}
+    clearTimeout(timer);
+    try{ fbq('track','Lead',{content_name:'Silence Quiz'},{eventID:r}); }catch(err){}
+    try{ navigator.sendBeacon(API+'/pv','quiz-gate'); }catch(err){}
+  }
+  const p = carry(); p.set('r', r);
+  location.href = 'result.html?' + p.toString();
+  return false;
+}
+
+render();
+</script>
+<script>try{if(window.LIVE)navigator.sendBeacon('https://pact-funnel-api.alex-f42.workers.dev/pv','quiz')}catch(e){}</script>
+</body>
+</html>

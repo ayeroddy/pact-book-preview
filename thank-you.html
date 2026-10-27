@@ -185,6 +185,37 @@ document.head.appendChild(s);
       <a class="btn" href="apply.html?src=ty" style="background:var(--gold);color:#241a05;font-weight:800;font-size:18px">Book My Complimentary Clarity Call &rarr;</a>
       <p style="font-size:13px;color:var(--muted);margin:10px 0 0">A few questions when you book help us match you with the right advisor. Calls available within 3 days.</p>
     </div>
+    <!-- SILENCE QUIZ buyers (Oct 2026): result.html sets wh_lp=quiz. For them the call card
+         becomes "Step 1" and moves up under the open-your-book button (the book button stays
+         first — buyers in their 60s-80s must never hunt for it). apply.html?src=quiz keeps the
+         worker's P1 routing. Inert for every other buyer. -->
+    <script>
+      (() => {
+        try {
+          if (localStorage.getItem('wh_lp') !== 'quiz') return;
+          const ft = document.getElementById('fasttrack'); if (!ft) return;
+          let q = null; try { q = JSON.parse(localStorage.getItem('wh_quiz') || 'null'); } catch (e) {}
+          const h = ft.querySelector('h3');
+          const step = document.createElement('div');
+          step.style.cssText = 'font-size:13px;letter-spacing:.12em;font-weight:800;text-transform:uppercase;color:#8a8378;margin-bottom:8px';
+          step.textContent = 'Step 1';
+          h.before(step);
+          h.textContent = 'Book your free Relationship Clarity Call.';
+          const ps = ft.querySelectorAll('p');
+          const pat = q && q.pattern && q.pattern.name ? q.pattern.name : '';
+          ps[0].innerHTML = (pat ? 'Your quiz put your family in <b>' + pat + '</b>' + (q.silence ? ', with a ' + q.silence + ' silence' : '') + '. You already have your pattern. ' : '') +
+            'On the call, one of Catherine’s senior advisors talks through where things stand with you and makes sure PACT is the right fit for your family. Spouses are warmly welcome. It’s 30 minutes, and it’s honest: if it’s not a fit, they’ll tell you.';
+          ps[1].innerHTML = 'Your book is open in your library either way — book now, or come back to this step when you’re ready.';
+          const a = ft.querySelector('a.btn'); if (a) a.href = 'apply.html?src=quiz';
+          const alt = document.createElement('p');
+          alt.style.cssText = 'font-size:15px;margin:14px 0 0';
+          alt.innerHTML = 'Not ready for a call? <a href="https://parentingadultstoday.com/thrive?src=quiz-ty" style="color:#381876">Join Catherine’s free live workshop</a> instead.';
+          ft.appendChild(alt);
+          const anchor = document.querySelector('p.plain'); // "There is nothing to download." line
+          if (anchor) anchor.after(ft);
+        } catch (e) {}
+      })();
+    </script>
 
 
     <div class="card">

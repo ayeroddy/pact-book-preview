@@ -422,7 +422,7 @@ document.head.appendChild(s);
       const r = await fetch(API + '/session', { method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ bump: bump.checked, bumps: pickedBumps(), arm: WH_ARM, email: leadEmail, fbp: mck('_fbp'), fbc: mck('_fbc'),
           fbclid: new URLSearchParams(location.search).get('fbclid') || undefined,
-          lp: new URLSearchParams(location.search).get('lp') || (function(){try{return localStorage.getItem('wh_lp')==='vsl'?'vsl':(localStorage.getItem('wh_lp')==='control'?'control':undefined)}catch(e){return undefined}})() }) });
+          lp: new URLSearchParams(location.search).get('lp') || (function(){try{const v=localStorage.getItem('wh_lp');return ['vsl','control','quiz'].includes(v)?v:undefined}catch(e){return undefined}})() }) });
       const j = await r.json();
       if (!j.clientSecret) throw new Error(j.error || 'session failed');
       if (checkout) checkout.destroy();
