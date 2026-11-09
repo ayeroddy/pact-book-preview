@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome — book your free Holiday Clarity Call | Parenting Adult Children Today</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Slab:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#2a1259; --ink:#2e2740; --grey:#faf7f1; --line:#eae4d8;
+    --red:#381876; --yellow:#f5ecd2; --yellow-btn:#C9A227; --yellow-btn-dark:#a5811a;
+    --navy:#381876; --green:#1e7e34; --plum:#6b2a46;
+    --sans:'Roboto',Arial,sans-serif; --slab:'Roboto Slab',Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);color:var(--ink);background:var(--grey);font-size:18px;line-height:1.65}
+  img{max-width:100%;height:auto;display:block}
+  p{margin:0 0 16px}
+  .helpbar{background:var(--black);color:#fff;font-size:14px;text-align:center;padding:9px 14px}
+  .helpbar b{color:var(--yellow)}
+  .helpbar a{color:#fff}
+  .logobar{background:#fff;border-bottom:1px solid var(--line);padding:10px 0;text-align:center}
+  .logobar img{height:34px;margin:0 auto}
+  .wrap{max-width:820px;margin:0 auto;padding:26px 16px 80px}
+  .steps{display:flex;justify-content:center;gap:10px;font-size:14px;font-weight:700;color:#999;margin-bottom:18px;flex-wrap:wrap}
+  .steps span.on{color:var(--black)}
+  .banner{background:var(--green);color:#fff;text-align:center;font-weight:900;font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding:10px 14px;border-radius:8px;margin-bottom:18px}
+  h1{font-family:var(--slab);font-size:clamp(26px,4.4vw,36px);color:var(--black);text-align:center;line-height:1.25;margin-bottom:10px}
+  .sub{text-align:center;color:#555;font-size:17px;max-width:640px;margin:0 auto 24px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px 20px;box-shadow:0 6px 24px -16px rgba(0,0,0,.25);margin-bottom:20px}
+  .card h2{font-family:var(--slab);font-size:21px;color:var(--black);margin-bottom:6px}
+  .card .lead{font-size:15.5px;color:#666;margin-bottom:16px}
+  .video{background:var(--black);aspect-ratio:16/9;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#C9C3E0;margin:0 0 22px;font-size:15px;text-align:center;padding:20px}
+  .placeholder{outline:2px dashed #B3392E;outline-offset:3px;border-radius:4px}
+
+  .q{margin:0 0 18px}
+  .q .ql{font-weight:700;font-size:17.5px;margin-bottom:10px;display:block}
+  .opt{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:pointer;background:#fff;font-size:16.5px;line-height:1.45}
+  .opt:has(input:checked){border-color:var(--navy);background:#f5f1fb}
+  .opt input{width:22px;height:22px;flex:0 0 22px;margin-top:2px;accent-color:var(--navy)}
+  .cta-btn{display:block;width:100%;background:linear-gradient(180deg,#d9b34a,var(--yellow-btn) 55%,var(--yellow-btn-dark));
+    color:#33270a;font-weight:900;font-size:clamp(18px,2.6vw,21px);text-decoration:none;text-align:center;
+    padding:18px 22px;border-radius:8px;border:1px solid var(--yellow-btn-dark);cursor:pointer;font-family:var(--sans);
+    box-shadow:0 6px 0 var(--yellow-btn-dark),0 12px 22px -8px rgba(0,0,0,.3)}
+  .cta-btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--yellow-btn-dark)}
+  .cta-btn[disabled]{opacity:.6;cursor:default}
+  .field-err{display:none;color:#B3392E;font-weight:700;font-size:15px;margin:10px 0 0}
+
+  #cal{display:none}
+  #cal iframe{width:100%;min-height:760px;border:0;border-radius:8px;background:#fff}
+  .calnote{font-size:14.5px;color:#666;text-align:center;margin-top:10px}
+
+  .step2{opacity:.55}
+  .step2.ready{opacity:1}
+  .lib{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+  .lib span{background:var(--grey);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14px}
+  .btn2{display:inline-block;background:var(--black);color:#fff;font-weight:700;text-decoration:none;padding:13px 22px;border-radius:8px;font-size:16px}
+  .ps{font-size:15px;color:#666;text-align:center;margin-top:8px}
+  footer{background:var(--black);color:#bbb;padding:30px 16px;font-size:12.5px;line-height:1.8;text-align:center}
+</style>
+<!-- Meta Pixel (PageView only — Purchase is fired server-side by the Worker) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1511568519903735');fbq('init','1387545469584384');
+fbq('track','PageView');</script>
+<!-- Hyros Universal Tracking -->
+<script>
+(function(){
+var s = document.createElement('script');
+s.type = 'text/javascript';
+s.src = "https://215347.t.hyros.com/v1/lst/universal-script?ph=80e0d167794caa546cdc56006c3b29ced01bd1778457b28346daf7acb5660416&tag=!clicked&ref_url=" + encodeURI(document.URL);
+document.head.appendChild(s);
+})();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18385634480"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18385634480');
+</script>
+</head>
+<body>
+<div class="helpbar"><b>Need Help?</b> Email us at <a href="mailto:info@parentingadultchildrentoday.com">info@parentingadultchildrentoday.com</a></div>
+<div class="logobar"><img src="../assets/pact-logo.png" alt="Parenting Adult Children Today"></div>
+
+<div class="wrap">
+  <div class="steps"><span class="on">1. Your details ✓</span><span>›</span><span class="on">2. Your order ✓</span><span>›</span><span class="on">3. Book your call</span></div>
+  <div class="banner">Your order is complete. Everything is on its way to your email.</div>
+  <h1>Welcome, <span id="fname">friend</span>. One more step: book your free Holiday Clarity Call.</h1>
+  <p class="sub">This is the part most parents skip, and it is the part that makes the rest work. A 30-minute Zoom with a member of Catherine's team to look at your family's pattern and plan the next few weeks. Two quick questions first so we match you with the right person.</p>
+
+  <div class="video placeholder" aria-label="Video placeholder">Catherine, 60–90 seconds: "Thank you, here is what to do first, and please book the call." (Internal placeholder — video not yet recorded.)</div>
+
+  <div class="card" id="qcard">
+    <h2>Step 1: Book your Holiday Clarity Call</h2>
+    <p class="lead">Two questions, then the calendar opens. Spouses are warmly welcome on the call.</p>
+
+    <div class="q">
+      <span class="ql">What has been hardest this season?</span>
+      <label class="opt"><input type="radio" name="hardest" value="inlaw"><span>A son- or daughter-in-law seems to control how much of my child I get.</span></label>
+      <label class="opt"><input type="radio" name="hardest" value="worldview"><span>My child sees the world, or our family's past, very differently than I do.</span></label>
+      <label class="opt"><input type="radio" name="hardest" value="struggling"><span>My child is struggling (mental health, addiction, a hard season) and I don't know how to help without pushing.</span></label>
+      <label class="opt"><input type="radio" name="hardest" value="grandchildren"><span>I'm being kept from my grandchildren.</span></label>
+      <label class="opt"><input type="radio" name="hardest" value="unknown"><span>I honestly don't know what happened.</span></label>
+    </div>
+
+    <div class="q">
+      <span class="ql">Will your spouse or partner join the call?</span>
+      <label class="opt"><input type="radio" name="spouse" value="yes"><span>Yes, we'll both be on.</span></label>
+      <label class="opt"><input type="radio" name="spouse" value="no"><span>No, it will be just me.</span></label>
+      <label class="opt"><input type="radio" name="spouse" value="na"><span>Not applicable.</span></label>
+    </div>
+
+    <p class="field-err" id="q-err"></p>
+    <button class="cta-btn" id="showcal" type="button">Show me the calendar →</button>
+
+    <div id="cal">
+      <iframe id="calframe" title="Book your Holiday Clarity Call" loading="lazy"></iframe>
+      <p class="calnote">Pick any time that works. You'll get a confirmation by email and text, plus the Zoom link.</p>
+    </div>
+  </div>
+
+  <div class="card step2" id="step2">
+    <h2>Step 2: Open your library</h2>
+    <p class="lead">Everything you ordered is waiting there now. The email with your login is on its way too.</p>
+    <div class="lib" id="lib">
+      <span>Welcome Home e-book</span><span>Audiobook</span><span>Estrangement Decoder</span><span>Reconnection Letter Kit</span><span>Holiday Messages Guide</span>
+    </div>
+    <a class="btn2" id="liblink" href="../members.html">Open my library →</a>
+    <p class="ps" style="text-align:left;margin-top:12px">Start with the Holiday Messages Guide tonight. It is short on purpose. Then read the Decoder before your call, so you walk in knowing which of the six patterns you are in.</p>
+  </div>
+
+  <p class="ps">Need anything? Email <a href="mailto:info@parentingadultchildrentoday.com" style="color:var(--navy)">info@parentingadultchildrentoday.com</a>. A real person reads every message.</p>
+</div>
+
+<footer>
+  <p style="margin-bottom:8px">© 2026 Parenting Adult Children Today · All rights reserved · Privacy · Terms · Refunds · info@parentingadultchildrentoday.com</p>
+  <p style="margin:0;max-width:760px;margin-inline:auto">Results vary. Reconnection depends on many factors including the participation of others; no outcome is promised or implied. This program provides educational content and is not therapy or a substitute for licensed mental-health care.</p>
+</footer>
+
+<script>
+  const API = 'https://pact-funnel-api.alex-f42.workers.dev';
+  const QS  = new URLSearchParams(location.search);
+  const SID = QS.get('sid') || '';
+  const FALLBACK_CAL = 'Z23jeSuOjQWlKHY3Mrex'; // RCC main calendar if /holiday/answers is unavailable
+  let who = { first_name: '', last_name: '', email: '', phone: '' };
+
+  // Prefill from the Stripe session. /holiday/order is the holiday-funnel lookup
+  // (/session-info only answers for the book funnel) and it understands cs_test_ sessions.
+  (async () => {
+    if (!SID) return;
+    document.getElementById('liblink').href = '../members.html?sid=' + encodeURIComponent(SID);
+    try {
+      const r = await fetch(API + '/holiday/order?session_id=' + encodeURIComponent(SID));
+      if (r.ok) {
+        const j = await r.json();
+        if (j.first) who.first_name = j.first;
+        if (j.email) who.email = j.email;
+        if (who.first_name) document.getElementById('fname').textContent = who.first_name;
+      }
+    } catch (e) {}
+    // Fill the rest (last name, phone) from the lead captured on page 1.
+    {
+      try {
+        const lead = JSON.parse(sessionStorage.getItem('hol_lead') || 'null');
+        if (lead) {
+          const parts = (lead.name || '').trim().split(/\s+/);
+          who.first_name = who.first_name || parts[0] || '';
+          who.last_name  = who.last_name  || parts.slice(1).join(' ');
+          who.email = who.email || lead.email || ''; who.phone = who.phone || lead.phone || '';
+          if (who.first_name) document.getElementById('fname').textContent = who.first_name;
+        }
+      } catch (e) {}
+    }
+  })();
+
+  function widgetUrl(calId) {
+    const p = new URLSearchParams();
+    if (who.first_name) p.set('first_name', who.first_name);
+    if (who.last_name)  p.set('last_name',  who.last_name);
+    if (who.email)      p.set('email',      who.email);
+    if (who.phone)      p.set('phone',      who.phone);
+    const q = p.toString();
+    return 'https://api.leadconnectorhq.com/widget/booking/' + calId + (q ? '?' + q : '');
+  }
+
+  document.getElementById('showcal').addEventListener('click', async () => {
+    const hardest = (document.querySelector('input[name=hardest]:checked') || {}).value;
+    const spouse  = (document.querySelector('input[name=spouse]:checked')  || {}).value;
+    const qerr = document.getElementById('q-err');
+    if (!hardest || !spouse) { qerr.textContent = 'Please answer both questions so we can match you with the right person.'; qerr.style.display = 'block'; return; }
+    qerr.style.display = 'none';
+    const btn = document.getElementById('showcal'); btn.disabled = true; btn.textContent = 'Opening the calendar…';
+
+    let calId = FALLBACK_CAL;
+    try {
+      const r = await fetch(API + '/holiday/answers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid: SID, hardest, spouse }) });
+      if (r.ok) { const j = await r.json(); if (j.calendar) calId = j.calendar; }
+    } catch (e) {}
+
+    document.getElementById('calframe').src = widgetUrl(calId);
+    document.getElementById('cal').style.display = 'block';
+    btn.style.display = 'none';
+    document.getElementById('step2').classList.add('ready');
+    try { fbq('trackCustom', 'HolidayAnswers', { hardest, spouse }); } catch (e) {}
+    document.getElementById('cal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  try { navigator.sendBeacon(API + '/pv', 'holiday-welcome'); } catch (e) {}
+</script>
+</body>
+</html>

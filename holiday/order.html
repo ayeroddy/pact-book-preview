@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your order — The Holiday Edition | Parenting Adult Children Today</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Slab:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+  :root{
+    --black:#2a1259; --ink:#2e2740; --grey:#faf7f1; --line:#eae4d8;
+    --red:#381876; --yellow:#f5ecd2; --yellow-btn:#C9A227; --yellow-btn-dark:#a5811a;
+    --navy:#381876; --green:#1e7e34; --plum:#6b2a46;
+    --sans:'Roboto',Arial,sans-serif; --slab:'Roboto Slab',Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);color:var(--ink);background:var(--grey);font-size:18px;line-height:1.6}
+  img{max-width:100%;height:auto;display:block}
+  .helpbar{background:var(--black);color:#fff;font-size:14px;text-align:center;padding:9px 14px}
+  .helpbar b{color:var(--yellow)}
+  .helpbar a{color:#fff}
+  .logobar{background:#fff;border-bottom:1px solid var(--line);padding:10px 0;text-align:center}
+  .logobar img{height:34px;margin:0 auto}
+  .ribbon{background:var(--plum);color:#fff;text-align:center;font-weight:900;font-size:14px;letter-spacing:.08em;padding:10px 16px;text-transform:uppercase}
+
+  .wrap{max-width:1040px;margin:0 auto;padding:24px 16px 80px}
+  .steps{display:flex;justify-content:center;gap:10px;font-size:14px;font-weight:700;color:#999;margin-bottom:18px;flex-wrap:wrap}
+  .steps span.on{color:var(--black)}
+  h1{font-family:var(--slab);font-size:clamp(24px,4vw,32px);color:var(--black);text-align:center;margin-bottom:6px;line-height:1.25}
+  .sub{text-align:center;color:#666;font-size:16px;margin-bottom:22px}
+  .grid{display:grid;grid-template-columns:1fr;gap:22px}
+  @media(min-width:900px){.grid{grid-template-columns:1.1fr .9fr;align-items:start}}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 20px;box-shadow:0 6px 24px -16px rgba(0,0,0,.25)}
+  .card h2{font-family:var(--slab);font-size:20px;color:var(--black);margin-bottom:12px}
+  .hello{background:#fcf5f8;border:1px solid #efd8e2;border-radius:8px;padding:12px 14px;font-size:15.5px;margin-bottom:18px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+  .hello a{color:var(--navy);font-weight:700;font-size:14px}
+
+  /* bumps */
+  .bump{border:3px dashed #B3392E;background:#fffaf0;border-radius:10px;padding:16px 16px 14px;margin:0 0 14px;position:relative}
+  .bump.on{background:#f1fbf3;border-color:var(--green);border-style:solid}
+  .bump .tag{position:absolute;top:-12px;left:14px;background:#B3392E;color:#fff;font-size:11.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px}
+  .bump.on .tag{background:var(--green)}
+  .bump label{display:flex;gap:14px;align-items:flex-start;cursor:pointer}
+  .bump input{width:26px;height:26px;flex:0 0 26px;margin-top:3px;accent-color:var(--green);cursor:pointer}
+  .bump .t{font-weight:900;font-size:18px;color:var(--black);line-height:1.3}
+  .bump .t .price{color:#B3392E;white-space:nowrap}
+  .bump.on .t .price{color:var(--green)}
+  .bump p{font-size:15.5px;color:#444;margin:6px 0 0}
+  .bump .note{font-size:13.5px;color:#777;margin-top:6px;font-style:italic}
+
+  /* summary */
+  .sum{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:16px}
+  .sum .row{display:flex;justify-content:space-between;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);font-size:16px}
+  .sum .row:last-child{border-bottom:none}
+  .sum .row.hidden{display:none}
+  .sum .row.total{background:var(--grey);font-weight:900;font-size:18px}
+  .sum .row small{display:block;color:#777;font-size:13.5px;font-weight:400}
+  .sum .row .inc{color:#777;font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+
+  #checkout{min-height:420px}
+  .loading{color:#777;font-size:15px;text-align:center;padding:40px 10px}
+  .err{display:none;background:#fff3f3;border:1px solid #f1b9b9;color:#8a1f1f;border-radius:8px;padding:12px 14px;font-size:15px;margin-bottom:12px}
+  .trust{font-size:13.5px;color:#777;text-align:center;margin-top:14px;line-height:1.6}
+  .trust b{color:var(--green)}
+  .testmode{display:none;background:#fff8d6;border:1px solid #e3cc6a;color:#6b5600;font-size:13px;font-weight:700;text-align:center;padding:6px}
+
+  .rev{border:2px dotted var(--line);border-radius:8px;padding:16px 18px;background:#fff;margin-top:16px}
+  .rev .head{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+  .avi{position:relative;width:40px;height:40px;border-radius:50%;background:var(--navy);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:13px;overflow:hidden;flex:0 0 40px}
+  .avi img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .rev .who{font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.06em}
+  .rev .stars{color:var(--yellow-btn);font-size:14px;letter-spacing:2px}
+  .rev blockquote{font-size:15.5px;font-style:italic;color:#444}
+
+  footer{background:var(--black);color:#bbb;padding:30px 16px;font-size:12.5px;line-height:1.8;text-align:center}
+</style>
+<!-- Meta Pixel (PageView only — Purchase is fired server-side by the Worker) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1511568519903735');fbq('init','1387545469584384');
+fbq('track','PageView');</script>
+<!-- Hyros Universal Tracking -->
+<script>
+(function(){
+var s = document.createElement('script');
+s.type = 'text/javascript';
+s.src = "https://215347.t.hyros.com/v1/lst/universal-script?ph=80e0d167794caa546cdc56006c3b29ced01bd1778457b28346daf7acb5660416&tag=!clicked&ref_url=" + encodeURI(document.URL);
+document.head.appendChild(s);
+})();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18385634480"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18385634480');
+</script>
+</head>
+<body>
+<div class="helpbar"><b>Need Help?</b> Email us at <a href="mailto:info@parentingadultchildrentoday.com">info@parentingadultchildrentoday.com</a></div>
+<div class="logobar"><img src="../assets/pact-logo.png" alt="Parenting Adult Children Today"></div>
+<div class="ribbon">Black Friday · Holiday Edition · $27 until Monday, Nov 30</div>
+<div class="testmode" id="testmode">TEST MODE — no real charge</div>
+
+<div class="wrap">
+  <div class="steps"><span class="on">1. Your details ✓</span><span>›</span><span class="on">2. Your order</span><span>›</span><span>3. Book your call</span></div>
+  <h1>Almost there. Add anything you want to your order, then pay below.</h1>
+  <p class="sub">Everything is delivered by email within minutes, and you book your free Holiday Clarity Call on the next page.</p>
+
+  <div class="grid">
+    <!-- LEFT: bumps + payment -->
+    <div class="card">
+      <div class="hello" id="hello"><span>Ordering as <b id="who">…</b></span><a href="index.html#start">Not you? Change</a></div>
+
+      <h2>Two things parents add most often</h2>
+
+      <div class="bump" id="b-plan">
+        <span class="tag">Add to your order</span>
+        <label>
+          <input type="checkbox" data-bump="plan" id="c-plan">
+          <div>
+            <div class="t">Yes! Add The Holiday Season Plan <span class="price">— just $27</span></div>
+            <p>A day-by-day plan from Thanksgiving to New Year's: what to do, send, and not send on every loaded date, with worksheets to decide your invitation, align with your spouse, and plan the day itself. Plus Catherine's short audio sessions for the hardest days: Thanksgiving morning, the birthday when the phone doesn't ring, Christmas Eve, when they chose the other family, the read receipt with no reply, New Year's morning.</p>
+            <p class="note">Delivered today with your order. Listen in the car or with your coffee.</p>
+          </div>
+        </label>
+      </div>
+
+      <div class="bump" id="b-gatekeeper">
+        <span class="tag">Add to your order</span>
+        <label>
+          <input type="checkbox" data-bump="gatekeeper" id="c-gatekeeper">
+          <div>
+            <div class="t">Yes! Add The Gatekeeper Guide <span class="price">— just $27</span></div>
+            <p>When a son- or daughter-in-law decides who gets in. Why the gatekeeper is not your enemy, the Two-Door Principle, how to reach grandchildren behind the gate without an end-run, and eight word-for-word messages to or through the person holding the door. Includes a 30-day side-door checklist.</p>
+            <p class="note">Read this before you send the holiday card to their house.</p>
+          </div>
+        </label>
+      </div>
+
+      <div class="bump" id="b-summit">
+        <span class="tag">Add to your order</span>
+        <label>
+          <input type="checkbox" data-bump="summit" id="c-summit">
+          <div>
+            <div class="t">Yes! Add the Never Too Late Summit recordings <span class="price">— just $37</span></div>
+            <p>Every session from Catherine's October summit, yours to keep and watch on your own schedule, including her sessions on the six patterns and what to do when your child has gone silent.</p>
+            <p class="note">Lifetime access in your library.</p>
+          </div>
+        </label>
+      </div>
+
+      <h2 style="margin-top:22px">Payment</h2>
+      <div class="err" id="err"></div>
+      <div id="checkout"><div class="loading">Loading secure checkout…</div></div>
+      <p class="trust">🔒 Secure payment by Stripe · Discreet charge, private order, <b>30-day refund promise.</b></p>
+    </div>
+
+    <!-- RIGHT: summary -->
+    <div>
+      <div class="card">
+        <h2>Your order</h2>
+        <div class="sum" id="sum">
+          <div class="row"><div>The Holiday Edition<small>Welcome Home e-book + audiobook · Estrangement Decoder · Reconnection Letter Kit · Holiday Messages Guide · Free Holiday Clarity Call</small></div><div><b>$27</b></div></div>
+          <div class="row hidden" id="r-plan"><div>The Holiday Season Plan<small>Day-by-day plan + Catherine's hard-day audios</small></div><div><b>$27</b></div></div>
+          <div class="row hidden" id="r-gatekeeper"><div>The Gatekeeper Guide<small>For in-law and grandchild situations</small></div><div><b>$27</b></div></div>
+          <div class="row hidden" id="r-summit"><div>Summit recordings<small>Never Too Late Summit, all sessions</small></div><div><b>$37</b></div></div>
+          <div class="row total"><div>Total today</div><div id="total">$27</div></div>
+        </div>
+        <p style="font-size:14.5px;color:#666;margin:0">One-time payment. Nothing recurring. If it isn't for you, email us within 30 days for a full refund. You keep everything.</p>
+      </div>
+      <p style="font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.06em;margin:26px 0 0">Parents who were where you are</p>
+      <div class="rev"><div class="head"><span class="avi"><img src="../assets/members/tricia-allen.jpg" alt="" onerror="this.remove()">TA</span><div><div class="who">Tricia</div><div class="stars">★★★★★</div></div></div><blockquote>"I sent my adult child a text… and she responded: 'I appreciate your honesty and your apology. I'll give you the space you asked for — I'm open to talking when you're ready.' <b>These are major steps forward.</b>"</blockquote></div>
+      <div class="rev"><div class="head"><span class="avi"><img src="../assets/members/helen-whittaker.jpg" alt="" onerror="this.remove()">HW</span><div><div class="who">Helen</div><div class="stars">★★★★★</div></div></div><blockquote>"Yes, I do feel the shift from the last few weeks of doing the modules. <b>I have faith that the shift will move even more</b>, since I am determined to continue."</blockquote></div>
+      <div class="rev"><div class="head"><span class="avi"><img src="../assets/members/kathleen-romanick.jpg" alt="" onerror="this.remove()">KR</span><div><div class="who">Kathleen</div><div class="stars">★★★★★</div></div></div><blockquote>"It has given me <b>great hope in bettering my relationships with my daughters.</b> I am encouraged and looking forward to being involved."</blockquote></div>
+      <div class="rev"><div class="head"><span class="avi"><img src="../assets/members/donna-damone.jpg" alt="" onerror="this.remove()">DD</span><div><div class="who">Donna</div><div class="stars">★★★★★</div></div></div><blockquote>"I have gotten some wonderful new tools… It begins with me. I was gifted to have them and now, through your work, <b>this gift can be opened again and again. It was shut because I shut it.</b>"</blockquote></div>
+      <div class="rev"><div class="head"><span class="avi"><img src="../assets/members/diana-millenbaugh.jpg" alt="" onerror="this.remove()">DM</span><div><div class="who">Diana</div><div class="stars">★★★★★</div></div></div><blockquote>"My biggest win has been becoming much more aware of my own thoughts, reactions, and the role I play in my relationships. <b>I'm learning to pause before I respond</b>, respect boundaries, and focus on what I can control."</blockquote></div>
+      <div class="rev"><div class="head"><span class="avi"><img src="../assets/members/jolene-palmquist.jpg" alt="" onerror="this.remove()">JP</span><div><div class="who">Jolene</div><div class="stars">★★★★★</div></div></div><blockquote>"I'm loving the program… <b>the content is amazing.</b> It speaks to the core of what I believe are the issues of struggles for me personally and in this new phase of parenting adult children."</blockquote></div>
+      <div class="rev"><div class="head"><span class="avi"><img src="../assets/members/linda-poole.jpg" alt="" onerror="this.remove()">LP</span><div><div class="who">Linda</div><div class="stars">★★★★★</div></div></div><blockquote>"It was so empowering and encouraging… <b>It's giving me courage to get ready to have a conversation with my daughter.</b>"</blockquote></div>
+      <div class="rev"><div class="head"><span class="avi"><img src="../assets/members/graciela-davis.jpg" alt="" onerror="this.remove()">GD</span><div><div class="who">Graciela</div><div class="stars">★★★★★</div></div></div><blockquote>"I'm learning tremendously <b>how to stay more calm, and not react…</b> Would like to see more classes. Thank you!"</blockquote></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p style="margin-bottom:8px">© 2026 Parenting Adult Children Today · All rights reserved · Privacy · Terms · Refunds · info@parentingadultchildrentoday.com</p>
+  <p style="margin:0;max-width:760px;margin-inline:auto">Results vary. Reconnection depends on many factors including the participation of others; no outcome is promised or implied. This program provides educational content and is not therapy or a substitute for licensed mental-health care.</p>
+</footer>
+
+<script>
+  const API  = 'https://pact-funnel-api.alex-f42.workers.dev';
+  const PK_LIVE = 'pk_live_51TP1022QGGpeDcPBKwnQbRVNU2pcQR4mhfiPWGaEJWbVXsWzmtvz4KrLBzrSG3p2unVsx5fJqjmzEfN0oMv5Vw1w006jhnyiMH';
+  const QS   = new URLSearchParams(location.search);
+  const TEST = QS.get('test') === '1';
+  const PRICE = { plan: 27, gatekeeper: 27, summit: 37 };
+  if (TEST) document.getElementById('testmode').style.display = 'block';
+
+  // Lead captured on page 1 and carried here in sessionStorage.
+  let lead = null;
+  try { lead = JSON.parse(sessionStorage.getItem('hol_lead') || 'null'); } catch (e) {}
+  if (!lead || !lead.email) { location.replace('index.html#start' + (location.search || '')); }
+  else { document.getElementById('who').textContent = lead.name + ' · ' + lead.email; }
+
+  const mck = n => { const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : undefined; };
+  const err = document.getElementById('err');
+  function showErr(msg) { err.textContent = msg; err.style.display = 'block'; }
+
+  function selectedBumps() {
+    return [...document.querySelectorAll('input[data-bump]:checked')].map(i => i.dataset.bump);
+  }
+  function renderSummary() {
+    const sel = selectedBumps();
+    let total = 27;
+    for (const k of Object.keys(PRICE)) {
+      const on = sel.includes(k);
+      document.getElementById('r-' + k).classList.toggle('hidden', !on);
+      document.getElementById('b-' + k).classList.toggle('on', on);
+      document.getElementById('b-' + k).querySelector('.tag').textContent = on ? 'Added ✓' : 'Add to your order';
+      if (on) total += PRICE[k];
+    }
+    document.getElementById('total').textContent = '$' + total;
+  }
+
+  // Embedded Checkout. Remount whenever the bump set changes (same pattern as checkout.html).
+  let stripe = null, checkout = null, mountedKey = null, loading = false, pending = false;
+  async function mountCheckout() {
+    if (!lead) return;
+    const bumps = selectedBumps();
+    const key = bumps.slice().sort().join(',');
+    if (key === mountedKey) return;
+    if (loading) { pending = true; return; }
+    loading = true; err.style.display = 'none';
+    document.getElementById('checkout').innerHTML = '<div class="loading">Updating your order…</div>';
+    try {
+      if (checkout) { try { checkout.destroy(); } catch (e) {} checkout = null; }
+      const body = {
+        email: lead.email, name: lead.name, phone: lead.phone,
+        bumps,
+        fbp: mck('_fbp') || lead.fbp, fbc: mck('_fbc') || lead.fbc,
+        fbclid: QS.get('fbclid') || lead.fbclid || undefined,
+        lp: 'holiday'
+      };
+      if (TEST) body.test = true;
+      const r = await fetch(API + '/holiday/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const j = await r.json();
+      if (!r.ok || !j.clientSecret) throw new Error(j.error || 'Could not start checkout');
+      // Live sessions carry no pk (same live publishable key as checkout.html); test sessions return the test pk.
+      if (!stripe) stripe = Stripe(j.pk || PK_LIVE);
+      checkout = await stripe.initEmbeddedCheckout({ clientSecret: j.clientSecret });
+      document.getElementById('checkout').innerHTML = '';
+      checkout.mount('#checkout');
+      mountedKey = key;
+    } catch (e) {
+      document.getElementById('checkout').innerHTML = '';
+      showErr('We could not load the payment form. Please refresh, or email info@parentingadultchildrentoday.com and we will take care of you.');
+      mountedKey = null;
+    } finally {
+      loading = false;
+      if (pending) { pending = false; mountCheckout(); }
+    }
+  }
+
+  document.querySelectorAll('input[data-bump]').forEach(i => i.addEventListener('change', () => { renderSummary(); mountCheckout(); }));
+  renderSummary();
+  mountCheckout();
+  try { fbq('track', 'InitiateCheckout', { value: 27, currency: 'USD' }); } catch (e) {}
+  try { navigator.sendBeacon(API + '/pv', 'holiday-order'); } catch (e) {}
+</script>
+</body>
+</html>

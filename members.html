@@ -353,6 +353,7 @@ function render(){
   g.innerHTML =
     section(1,'Your Book & Bonuses','Read tonight — everything opens right here on this page.') +
     bookModule() +
+    ((owned.has('holiday-guide')||owned.has('holiday-plan')||owned.has('gatekeeper-guide')) ? holidayModule() : '') +
     section(2,'The Reconnection Roadmap','Catherine on video — your first 30 days, one module at a time.') +
     videoModule({
       slug:'roadmap', title:'The Reconnection Roadmap', sub:'The 8-module method on video, with the 30-day day-by-day schedule.',
@@ -477,6 +478,61 @@ function tileHTML(v,m){
       <div class="cap">${esc(v.t)}</div></div>`;
 }
 
+/* Black Friday 2026 "Holiday Edition" (Nov 2026). Files live under R2 holiday/…
+   and are gated per item in the worker: holiday-guide -> holiday/guide/,
+   holiday-plan -> holiday/plan/ (PDF + the six Hard Days audios),
+   gatekeeper-guide -> holiday/gatekeeper/. */
+const HARD_DAYS = [
+  ['01-thanksgiving-morning','Thanksgiving morning'],
+  ['02-the-birthday-when-the-phone-doesnt-ring','The birthday when the phone doesn’t ring'],
+  ['03-christmas-eve','Christmas Eve'],
+  ['04-when-they-chose-the-other-family','When they chose the other family'],
+  ['05-the-read-receipt-with-no-reply','The read receipt with no reply'],
+  ['06-new-years-morning','New Year’s morning'],
+];
+function holidayModule(){
+  const owned = new Set(ME.owned||[]);
+  const lessons = [];
+  if (owned.has('holiday-guide')) lessons.push(
+    {ic:'🕯️',b:'The Holiday Messages Guide',s:'What to send, what to say, and when to stay quiet — Thanksgiving, Christmas and birthdays',
+      act:"openDoc('holiday/guide/holiday-messages-guide.pdf','The Holiday Messages Guide')", start:true},
+    {ic:'⬇️',b:'Download the Messages Guide (PDF)',s:'Your own copy to keep',
+      act:"downloadDoc('holiday/guide/holiday-messages-guide.pdf','The Holiday Messages Guide - Catherine Hickem.pdf')", go:'Download →', nokey:true});
+  if (owned.has('holiday-plan')) lessons.push(
+    {ic:'🗓️',b:'The Holiday Season Plan',s:'Day by day from Thanksgiving to New Year’s — start with the planning week',
+      act:"openDoc('holiday/plan/holiday-season-plan.pdf','The Holiday Season Plan')"},
+    {ic:'⬇️',b:'Download the Season Plan (PDF)',s:'Print the worksheets at the back',
+      act:"downloadDoc('holiday/plan/holiday-season-plan.pdf','The Holiday Season Plan - Catherine Hickem.pdf')", go:'Download →', nokey:true});
+  if (owned.has('gatekeeper-guide')) lessons.push(
+    {ic:'🚪',b:'The Gatekeeper Guide',s:'When a son- or daughter-in-law decides who gets in',
+      act:"openDoc('holiday/gatekeeper/gatekeeper-guide.pdf','The Gatekeeper Guide')"},
+    {ic:'⬇️',b:'Download the Gatekeeper Guide (PDF)',s:'Your own copy to keep',
+      act:"downloadDoc('holiday/gatekeeper/gatekeeper-guide.pdf','The Gatekeeper Guide - Catherine Hickem.pdf')", go:'Download →', nokey:true});
+  let audio = '';
+  if (owned.has('holiday-plan')) {
+    const rows = HARD_DAYS.map(([slug,t],i)=>{
+      const key = 'holiday/plan/audio/'+slug+'.mp3';
+      window.__items.push(key);
+      const dn = isDone(key);
+      return `<div class="chap ${dn?'isdone':''}" onclick="playAudio('${key}','${esc(t)}','The Hard Days')">
+        <span class="n">${dn?'✓':i+1}</span><span>${esc(t)}</span><span class="pl">${dn?'✓ Done':'▶ Listen'}</span></div>`;
+    }).join('');
+    audio = `<div class="audio-head"><div class="ic">🎧</div><div><b>The Hard Days</b><span>Six short sessions from Catherine — about a minute each, for the mornings that need one</span></div></div>
+      <div class="chaps">${rows}</div>`;
+  }
+  return `<div class="mod"><div class="head">
+    <div><h3>Holiday Edition</h3><div class="sub">Your holiday guides, and Catherine’s short sessions for the hardest days.</div></div>
+    <span class="badge owned">✓ Yours</span></div>
+    <div class="body">
+      ${lessons.map(l=>{const dk=(l.act.match(/'([^']+)'/)||[])[1]||''; if(!l.nokey) window.__items.push(dk);
+        const dn=!l.nokey&&isDone(dk);
+        return `<div class="lesson ${dn?'isdone':''}" onclick="${l.act}"><div class="ic">${l.ic}</div>
+        <div class="t"><b>${l.b}${l.start?'<span class="startflag">Start here</span>':''}${dn?'<span class="ck">✓</span>':''}</b><span>${l.s}</span></div>
+        <div class="go">${l.go||(dn?'Again →':'Open →')}</div></div>`}).join('')}
+      ${audio}
+    </div></div>`;
+}
+
 function videoModule(m){
   const withKeys = m.vids.filter(v=>v.key);
   const doneN = withKeys.filter(v=>isDone(v.key)).length;
@@ -529,7 +585,7 @@ function closeOverlay(){ overlay.classList.remove('on'); ovbody.innerHTML=''; do
 function playVideo(key,title){ ovbody.innerHTML=`<video controls autoplay playsinline src="${vurl(key)}"></video>`; openOverlay(title);
   const v=ovbody.querySelector('video'); v.addEventListener('ended',()=>markDone(key));
   v.addEventListener('timeupdate',()=>{ if(v.duration && v.currentTime/v.duration>0.9) markDone(key); },{passive:true}); }
-function playAudio(key,title){ ovbody.innerHTML=`<div class="ov-audio"><h4>${esc(title)}</h4><audio controls autoplay src="${vurl(key)}"></audio><p style="color:var(--soft);font-size:15px;margin-top:14px">Listens right here — press ← Back when you’re done.</p></div>`; openOverlay('The Audiobook'); }
+function playAudio(key,title,ovTitle){ ovbody.innerHTML=`<div class="ov-audio"><h4>${esc(title)}</h4><audio controls autoplay src="${vurl(key)}"></audio><p style="color:var(--soft);font-size:15px;margin-top:14px">Listens right here — press ← Back when you’re done.</p></div>`; openOverlay(ovTitle||'The Audiobook'); }
 /* PDFs never go in the iframe: iPhone/iPad Safari renders only PAGE ONE of a framed
    PDF and it will not scroll ("I can only see the title page" — Maria D., Sep 30).
    Open them in their own tab, where the phone's real PDF viewer takes over. */
