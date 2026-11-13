@@ -136,6 +136,14 @@ document.head.appendChild(s);
     <!-- Click tracking for the call button (Nov 2026). Applications that follow carry the
          GHL tag app-src-ty (apply.html passes src=ty to /apply). -->
     <script>
+      // Pass the order id so apply.html can fill name/email/phone from the paid order.
+      (() => {
+        let sid = new URLSearchParams(location.search).get('sid') || '';
+        if (!sid) { try { const m = (localStorage.getItem('wh_library_link') || '').match(/[?&]sid=([^&]+)/); if (m) sid = decodeURIComponent(m[1]); } catch (e) {} }
+        if (sid) document.getElementById('call-btn').href = 'apply.html?src=ty&sid=' + encodeURIComponent(sid);
+      })();
+    </script>
+    <script>
       document.getElementById('call-btn').addEventListener('click', function(){
         try { fbq('trackCustom','ClarityCallClick',{src:'ty'}); } catch(e) {}
         try { gtag('event','clarity_call_click',{src:'ty'}); } catch(e) {}

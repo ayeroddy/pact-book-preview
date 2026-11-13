@@ -42,6 +42,8 @@
     font-family:var(--sans);box-shadow:0 8px 20px rgba(201,162,39,.35);transition:transform .12s}
   .btn:hover{transform:translateY(-2px)}
   .btn[disabled]{opacity:.6;pointer-events:none}
+  .known{font-size:17px;line-height:1.55;background:#fff;border:2px solid var(--line);border-radius:12px;padding:14px 16px;margin:0;word-break:break-word}
+  .known button{font:inherit;font-size:15px;color:var(--purple);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0 0 0 4px}
   .trust{text-align:center;font-size:14.5px;color:var(--soft);margin-top:14px}
   .err{color:#b5352a;font-size:15px;margin-top:8px;display:none}
   /* result states */
@@ -159,13 +161,16 @@ document.head.appendChild(s);
       </div>
     </div>
 
-    <div class="q"><label class="title">Where should we send your call confirmation?</label>
+    <div class="q" id="contact-q"><label class="title">Where should we send your call confirmation?</label>
+      <p class="known" id="known" hidden>We’ll send your confirmation to <b id="known-email"></b> and text <b id="known-phone"></b>. <button type="button" id="known-change">Change</button></p>
+      <div id="contact-fields">
       <div class="row2">
         <input type="text" id="fname" placeholder="First name" required>
         <input type="text" id="lname" placeholder="Last name">
       </div>
       <input type="email" id="email" placeholder="you@example.com" required style="margin-top:10px">
       <input type="tel" id="phone" placeholder="Mobile — so our team can confirm your time" required style="margin-top:10px">
+      </div>
     </div>
 
     <button class="btn" id="subbtn" type="submit">See Available Call Times →</button>
@@ -259,6 +264,43 @@ const SRC = QS.get('src') || 'direct';
   if (QS.get('e')) document.getElementById('email').value = QS.get('e');
   if (QS.get('fn')) document.getElementById('fname').value = QS.get('fn');
   if (QS.get('ln')) document.getElementById('lname').value = QS.get('ln');
+})();
+
+// Book buyers arriving from the thank-you page carry their Stripe session id (sid).
+// Fill name/email/phone from the paid order (same /session-info the quiz calendar uses)
+// so they don't type what they gave at checkout. All three known → the fields fold into
+// one "we'll send it to…" line with a Change link; only phone missing → only phone shows.
+(function(){
+  const sid = QS.get('sid') || '';
+  if (!/^cs_(live|test)_[A-Za-z0-9]+$/.test(sid)) return;
+  fetch(API + '/session-info?sid=' + encodeURIComponent(sid))
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      if (!d) return;
+      const set = (id, v) => { const el = document.getElementById(id); if (v && !el.value) el.value = v; };
+      set('fname', d.first_name); set('lname', d.last_name); set('email', d.email); set('phone', d.phone);
+      const f = id => document.getElementById(id).value.trim();
+      if (!f('fname') || !f('email')) return;
+      const fields = document.getElementById('contact-fields');
+      if (f('phone')) {
+        document.getElementById('known-email').textContent = f('email');
+        document.getElementById('known-phone').textContent = f('phone');
+        document.getElementById('known').hidden = false;
+        fields.hidden = true;
+        document.querySelector('#contact-q label.title').textContent = 'Your call confirmation';
+      } else {
+        // only the phone is missing: hide name/email, keep the phone box
+        fields.querySelector('.row2').hidden = true;
+        document.getElementById('email').hidden = true;
+        document.getElementById('phone').style.marginTop = '0';
+        document.querySelector('#contact-q label.title').textContent = 'What mobile number should our team use to confirm your time?';
+      }
+    }).catch(() => {});
+  document.getElementById('known-change').addEventListener('click', () => {
+    document.getElementById('known').hidden = true;
+    document.getElementById('contact-fields').hidden = false;
+    document.querySelector('#contact-q label.title').textContent = 'Where should we send your call confirmation?';
+  });
 })();
 
 // Source-aware ordering: hot arrivals (TY page, emails, Hope) see the form
