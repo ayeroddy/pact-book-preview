@@ -22,16 +22,13 @@
   ol.steps{margin:0 0 22px 20px}
   ol.steps li{margin-bottom:12px}
   .done{color:var(--green);font-weight:700;font-size:20px}
-  h1.ready{font-size:40px;margin-bottom:18px}
   .btn-big{display:block;text-align:center;font-size:25px;line-height:1.25;padding:24px 20px;border-radius:14px;box-shadow:0 8px 22px rgba(165,129,26,.4)}
-  .plain{font-size:20px;line-height:1.55}
-  .access{border:2px solid var(--indigo);padding:24px 20px}
-  .access h3{font-size:24px;margin-bottom:14px}
-  .linkbtns{display:flex;flex-direction:column;gap:12px;margin:0 0 16px}
-  .linkbtns a{display:block;text-align:center;font:700 21px var(--sans);color:#fff;background:var(--indigo);border-radius:12px;padding:18px 12px;text-decoration:none}
-  .tiny{font-size:14px;color:var(--muted);margin:0}
-  .linkbox{word-break:break-all;user-select:all;-webkit-user-select:all}
-  .tiny button{font:700 14px var(--sans);color:var(--indigo);background:#fff;border:1px solid var(--indigo);border-radius:6px;padding:4px 10px;cursor:pointer}
+  .btn-call{display:block;text-align:center;font-size:clamp(19px,4.6vw,22px);line-height:1.3;padding:18px 18px;border-radius:14px;
+    color:#241a05;margin-top:6px;box-shadow:0 10px 26px rgba(165,129,26,.5),0 0 0 0 rgba(201,162,39,.55);animation:callglow 2.4s ease-in-out infinite}
+  .btn-call:hover{filter:brightness(1.05)}
+  @keyframes callglow{0%,100%{box-shadow:0 10px 26px rgba(165,129,26,.5),0 0 0 0 rgba(201,162,39,.55)}50%{box-shadow:0 10px 26px rgba(165,129,26,.5),0 0 0 7px rgba(201,162,39,0)}}
+  @media(prefers-reduced-motion:reduce){.btn-call{animation:none}}
+  .btn-book{font-size:18px;padding:14px 16px;box-shadow:0 4px 12px rgba(165,129,26,.25)}
   .placeholder{outline:2px dashed #B3392E;outline-offset:3px;border-radius:4px}
 </style>
 <!-- Meta Pixel -->
@@ -79,71 +76,6 @@ document.head.appendChild(s);
 <section>
   <div class="wrap">
     <p class="done">✓ Your order is complete. Thank you.</p>
-    <h1 class="ready">Your book is ready.</h1>
-    <p><a class="btn btn-big" id="library-btn" href="members.html">👉 Tap here to open your book</a></p>
-    <p class="plain"><b>There is nothing to download.</b> Your book opens right here on this screen when you tap the gold button.</p>
-
-    <!-- ACCESS CARD (Oct 2026). Written for readers in their 60s-80s: one action per
-         step, big type, no jargon. Three complaints drove it — buyers waiting on an
-         email that never came (opted-out contacts get NO delivery email), buyers
-         hunting for a download, and buyers who closed this page with no way back.
-         So the link is ON the page and they can send it to themselves. -->
-    <div class="card access">
-      <h3 style="margin-top:0">How to come back to your book later</h3>
-      <div id="has-link" hidden>
-        <p class="plain"><b>1.</b> We emailed your book link to <span id="sent-to">the email address on your order</span>. Keep that email. If you don’t see it, look in your spam folder.</p>
-        <p class="plain"><b>2.</b> To be safe, send the link to yourself now:</p>
-        <div class="linkbtns">
-          <a id="mail-btn" href="#">✉️ Email my link to me</a>
-          <a id="sms-btn" href="#" hidden>💬 Text my link to me</a>
-        </div>
-        <p class="tiny">Or copy your link: <span class="linkbox" id="mylink"></span> <button type="button" id="copy-btn">Copy</button></p>
-      </div>
-      <div id="no-link" hidden>
-        <p class="plain">Tap the button below and we will find your book for you.</p>
-        <p><a class="btn btn-big" href="access.html">Find my book</a></p>
-      </div>
-      <p class="plain" style="margin:14px 0 0"><b>Need help?</b> Email <a href="mailto:info@parentingadultchildrentoday.com">info@parentingadultchildrentoday.com</a>. A real person will help you today.</p>
-    </div>
-    <p style="font-size:15px"><a href="#fasttrack" style="color:var(--gold,#9a7b1a);font-weight:700">In year-two-plus silence? You can skip ahead and talk to the team this week &darr;</a></p>
-    <script>
-      (() => {
-        const sid = new URLSearchParams(location.search).get('sid');
-        const btn = document.getElementById('library-btn');
-        // sid = instant auto-login. With no sid (back button, forwarded link, stripped
-        // query) fall back to the link this browser saved at purchase, then to the
-        // self-serve recovery page — never to the library's "open this from your
-        // confirmation" dead end.
-        const mk = () => new URL('members.html?sid=' + encodeURIComponent(sid), location.href).href;
-        let link = '';
-        try {
-          if (sid) { link = mk(); localStorage.setItem('wh_library_link', link); }
-          else link = localStorage.getItem('wh_library_link') || '';
-        } catch (e) { if (sid) link = mk(); }
-        if (!link) { btn.href = 'access.html'; document.getElementById('no-link').hidden = false; return; }
-        btn.href = link;
-        document.getElementById('has-link').hidden = false;
-        document.getElementById('mylink').textContent = link;
-        const subject = 'My Welcome Home book';
-        const body = 'This is my link to the Welcome Home book. Tap it to open the book on any phone, tablet or computer:\n\n' + link;
-        const mail = document.getElementById('mail-btn');
-        const setMail = (to) => { mail.href = 'mailto:' + (to || '') + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body); };
-        setMail('');
-        if ('ontouchstart' in window) { const sms = document.getElementById('sms-btn'); sms.hidden = false; sms.href = 'sms:?&body=' + encodeURIComponent('My Welcome Home book: ' + link); }
-        const copy = document.getElementById('copy-btn');
-        copy.addEventListener('click', async () => {
-          try { await navigator.clipboard.writeText(link); }
-          catch (e) { const r = document.createRange(); r.selectNodeContents(document.getElementById('mylink')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); try { document.execCommand('copy'); } catch (e2) {} }
-          copy.textContent = 'Copied ✓';
-        });
-        // Show WHICH address the link went to — a typo at checkout is the #1 reason
-        // "the email never came". Best-effort; the page works without it.
-        if (sid) fetch('https://pact-funnel-api.alex-f42.workers.dev/status?session_id=' + encodeURIComponent(sid))
-          .then(r => r.json()).then(j => { if (j && j.email) { const el = document.getElementById('sent-to'); el.textContent = ''; const bEl = document.createElement('b'); bEl.textContent = j.email; el.appendChild(bEl); setMail(j.email); } })
-          .catch(() => {});
-      })();
-    </script>
-
     <!-- Value bomb #1 (captioned) -->
     <style>
       .tywrap{position:relative;border-radius:8px;overflow:hidden;cursor:pointer}
@@ -172,7 +104,7 @@ document.head.appendChild(s);
 
     <!-- CALL FAST-TRACK: the funnel's true terminal action. Never gated behind content
          consumption — 20% of PACT closes never watched the webinar. -->
-    <div class="card" id="fasttrack" style="border:2px solid var(--gold);background:#FFFDF6">
+    <div class="card" id="fasttrack" style="border:3px solid var(--gold);background:#FFFDF6">
       <h3 style="margin-top:0">If the silence is measured in years, not months — skip ahead.</h3>
       <p>The book teaches the method, and for many families it's enough. But if your
       situation is severe — 12+ months of no contact, a gatekeeper in the doorway,
@@ -182,9 +114,33 @@ document.head.appendChild(s);
       advisor (spouses warmly invited). You'll leave with a diagnosis of your estrangement
       pattern and a plan — whether or not you ever join a program. If working together makes
       sense, your advisor will walk you through exactly what that looks like on the call.</p>
-      <a class="btn" href="apply.html?src=ty" style="background:var(--gold);color:#241a05;font-weight:800;font-size:18px">Book My Complimentary Clarity Call &rarr;</a>
+      <a class="btn btn-call" id="call-btn" href="apply.html?src=ty">📞 Book My Complimentary Clarity Call&nbsp;&rarr;</a>
       <p style="font-size:13px;color:var(--muted);margin:10px 0 0">A few questions when you book help us match you with the right advisor. Calls available within 3 days.</p>
     </div>
+    <!-- BOOK BUTTON (Nov 2026): the only book link on the page — buyers who unsubscribed
+         before buying get no delivery email from GHL. sid = instant auto-login; with no sid
+         (back button, stripped query) use the link this browser saved at purchase, then the
+         self-serve recovery page. -->
+    <p><a class="btn btn-big btn-book" id="library-btn" href="access.html">👉 Tap here to open your book</a></p>
+    <script>
+      (() => {
+        const sid = new URLSearchParams(location.search).get('sid');
+        let link = '';
+        try {
+          if (sid) { link = new URL('members.html?sid=' + encodeURIComponent(sid), location.href).href; localStorage.setItem('wh_library_link', link); }
+          else link = localStorage.getItem('wh_library_link') || '';
+        } catch (e) { if (sid) link = 'members.html?sid=' + encodeURIComponent(sid); }
+        if (link) document.getElementById('library-btn').href = link;
+      })();
+    </script>
+    <!-- Click tracking for the call button (Nov 2026). Applications that follow carry the
+         GHL tag app-src-ty (apply.html passes src=ty to /apply). -->
+    <script>
+      document.getElementById('call-btn').addEventListener('click', function(){
+        try { fbq('trackCustom','ClarityCallClick',{src:'ty'}); } catch(e) {}
+        try { gtag('event','clarity_call_click',{src:'ty'}); } catch(e) {}
+      });
+    </script>
     <!-- SILENCE QUIZ buyers (Oct 2026): the quiz result pages set wh_lp=quiz. For them the
          first screen is Step 1 = the Clarity Call calendar itself (RCC main, prefilled from the
          paid session), the book becomes Step 2, and one workshop link sits under the calendar.
