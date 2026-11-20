@@ -400,7 +400,9 @@ document.head.appendChild(s);
     leadEmail = email;
     const e164 = d.length === 10 ? '+1' + d : '+' + d;
     try { fetch(API + '/lead', { method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ name, email, phone: e164 }) }); } catch (e) {}
+      body: JSON.stringify({ name, email, phone: e164,
+        // A/B split test: same rule as the /session call below (only "A" or "B", from ?ab_variant=)
+        ab_variant: (function(){const v=String(new URLSearchParams(location.search).get('ab_variant')||'').trim().toUpperCase();return v==='A'||v==='B'?v:undefined})() }) }); } catch (e) {}
     try { fbq('track', 'AddPaymentInfo'); } catch (e) {}
     try { navigator.sendBeacon(API + '/pv', 'checkout2'); } catch (e) {}
     goStep(2);
